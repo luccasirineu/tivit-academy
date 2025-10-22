@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TIVIT Academy | Professor</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAk1BMVEXyACT////xAADyAA794ub4oKXyABfyACHyABv2dHvyAB7yABTxAAfxAAz/+/zyABb/9/n1TmD1Z3H1Xmr7tr791tryACfyEy37wMf+7/L6p7D4lZz+5+v8xcz+7fD4jZjzGzf0LEP0PE71VmP2bnb1VGH0N073iZD8zdL6rrf5oqv3kpj2eIL1QlbzJED90df3gYo3mUy0AAAD10lEQVR4nO3c63KiShSGYdIgICeRg6AoiJoEHTHc/9VNo2b2dtQRaR1cU9/zMzHab1o7uKyKJAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALwUTdMMQ99T/3P4gmHw73a9wLvxIF01Zdtie7IxmueL4fty6fue5636/f5q5Xm+7y/fh2W+izTzcEPLluVB3dx1wCX1LvGoQ5M+/1iuPpPNJJiFytjlHMd5u8Jx96ZhEa83yY+tX+5Gx15T1Y3ON3i/WzbfpmhX+tskCAplfK3lDs70Kw4mn6thHkkms+Q69a+3GbopMybl71614VvlPqDrcmtYrLPVchFZjG/qXwnVDL5pzNr5VRIr6bPKzkrH04Jv6kLjDy3rT+rkz0jTsmyjrCbx9Orr6tmlbrFO/Mi2+FP3kRuqGQObjfJhFRRpR2mnnDBOvMXcZLxTuM4wLaaV20047TrrzFiJMy+X+QtUJFP9qCbhI87HZ3HGxab6aP+EteKuC5phrQvNrOu1NzJtX6gvu158I7P2hUbe9eIbWdutC7XRa/x5uGE7aF0omWHXq2+iFPhzwWZdr76JucDljUzhMFVE3mSpXtfLb+DLah8oGWXXy29gLVKoRa98yXZUmQKFEnu9K+4zvi5U+PpXpk4u9BZKTroOuCkVm1eZVdcBNyntr0prbQ9Tx3HdcRoWcbCebJKsuHij9DPpbdZBPPtSxmPXbTkbETpK61Fo84dyU0UJ40lW9b33xS5Svye9tsx6F39AYbJsW4cxqyzNF0O/v802QREq0zuO8EwWKpTY7cdSvmb7kd8u0vlqbdlUfx/mytcKT36Xhv49LDfrXK/axEV4e5y3UgULr1+ZOmEwqYZz3dzPvv40oW5SeEI7Dpv5/Ublqrf+0whM7CiVJHtydpduGgbJtqzH77apNznJ7i48aVXrzwvk3MsmxXR8/mIVexn+fpim4Xq73Kn8dzu4ZzArUPiLUe8pi0ovi09mY4JH6f8O02nc8/ORZZktZs6PKDyod5SZ0cLrxcerrUC0UDPenDRIhiZj7efMjyv8XhTvZINhEqRvPcGjlN/bMuJxYh8WPLrwuDKdZ0Yib3+PHvBJyHMK9zr/iPHgiYUvAoX0oZA+FNKHQvpQSB8K6UMhfSikD4X0oZA+FNKHQvpQSB8K6UMhfSikD4X0oZA+FNKHQvpQSB8K6UMhfSikD4X0oZA+FNKHQvpQSB8K6UMhfSikD4X0oZA+FNKHQvpQSB8K6btSKPAfjl+NUfYv8YT+4eFrMdRL/qFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD4h/wECmVOFgO3Vo0AAAAASUVORK5CYII=">
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+</head>
+
+<body>
+  <div class="dashboard">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="logo">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAk1BMVEXyACT////xAADyAA794ub4oKXyABfyACHyABv2dHvyAB7yABTxAAfxAAz/+/zyABb/9/n1TmD1Z3H1Xmr7tr791tryACfyEy37wMf+7/L6p7D4lZz+5+v8xcz+7fD4jZjzGzf0LEP0PE71VmP2bnb1VGH0N073iZD8zdL6rrf5oqv3kpj2eIL1QlbzJED90df3gYo3mUy0AAAD10lEQVR4nO3c63KiShSGYdIgICeRg6AoiJoEHTHc/9VNo2b2dtQRaR1cU9/zMzHab1o7uKyKJAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALwUTdMMQ99T/3P4gmHw73a9wLvxIF01Zdtie7IxmueL4fty6fue5636/f5q5Xm+7y/fh2W+izTzcEPLluVB3dx1wCX1LvGoQ5M+/1iuPpPNJJiFytjlHMd5u8Jx96ZhEa83yY+tX+5Gx15T1Y3ON3i/WzbfpmhX+tskCAplfK3lDs70Kw4mn6thHkkms+Q69a+3GbopMybl71614VvlPqDrcmtYrLPVchFZjG/qXwnVDL5pzNr5VRIr6bPKzkrH04Jv6kLjDy3rT+rkz0jTsmyjrCbx9Orr6tmlbrFO/Mi2+FP3kRuqGQObjfJhFRRpR2mnnDBOvMXcZLxTuM4wLaaV20047TrrzFiJMy+X+QtUJFP9qCbhI87HZ3HGxab6aP+EteKuC5phrQvNrOu1NzJtX6gvu158I7P2hUbe9eIbWdutC7XRa/x5uGE7aF0omWHXq2+iFPhzwWZdr76JucDljUzhMFVE3mSpXtfLb+DLah8oGWXXy29gLVKoRa98yXZUmQKFEnu9K+4zvi5U+PpXpk4u9BZKTroOuCkVm1eZVdcBNyntr0prbQ9Tx3HdcRoWcbCebJKsuHij9DPpbdZBPPtSxmPXbTkbETpK61Fo84dyU0UJ40lW9b33xS5Svye9tsx6F39AYbJsW4cxqyzNF0O/v802QREq0zuO8EwWKpTY7cdSvmb7kd8u0vlqbdlUfx/mytcKT36Xhv49LDfrXK/axEV4e5y3UgULr1+ZOmEwqYZz3dzPvv40oW5SeEI7Dpv5/Ublqrf+0whM7CiVJHtydpduGgbJtqzH77apNznJ7i48aVXrzwvk3MsmxXR8/mIVexn+fpim4Xq73Kn8dzu4ZzArUPiLUe8pi0ovi09mY4JH6f8O02nc8/ORZZktZs6PKDyod5SZ0cLrxcerrUC0UDPenDRIhiZj7efMjyv8XhTvZINhEqRvPcGjlN/bMuJxYh8WPLrwuDKdZ0Yib3+PHvBJyHMK9zr/iPHgiYUvAoX0oZA+FNKHQvpQSB8K6UMhfSikD4X0oZA+FNKHQvpQSB8K6UMhfSikD4X0oZA+FNKHQvpQSB8K6UMhfSikD4X0oZA+FNKHQvpQSB8K6UMhfSikD4X0oZA+FNKHQvpQSB8K6btSKPAfjl+NUfYv8YT+4eFrMdRL/qFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD4h/wECmVOFgO3Vo0AAAAASUVORK5CYII=" >
+        <h2>TIVIT Academy</h2>
+      </div>
+      <nav>
+        <ul>
+          <li class="active" data-section="dashboard" > <i class='bx  bx-home'  ></i> Dashboard</li> 
+          <li data-section="calendario"><i class='bx bx-calendar'></i> Calendário</li>
+          <li data-section="boletins"><i class='bx bx-file'></i> Boletins</li>
+          <li data-section="medias"><i class='bx bx-calculator'></i> Médias & Frequência</li>
+        </ul>
+      </nav>
+      <div class="theme-toggle">
+          <span><i class='bx  bx-moon'  ></i> </span>
+          <label class="switch">
+            <input type="checkbox" id="themeSwitch">
+            <span class="slider round"></span>
+          </label>
+          <span><i class='bx  bx-sun'  ></i> </span>
+        </div>
+    </aside>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="content">
+
+      <section id="dashboard" class="active">
+          <div class="dashboard-header">
+            <h1>Bem-vindo, Professor!</h1>
+            <p>Gerencie o controle de desempenho dos alunos da TIVIT Academy.</p>
+          </div>
+      </section>
+
+      <!-- CALENDÁRIO -->
+      <section id="calendario">
+        <h1>Calendário Escolar</h1>
+        <div class="calendar-container">
+          <div class="calendar-header">
+            <button id="prevYear">&laquo;</button>
+            <button id="prevMonth">&lt;</button>
+            <h2 id="monthYear"></h2>
+            <button id="nextMonth">&gt;</button>
+            <button id="nextYear">&raquo;</button>
+          </div>
+          <div class="calendar-days">
+            <div class="day-name">Dom</div>
+            <div class="day-name">Seg</div>
+            <div class="day-name">Ter</div>
+            <div class="day-name">Qua</div>
+            <div class="day-name">Qui</div>
+            <div class="day-name">Sex</div>
+            <div class="day-name">Sáb</div>
+          </div>
+          <div id="calendarDays" class="calendar-grid"></div>
+        </div>
+
+        <!-- Modal para adicionar evento -->
+        <div id="eventModal" class="modal">
+          <div class="modal-content">
+            <h3>Adicionar Evento</h3>
+
+            <label for="eventTitle">Título:</label>
+            <input type="text" id="eventTitle" placeholder="Título do evento" />
+
+            <label for="eventTime">Horário:</label>
+            <input type="time" id="eventTime" />
+
+            <label for="eventDescription">Descrição:</label>
+            <textarea id="eventDescription" placeholder="Descreva o evento..." rows="3"></textarea>
+
+            <div class="modal-actions">
+              <button id="saveEvent">Salvar</button>
+              <button id="closeModal">Cancelar</button>
+            </div>
+          </div>
+        </div>
+
+
+      </section>
+
+
+      <!-- BOLETIM -->
+      <section id="boletins" >
+        <h2><i class='bx bx-file'></i> Boletins</h2>
+
+        <div class="boletim-container">
+          <!-- Campo de busca -->
+          <div class="search-box">
+            <input type="text" id="searchAluno" placeholder=" Pesquise o aluno pelo nome ou matrícula">
+            <button id="btnBuscarAluno"><i class='bx bx-search'></i> Buscar</button>
+          </div>
+
+          <!-- Resultados -->
+          <div id="resultadoAluno" class="resultado-box hidden">
+            <h3>Informações do aluno</h3>
+            <p><strong>Nome:</strong> <span id="alunoNome"></span></p>
+            <p><strong>Curso:</strong> <span id="alunoCurso"></span></p>
+
+            <table class="tabela-notas">
+              <thead>
+                <tr>
+                  <th>Disciplina</th>
+                  <th>Média Final</th>
+                  <th>Frequência</th>
+                </tr>
+              </thead>
+              <tbody id="tabelaMaterias"></tbody>
+            </table>
+
+            <button id="btnBoletim" class="btn-pdf">
+              <i class='bx bx-file'></i> Gerar Boletim em PDF
+            </button>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- MÉDIAS E FREQUÊNCIA -->
+      <section id="medias">
+        <h1>Cálculo de Médias e Frequência</h1>
+        
+      </section>
+    </main>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
