@@ -282,22 +282,31 @@ document.getElementById("btnBoletim").addEventListener("click", gerarBoletim);
 
 
 // ===== CÁLCULO DE MÉDIAS E FREQUÊNCIA =====
-const mediaForm = document.getElementById("mediaForm");
-const resultado = document.getElementById("resultado");
+document.getElementById("calcularBtn").addEventListener("click", () => {
+  const nota1 = parseFloat(document.getElementById("nota1").value) || 0;
+  const nota2 = parseFloat(document.getElementById("nota2").value) || 0;
+  const faltas = parseInt(document.getElementById("faltas").value) || 0;
+  const totalAulas = parseInt(document.getElementById("totalAulas").value) || 1;
 
-mediaForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-  const n1 = parseFloat(document.getElementById("nota1").value) || 0;
-  const n2 = parseFloat(document.getElementById("nota2").value) || 0;
-  const n3 = parseFloat(document.getElementById("nota3").value) || 0;
-  const freq = parseFloat(document.getElementById("freq").value) || 0;
+  const media = ((nota1 + nota2) / 2).toFixed(1);
+  const frequencia = (((totalAulas - faltas) / totalAulas) * 100).toFixed(1);
 
-  const media = ((n1 + n2 + n3) / 3).toFixed(2);
-  const status = media >= 7 && freq >= 75 ? "Aprovado" : "Reprovado";
+  document.getElementById("mediaFinal").textContent = media;
+  document.getElementById("frequenciaTexto").textContent = `${frequencia}%`;
 
-  resultado.innerHTML = `
-    Média: <strong>${media}</strong><br>
-    Frequência: <strong>${freq}%</strong><br>
-    Situação: <span style="color:${status.includes('Aprovado') ? 'lime' : 'red'}">${status}</span>
-  `;
+  // Atualiza barra de frequência
+  const barra = document.getElementById("barraFreq");
+  barra.style.width = `${frequencia}%`;
+
+  const statusEl = document.getElementById("statusAluno");
+  const statusCard = statusEl.parentElement;
+  statusCard.classList.remove("aprovado", "reprovado");
+
+  if (media >= 6 && frequencia >= 75) {
+    statusEl.textContent = "✅ Aprovado";
+    statusCard.classList.add("aprovado");
+  } else {
+    statusEl.textContent = "❌ Reprovado";
+    statusCard.classList.add("reprovado");
+  }
 });
