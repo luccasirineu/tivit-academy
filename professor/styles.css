@@ -223,83 +223,161 @@ tr:hover { background: rgba(255,255,255,0.05); }
 }
 
 /* === DASHBOARD === */
+#dashboard {
+  padding: 40px;
+  overflow-y: auto;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Cabeçalho */
 .dashboard-header {
   text-align: center;
   margin-bottom: 40px;
 }
 
-.stats-container {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 25px;
-  margin-bottom: 40px;
-  animation: fadeIn 1s ease;
-}
-
-.stat-card {
-  background: var(--bg-secondary);
-  border-radius: 15px;
-  box-shadow: 0 6px 20px var(--shadow);
-  padding: 25px;
-  min-width: 220px;
-  text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.stat-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 10px 25px var(--shadow);
-}
-
-.stat-card i {
-  font-size: 40px;
-  color: var(--accent);
-  margin-bottom: 10px;
-}
-
-.stat-info h3 {
+.dashboard-header h1 {
   font-size: 2rem;
-  margin: 5px 0;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+.dashboard-header p {
+  font-size: 1rem;
+  opacity: 0.85;
+}
+
+/* === CARDS DE RESUMO === */
+.resumo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
+  margin-bottom: 50px;
+}
+
+.resumo-card {
+  background-color: var(--bg-secondary);
+  border-radius: 14px;
+  padding: 25px 30px;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 15px;
+  box-shadow: 0 2px 12px var(--shadow);
+  transition: all 0.3s ease;
+}
+
+.resumo-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 16px var(--shadow);
+}
+
+.resumo-card i {
+  font-size: 2.2rem;
   color: var(--accent);
 }
 
-.stat-info p {
+.resumo-card h3 {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.resumo-card p {
+  margin: 0;
   font-size: 0.9rem;
   opacity: 0.8;
 }
 
-/* === BOTÕES DO DASHBOARD === */
-.dashboard-actions {
+/* === ÚLTIMO EVENTO === */
+.ultimo-evento {
+  margin-bottom: 50px;
+  text-align: center;
+}
+
+.ultimo-evento h2 {
+  font-size: 1.4rem;
+  margin-bottom: 20px;
+  color: var(--accent);
+}
+
+.evento-card {
+  background-color: var(--bg-secondary);
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 2px 12px var(--shadow);
+  max-width: 700px;
+  margin: 0 auto;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.evento-info {
   display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
+  align-items: center;
   gap: 20px;
 }
 
-.dashboard-btn {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: var(--accent);
+.evento-data {
+  background-color: var(--accent);
   color: #fff;
-  border: none;
-  border-radius: 12px;
-  padding: 14px 28px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  box-shadow: 0 4px 15px var(--shadow);
-  transition: all 0.3s ease;
+  border-radius: 10px;
+  padding: 10px 15px;
+  text-align: center;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
 
-.dashboard-btn i { font-size: 20px; }
-
-.dashboard-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 20px var(--shadow);
-  background: #ff3380;
+.evento-data .dia {
+  font-size: 1.8rem;
+  display: block;
 }
+
+.evento-data .mes {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.evento-detalhes {
+  text-align: left;
+}
+
+.evento-detalhes h3 {
+  margin-bottom: 8px;
+  font-size: 1.2rem;
+}
+
+.evento-detalhes p {
+  margin: 4px 0;
+  opacity: 0.9;
+}
+
+.evento-detalhes .descricao {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  margin-top: 10px;
+}
+
+/* === ANIMAÇÃO === */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* === RESPONSIVIDADE === */
+@media (max-width: 900px) {
+  .resumo-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .evento-info {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .evento-detalhes {
+    text-align: center;
+  }
+}
+
 
 /* === LIGHT MODE AJUSTES === */
 body.light .stat-card {
@@ -729,7 +807,7 @@ body.light .modal-content {
 
 /* 🎨 Ajuste específico para o modo escuro */
 body.light .resultado-card {
-  background-color: rgba(234, 234, 234, 0.628); /* levemente mais claro que o fundo */
+  background-color: rgb(234, 234, 234); /* levemente mais claro que o fundo */
 }
 
 .resultado-card h3 {
@@ -764,3 +842,7 @@ body.light .resultado-card {
   }
 }
 
+
+.return-btn{
+  color: white;
+}

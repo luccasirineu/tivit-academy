@@ -23,6 +23,11 @@
           <li data-section="calendario"><i class='bx bx-calendar'></i> Calendário</li>
           <li data-section="boletins"><i class='bx bx-file'></i> Boletins</li>
           <li data-section="calculo"><i class='bx bx-calculator'></i> Médias & Frequência</li>
+          <br>
+          <a href="../index.html" class="return-btn" title="Voltar para o início">
+              <i class='bx bx-undo'></i>
+          </a>
+          
         </ul>
       </nav>
       <div class="theme-toggle">
@@ -39,11 +44,56 @@
     <main class="content">
 
       <section id="dashboard" class="active">
-          <div class="dashboard-header">
-            <h1>Bem-vindo, Professor!</h1>
-            <p>Gerencie o controle de desempenho dos alunos da TIVIT Academy.</p>
+        <div class="dashboard-header">
+          <h1>Bem-vindo, Professor!</h1>
+          <p>Gerencie as informações e acompanhe os últimos eventos da <strong>TIVIT Academy</strong>.</p>
+        </div>
+
+        <!-- Cards de Resumo -->
+        <div class="resumo-grid">
+          <div class="resumo-card">
+            <i class='bx bx-group'></i>
+            <div>
+              <h3>120</h3>
+              <p>Alunos Ativos</p>
+            </div>
           </div>
+          <div class="resumo-card">
+            <i class='bx bx-book'></i>
+            <div>
+              <h3>6</h3>
+              <p>Turmas</p>
+            </div>
+          </div>
+          <div class="resumo-card">
+            <i class='bx bx-time'></i>
+            <div>
+              <h3>3</h3>
+              <p>Eventos nos próximos 7 dias</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Último Evento -->
+        <div class="ultimo-evento">
+          <h2><i class='bx bx-calendar'></i> Próximo Evento</h2>
+          <div class="evento-card">
+            <div class="evento-info">
+              <div class="evento-data">
+                <span class="dia">20</span>
+                <span class="mes">OUT</span>
+              </div>
+              <div class="evento-detalhes">
+                <h3>Apresentação de Projetos</h3>
+                <p><strong>Horário:</strong> 09h00</p>
+                <p><strong>Local:</strong> Auditório Principal</p>
+                <p class="descricao">Os alunos apresentaram seus projetos finais do semestre para banca avaliadora.</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
+
 
       <!-- CALENDÁRIO -->
       <section id="calendario">
