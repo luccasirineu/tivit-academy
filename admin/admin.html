@@ -83,39 +83,64 @@
           </div>
         </section>
 
-
-
-        
-
         <section id="cadastro">
-          <h2>Cadastro</h2>
+          <div class="cadastro-container">
+            <h2><i class='bx  bx-file'  ></i> Cadastro de Usuário</h2>
+            <p>Preencha as informações abaixo para cadastrar um novo aluno ou professor.</p>
 
-          <form id="cadastroForm">
-            <label for="tipo">Tipo de Usuário</label>
-            <select id="tipo" required>
-              <option value="" disabled selected>Selecione...</option>
-              <option value="aluno">Aluno</option>
-              <option value="professor">Professor</option>
-            </select>
+            <form id="cadastroForm" autocomplete="off">
+              <div class="form-grid">
 
-            <label for="nome">Nome</label>
-            <input type="text" id="nome" required>
+                <!-- Tipo -->
+                <div class="form-group">
+                  <label for="tipo">Tipo de Usuário</label>
+                  <select id="tipo" required>
+                    <option value="" disabled selected>Selecione...</option>
+                    <option value="aluno">Aluno</option>
+                    <option value="professor">Professor</option>
+                  </select>
+                </div>
 
-            <label for="email">E-mail</label>
-            <input type="email" id="email" required>
+                <!-- Nome -->
+                <div class="form-group">
+                  <label for="nome">Nome</label>
+                  <input type="text" id="nome" placeholder="Digite o nome completo" required>
+                </div>
 
-            <label for="senha">Senha</label>
-              <div class="senha-wrapper">
-              <input type="password" id="senha" required>
-              <i class='bx bx-hide toggle-senha' id="toggleSenha"></i>
+                <!-- Email -->
+                <div class="form-group">
+                  <label for="email">E-mail</label>
+                  <input type="email" id="email" placeholder="exemplo@tivit.com" required>
+                </div>
+
+                <!-- Senha -->
+                <div class="form-group senha-group">
+                  <label for="senha">Senha</label>
+                  <div class="senha-wrapper">
+                    <input type="password" id="senha" placeholder="Crie uma senha" required>
+                    <i class='bx bx-hide toggle-senha' id="toggleSenha"></i>
+                  </div>
+                </div>
+
+                <!-- Curso / Matéria -->
+                <div class="form-group">
+                  <label for="curso">Curso / Matéria</label>
+                  <input type="text" id="curso" placeholder="Ex: Desenvolvimento Web" required>
+                </div>
+
+                <!-- Matrícula (somente para aluno) -->
+                <div class="form-group hidden" id="matriculaGroup">
+                  <label for="matricula">Matrícula</label>
+                  <input type="text" id="matricula" placeholder="Ex: 20250123">
+                </div>
               </div>
 
-            <label for="curso">Curso / Matéria</label>
-            <input type="text" id="curso" required>
-
-            <button type="submit" class="btn">Cadastrar</button>
-          </form>
+              <button type="submit" class="btn">Cadastrar</button>
+            </form>
+          </div>
         </section>
+
+
 
         <section id="listagem">
           <h2>Listagem</h2>

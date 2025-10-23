@@ -846,3 +846,6 @@ body.light .resultado-card {
 .return-btn{
   color: white;
 }
+body.light .return-btn {
+  color: black; 
+}

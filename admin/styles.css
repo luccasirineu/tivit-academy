@@ -122,84 +122,6 @@ input:checked + .slider::before {
   transform: translateX(22px);
 }
 
-/* === FORMULÁRIOS === */
-form {
-  background: var(--bg-secondary);
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px var(--shadow);
-  max-width: 400px;
-}
-
-form label {
-  display: block;
-  margin-top: 10px;
-}
-
-input, select {
-  width: 96%;
-  padding: 8px;
-  margin-top: 5px;
-  border: none;
-  border-radius: 5px;
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--text);
-  transition: all 0.3s ease;
-}
-
-input:focus, select:focus {
-  outline: 2px solid var(--accent);
-}
-
-/* Inputs claros */
-body.light input,
-body.light select {
-  background: rgba(0, 0, 0, 0.05);
-  color: #000;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-body:not(.light) select option {
-  background-color: #222;
-  color: #fff;
-}
-
-.btn {
-  width: 100%;
-  padding: 10px;
-  background: var(--accent);
-  border: none;
-  border-radius: 6px;
-  color: #fff;
-  font-weight: bold;
-  margin-top: 15px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.btn:hover {
-  background: #ff3380;
-}
-
-/* === CAMPOS DE SENHA === */
-.senha-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.senha-wrapper input { padding-right: 35px; }
-
-.toggle-senha {
-  position: absolute;
-  right: 10px;
-  cursor: pointer;
-  color: var(--text);
-  font-size: 18px;
-  transition: color 0.3s;
-}
-
-.toggle-senha:hover { color: var(--accent); }
 
 /* === TABELA === */
 table {
@@ -328,3 +250,160 @@ body.light .stat-card {
   from { opacity: 0; transform: translateY(15px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+
+/* === CADASTRO === */
+#cadastro {
+  justify-content: center;
+  align-items: center;
+  height: 100vh;              /* ocupa toda a altura da tela */
+  overflow: hidden;           /* remove o scroll vertical e horizontal */
+  padding: 0 20px;            /* um pequeno respiro lateral */
+  animation: fadeIn 0.5s ease-in-out;
+  height: 100%;
+
+}
+
+.cadastro-container {
+  width: 100%;
+  max-width: 850px;
+  background: var(--bg-secondary);
+  padding: 35px 40px;
+  border-radius: 16px;
+  box-shadow: 0 4px 18px var(--shadow);
+  overflow: hidden;           
+}
+
+
+.cadastro-container h2 {
+  color: var(--accent);
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.cadastro-container p {
+  text-align: center;
+  margin-bottom: 40px;
+  opacity: 0.8;
+  font-size: 0.95rem;
+}
+
+/* GRID DO FORMULÁRIO */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 25px 30px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+input, select {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text);
+  transition: all 0.3s ease;
+}
+
+input::placeholder {
+  opacity: 0.6;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(255, 51, 128, 0.2);
+}
+
+/* Dark mode */
+body:not(.light) select option {
+  background-color: #111;   
+  color: #fff;              
+}
+
+/* MODO CLARO */
+body.light input,
+body.light select {
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  color: #000;
+}
+
+body.light input:focus,
+body.light select:focus {
+  box-shadow: 0 0 0 2px rgba(255, 51, 128, 0.15);
+}
+
+/* === SENHA === */
+.senha-wrapper {
+  position: relative;
+}
+
+.toggle-senha {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: var(--text);
+  font-size: 1.3rem;
+  transition: color 0.3s;
+}
+
+.toggle-senha:hover {
+  color: var(--accent);
+}
+
+/* === BOTÃO === */
+.btn {
+  width: 100%;
+  padding: 14px;
+  background: var(--accent);
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  font-weight: 600;
+  font-size: 1rem;
+  margin-top: 30px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.btn:hover {
+  background: #ff3380;
+  transform: translateY(-2px);
+}
+
+/* === ANIMAÇÃO === */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* === RESPONSIVO === */
+@media (max-width: 800px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  #cadastro {
+    padding: 30px;
+  }
+
+  .cadastro-container {
+    padding: 30px;
+  }
+}
+
+
