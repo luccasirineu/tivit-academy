@@ -23,6 +23,9 @@
             <li class="active" data-section="dashboard" > <i class='bx  bx-home'  ></i> Dashboard</li> 
             <li data-section="cadastro"> <i class='bx  bx-file'  ></i>  Cadastro</li>
             <li data-section="listagem"> <i class='bx  bx-list-ul'  ></i>  Listagem</li>
+            <li data-section="cursos"> <i class='bx  bx-list-plus'  ></i>  Cursos</li>
+            <li data-section="turmas-cursos"> <i class='bx  bx-group'  ></i>   Turmas</li>
+
           </ul>
         </nav>
 
@@ -161,6 +164,145 @@
             </tbody>
           </table>
         </section>
+
+        <section id="cursos" >
+          <div class="cursos-header">
+            <div class="cursos-header-left">
+              <h2><i class='bx bx-book'></i> Gerenciar Cursos</h2>
+              <p>Visualize, edite ou adicione novos cursos.</p>
+            </div>
+            <button class="btn-accent" id="btnNovoCurso">
+              <i class='bx bx-plus-circle'></i> Novo Curso
+            </button>
+          </div>
+
+
+          <div class="cursos-grid">
+            <!-- Mock de cards de cursos -->
+            <div class="cursos-card">
+              <h3>Desenvolvimento Web</h3>
+              <p><i class='bx bx-user'></i> Professor: João Silva</p>
+              <p><i class='bx bx-group'></i> Alunos: 24</p>
+              <p><i class='bx bx-calendar'></i> Período: 2025/1</p>
+              <div class="card-actions">
+                <button class="btn-edit"><i class='bx bx-edit'></i></button>
+                <button class="btn-delete"><i class='bx bx-trash'></i></button>
+              </div>
+            </div>
+
+            <div class="cursos-card">
+              <h3>Banco de Dados</h3>
+              <p><i class='bx bx-user'></i> Professor: Maria Oliveira</p>
+              <p><i class='bx bx-group'></i> Alunos: 30</p>
+              <p><i class='bx bx-calendar'></i> Período: 2025/2</p>
+              <div class="card-actions">
+                <button class="btn-edit"><i class='bx bx-edit'></i></button>
+                <button class="btn-delete"><i class='bx bx-trash'></i></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Popup de  Novo Curso -->
+          <div id="popupNovaCursos" class="popup hidden">
+            <div class="popup-content">
+              <h3><i class='bx bx-plus-circle'></i> Novo Curso</h3>
+              <form id="formNovaCursos">
+                <label for="cursoNome">Nome do Curso</label>
+                <input type="text" id="cursoNome" placeholder="Ex: Desenvolvimento Web" required>
+
+                <label for="professor">Professor Responsável</label>
+                <input type="text" id="professor" placeholder="Ex: João da Silva" required>
+
+                <label for="periodo">Período</label>
+                <input type="text" id="periodo" placeholder="Ex: 2025/1" required>
+
+                <label for="qtdAlunos">Quantidade de Alunos</label>
+                <input type="number" id="qtdAlunos" placeholder="Ex: 25" required>
+
+                <div class="popup-actions">
+                  <button type="submit" class="btn-accent">Salvar</button>
+                  <button type="button" id="btnFecharPopup" class="btn-cancelar">Cancelar</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <section id="turmas-cursos" >
+          <div class="turmas-wrapper">
+            <!-- TOPO -->
+            <div class="turmas-top">
+              <div class="turmas-header">
+                <h2><i class='bx  bx-group'  ></i>   Gerenciamento de Turmas</h2>
+                <p>Visualize, edite e crie turmas associadas aos cursos da plataforma.</p>
+              </div>
+              <button id="btnNovaTurma" class="btn-accent">
+                <i class='bx bx-plus-circle'></i> Nova Turma
+              </button>
+            </div>
+
+            <!-- LISTA DE TURMAS -->
+            <div class="turmas-lista" id="listaTurmas">
+              <div class="turma-item">
+                <div class="turma-info">
+                  <h3>Turma Front-End 2025</h3>
+                  <p><i class='bx bx-book'></i> Curso: Desenvolvimento Web</p>
+                  <p><i class='bx bx-user'></i> Professor: João Silva</p>
+                  <p><i class='bx bx-group'></i> 22 alunos • Turno: Manhã</p>
+                </div>
+                <div class="turma-status ativo">Ativa</div>
+                <div class="turma-actions">
+                  <button class="btn-edit"><i class='bx bx-edit-alt'></i></button>
+                  <button class="btn-delete"><i class='bx bx-trash'></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- === POPUP DE CRIAÇÃO DE TURMA === -->
+          <div id="popupNovaTurma" class="popup-overlay hidden">
+            <div class="popup-content">
+              <h3><i class='bx bx-plus-circle'></i>  Nova Turma</h3>
+              <form id="formTurma">
+                <label for="nomeTurma">Nome da Turma</label>
+                <input type="text" id="nomeTurma" placeholder="Ex: Turma FullStack 2025" required>
+
+                <label for="cursoTurma">Curso Vinculado</label>
+                <input type="text" id="cursoTurma" placeholder="Ex: Desenvolvimento Web" required>
+
+                <label for="professorTurma">Professor Responsável</label>
+                <input type="text" id="professorTurma" placeholder="Ex: João da Silva" required>
+
+                <label for="alunosTurma">Quantidade de Alunos</label>
+                <input type="number" id="alunosTurma" placeholder="Ex: 25" required>
+
+
+                <label for="turnoTurma">Turno</label>
+                <select id="turnoTurma" required>
+                  <option value="" disabled selected>Selecione...</option>
+                  <option value="manhã">Manhã</option>
+                  <option value="tarde">Tarde</option>
+                  <option value="noite">Noite</option>
+                </select>
+
+                <label for="statusTurma">Status</label>
+                <select id="statusTurma" required>
+                  <option value="ativo">Ativa</option>
+                  <option value="inativo">Concluída</option>
+                </select>
+
+                <div class="popup-actions">
+                  <button type="submit" class="btn-accent">Salvar</button>
+                  <button type="button" id="fecharPopup" class="btn-cancelar">Cancelar</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </section>
+
+
+
+
 
       </main>
     </div>

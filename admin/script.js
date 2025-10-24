@@ -122,3 +122,76 @@ toggleSenha.addEventListener('click', () => {
 });
 
 
+// === POPUP DE NOVO CURSO ===
+const btnNovoCurso = document.getElementById("btnNovoCurso");
+const popupNovaCursos = document.getElementById("popupNovaCursos");
+const btnFecharCurso = document.getElementById("btnFecharPopup");
+const formNovaCursos = document.getElementById("formNovaCursos");
+
+btnNovoCurso.addEventListener("click", () => {
+  popupNovaCursos.classList.remove("hidden");
+});
+
+btnFecharCurso.addEventListener("click", () => {
+  popupNovaCursos.classList.add("hidden");
+});
+
+formNovaCursos.addEventListener("submit", (e) => {
+  e.preventDefault();
+  alert("Novo curso cadastrado com sucesso! (mock)");
+  formNovaCursos.reset();
+  popupNovaCursos.classList.add("hidden");
+});
+
+
+// === POPUP NOVA TURMA ===
+const btnNovaTurma = document.getElementById("btnNovaTurma");
+const popupNovaTurma = document.getElementById("popupNovaTurma");
+const fecharPopupTurma = document.getElementById("fecharPopup");
+const formTurma = document.getElementById("formTurma");
+const listaTurmas = document.getElementById("listaTurmas");
+
+btnNovaTurma.addEventListener("click", () => {
+  popupNovaTurma.classList.remove("hidden");
+});
+
+fecharPopupTurma.addEventListener("click", () => {
+  popupNovaTurma.classList.add("hidden");
+});
+
+popupNovaTurma.addEventListener("click", (e) => {
+  if (e.target === popupNovaTurma) {
+    popupNovaTurma.classList.add("hidden");
+  }
+});
+
+formTurma.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const nome = document.getElementById("nomeTurma").value;
+  const curso = document.getElementById("cursoTurma").value;
+  const prof = document.getElementById("professorTurma").value;
+  const turno = document.getElementById("turnoTurma").value;
+  const alunos = document.getElementById("alunosTurma").value;
+  const status = document.getElementById("statusTurma").value;
+
+  const card = document.createElement("div");
+  card.classList.add("turma-item");
+  card.innerHTML = `
+    <div class="turma-info">
+      <h3>${nome}</h3>
+      <p><i class='bx bx-book'></i> Curso: ${curso}</p>
+      <p><i class='bx bx-user'></i> Professor: ${prof}</p>
+      <p><i class='bx bx-group'></i> ${alunos} alunos • Turno: ${turno}</p>
+    </div>
+    <div class="turma-status ${status}">${status === "ativo" ? "Ativa" : "Concluída"}</div>
+    <div class="turma-actions">
+      <button class="btn-edit"><i class='bx bx-edit-alt'></i></button>
+      <button class="btn-delete"><i class='bx bx-trash'></i></button>
+    </div>
+  `;
+
+  listaTurmas.appendChild(card);
+  formTurma.reset();
+  popupNovaTurma.classList.add("hidden");
+});
