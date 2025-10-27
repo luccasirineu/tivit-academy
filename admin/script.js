@@ -195,3 +195,16 @@ formTurma.addEventListener("submit", (e) => {
   formTurma.reset();
   popupNovaTurma.classList.add("hidden");
 });
+
+const toggleBtn = document.getElementById("toggleSidebar");
+const sidebar = document.querySelector(".sidebar");
+const body = document.body;
+const floatingBtn = document.getElementById("sidebarToggleFloating");
+
+function toggleSidebar() {
+  sidebar.classList.toggle("collapsed");
+  body.classList.toggle("sidebar-collapsed");
+}
+
+if (toggleBtn) toggleBtn.addEventListener("click", toggleSidebar);
+if (floatingBtn) floatingBtn.addEventListener("click", toggleSidebar);

@@ -849,3 +849,128 @@ body.light .resultado-card {
 body.light .return-btn {
   color: black; 
 }
+
+
+
+/* ---- LAYOUT PAI ---- */
+.dashboard {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  align-items: stretch;
+}
+
+/* ---- SIDEBAR (flex item) ---- */
+.sidebar {
+  flex: 0 0 260px;                /* fixa largura inicial como item flex */
+  width: 260px;                   /* para navegadores/backup */
+  box-sizing: border-box;
+  transition: flex-basis 0.28s ease, width 0.28s ease, padding 0.28s ease, opacity 0.2s;
+  z-index: 20;
+  overflow: hidden;               /* evita scroll interno ao encolher */
+}
+
+/* conteúdo interno da sidebar pode continuar com padding */
+.sidebar .logo,
+.sidebar nav,
+.sidebar .theme-toggle {
+  transition: opacity 0.2s ease, transform 0.28s ease;
+}
+
+.toggle-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-size: 24px;
+  cursor: pointer; /* 👈 faz o ponteiro mudar ao passar o mouse */
+  transition: transform 0.2s ease;
+  z-index: 1000;
+}
+
+.toggle-btn:hover {
+  transform: scale(1.1);
+}
+
+
+/* ---- SIDEBAR COLLAPSED ---- */
+.sidebar.collapsed {
+  flex-basis: 0;                  /* reduz o espaço que ocupa no flex */
+  width: 0;                       /* garante que a width seja zero */
+  padding: 0;                     /* remove paddings que ocupam espaço */
+  opacity: 0;                     /* dá efeito de fade */
+  pointer-events: none;           /* evita interação quando oculto */
+}
+
+/* ocultar visualmente itens internos para evitar conteúdo visível ao encolher */
+.sidebar.collapsed .logo,
+.sidebar.collapsed nav,
+.sidebar.collapsed .theme-toggle {
+  opacity: 0;
+  transform: translateX(-6px);
+}
+
+/* ---- CONTEÚDO PRINCIPAL (flex item) ---- */
+.content {
+  flex: 1 1 auto;
+  transition: margin 0.28s ease, width 0.28s ease, padding 0.28s ease;
+  padding: 30px;
+  min-width: 0; /* muito importante para evitar overflow em flex children */
+}
+
+/* opcional: quando sidebar está colapsada, forçar content a preencher */
+body.sidebar-collapsed .content {
+  width: 100%;
+}
+
+/* ---- MOBILE ---- */
+@media (max-width: 900px) {
+  .sidebar {
+    background: var(--bg);
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    transform: translateX(0);
+    z-index: 999;
+    transition: transform 0.3s ease;
+  }
+
+  /* Quando colapsa, some */
+  .sidebar.collapsed {
+    transform: translateX(-100%);
+  }
+
+  .content {
+    width: 100%;
+    margin-left: 0;
+  }
+}
+
+
+
+/* === BOTÃO FLUTUANTE PARA REABRIR SIDEBAR === */
+.sidebar-toggle-floating {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 12px;
+  cursor: pointer;
+  box-shadow: 0 0 15px var(--shadow);
+  z-index: 50;
+  transition: all 0.3s ease;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Mostra o botão apenas quando a sidebar está colapsada */
+body.sidebar-collapsed .sidebar-toggle-floating {
+  opacity: 1;
+  pointer-events: auto;
+}
+
