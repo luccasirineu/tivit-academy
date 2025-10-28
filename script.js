@@ -30,4 +30,8 @@ form.addEventListener('submit', (e) => {
     window.location.href = "professor/professor.html"; 
   }
 
+  if (tipo === "aluno" && usuario === "aluno123" && senhaValor === "aluno123") {
+    window.location.href = "aluno/aluno.html"; 
+  }
+
 });

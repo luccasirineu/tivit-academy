@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TIVIT Academy | Aluno</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAk1BMVEXyACT////xAADyAA794ub4oKXyABfyACHyABv2dHvyAB7yABTxAAfxAAz/+/zyABb/9/n1TmD1Z3H1Xmr7tr791tryACfyEy37wMf+7/L6p7D4lZz+5+v8xcz+7fD4jZjzGzf0LEP0PE71VmP2bnb1VGH0N073iZD8zdL6rrf5oqv3kpj2eIL1QlbzJED90df3gYo3mUy0AAAD10lEQVR4nO3c63KiShSGYdIgICeRg6AoiJoEHTHc/9VNo2b2dtQRaR1cU9/zMzHab1o7uKyKJAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALwUTdMMQ99T/3P4gmHw73a9wLvxIF01Zdtie7IxmueL4fty6fue5636/f5q5Xm+7y/fh2W+izTzcEPLluVB3dx1wCX1LvGoQ5M+/1iuPpPNJJiFytjlHMd5u8Jx96ZhEa83yY+tX+5Gx15T1Y3ON3i/WzbfpmhX+tskCAplfK3lDs70Kw4mn6thHkkms+Q69a+3GbopMybl71614VvlPqDrcmtYrLPVchFZjG/qXwnVDL5pzNr5VRIr6bPKzkrH04Jv6kLjDy3rT+rkz0jTsmyjrCbx9Orr6tmlbrFO/Mi2+FP3kRuqGQObjfJhFRRpR2mnnDBOvMXcZLxTuM4wLaaV20047TrrzFiJMy+X+QtUJFP9qCbhI87HZ3HGxab6aP+EteKuC5phrQvNrOu1NzJtX6gvu158I7P2hUbe9eIbWdutC7XRa/x5uGE7aF0omWHXq2+iFPhzwWZdr76JucDljUzhMFVE3mSpXtfLb+DLah8oGWXXy29gLVKoRa98yXZUmQKFEnu9K+4zvi5U+PpXpk4u9BZKTroOuCkVm1eZVdcBNyntr0prbQ9Tx3HdcRoWcbCebJKsuHij9DPpbdZBPPtSxmPXbTkbETpK61Fo84dyU0UJ40lW9b33xS5Svye9tsx6F39AYbJsW4cxqyzNF0O/v802QREq0zuO8EwWKpTY7cdSvmb7kd8u0vlqbdlUfx/mytcKT36Xhv49LDfrXK/axEV4e5y3UgULr1+ZOmEwqYZz3dzPvv40oW5SeEI7Dpv5/Ublqrf+0whM7CiVJHtydpduGgbJtqzH77apNznJ7i48aVXrzwvk3MsmxXR8/mIVexn+fpim4Xq73Kn8dzu4ZzArUPiLUe8pi0ovi09mY4JH6f8O02nc8/ORZZktZs6PKDyod5SZ0cLrxcerrUC0UDPenDRIhiZj7efMjyv8XhTvZINhEqRvPcGjlN/bMuJxYh8WPLrwuDKdZ0Yib3+PHvBJyHMK9zr/iPHgiYUvAoX0oZA+FNKHQvpQSB8K6UMhfSikD4X0oZA+FNKHQvpQSB8K6UMhfSikD4X0oZA+FNKHQvpQSB8K6UMhfSikD4X0oZA+FNKHQvpQSB8K6UMhfSikD4X0oZA+FNKHQvpQSB8K6btSKPAfjl+NUfYv8YT+4eFrMdRL/qFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD4h/wECmVOFgO3Vo0AAAAASUVORK5CYII=">
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+</head>
+
+<body>
+  <div class="dashboard">
+    <button id="sidebarToggleFloating" class="sidebar-toggle-floating">
+        <i class='bx bx-menu'></i>
+    </button>
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      
+      <div class="toggle-btn" id="toggleSidebar">
+        <i class='bx bx-menu'></i>
+      </div>
+
+      <div class="logo">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAk1BMVEXyACT////xAADyAA794ub4oKXyABfyACHyABv2dHvyAB7yABTxAAfxAAz/+/zyABb/9/n1TmD1Z3H1Xmr7tr791tryACfyEy37wMf+7/L6p7D4lZz+5+v8xcz+7fD4jZjzGzf0LEP0PE71VmP2bnb1VGH0N073iZD8zdL6rrf5oqv3kpj2eIL1QlbzJED90df3gYo3mUy0AAAD10lEQVR4nO3c63KiShSGYdIgICeRg6AoiJoEHTHc/9VNo2b2dtQRaR1cU9/zMzHab1o7uKyKJAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALwUTdMMQ99T/3P4gmHw73a9wLvxIF01Zdtie7IxmueL4fty6fue5636/f5q5Xm+7y/fh2W+izTzcEPLluVB3dx1wCX1LvGoQ5M+/1iuPpPNJJiFytjlHMd5u8Jx96ZhEa83yY+tX+5Gx15T1Y3ON3i/WzbfpmhX+tskCAplfK3lDs70Kw4mn6thHkkms+Q69a+3GbopMybl71614VvlPqDrcmtYrLPVchFZjG/qXwnVDL5pzNr5VRIr6bPKzkrH04Jv6kLjDy3rT+rkz0jTsmyjrCbx9Orr6tmlbrFO/Mi2+FP3kRuqGQObjfJhFRRpR2mnnDBOvMXcZLxTuM4wLaaV20047TrrzFiJMy+X+QtUJFP9qCbhI87HZ3HGxab6aP+EteKuC5phrQvNrOu1NzJtX6gvu158I7P2hUbe9eIbWdutC7XRa/x5uGE7aF0omWHXq2+iFPhzwWZdr76JucDljUzhMFVE3mSpXtfLb+DLah8oGWXXy29gLVKoRa98yXZUmQKFEnu9K+4zvi5U+PpXpk4u9BZKTroOuCkVm1eZVdcBNyntr0prbQ9Tx3HdcRoWcbCebJKsuHij9DPpbdZBPPtSxmPXbTkbETpK61Fo84dyU0UJ40lW9b33xS5Svye9tsx6F39AYbJsW4cxqyzNF0O/v802QREq0zuO8EwWKpTY7cdSvmb7kd8u0vlqbdlUfx/mytcKT36Xhv49LDfrXK/axEV4e5y3UgULr1+ZOmEwqYZz3dzPvv40oW5SeEI7Dpv5/Ublqrf+0whM7CiVJHtydpduGgbJtqzH77apNznJ7i48aVXrzwvk3MsmxXR8/mIVexn+fpim4Xq73Kn8dzu4ZzArUPiLUe8pi0ovi09mY4JH6f8O02nc8/ORZZktZs6PKDyod5SZ0cLrxcerrUC0UDPenDRIhiZj7efMjyv8XhTvZINhEqRvPcGjlN/bMuJxYh8WPLrwuDKdZ0Yib3+PHvBJyHMK9zr/iPHgiYUvAoX0oZA+FNKHQvpQSB8K6UMhfSikD4X0oZA+FNKHQvpQSB8K6UMhfSikD4X0oZA+FNKHQvpQSB8K6UMhfSikD4X0oZA+FNKHQvpQSB8K6UMhfSikD4X0oZA+FNKHQvpQSB8K6btSKPAfjl+NUfYv8YT+4eFrMdRL/qFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD4h/wECmVOFgO3Vo0AAAAASUVORK5CYII=" >
+        <h2>TIVIT Academy</h2>
+      </div>
+      <nav>
+        <ul>
+          <li class="active" data-section="dashboard" > <i class='bx  bx-home'  ></i> Dashboard</li> 
+          <li data-section="calendario"><i class='bx bx-calendar'></i> Calendário</li>
+          <li data-section="desempenho-aluno"><i class="bx bx-line-chart"></i> Desempenho</li>
+          <li data-section="materias"><i class='bx  bx-book'  ></i>  Máterias</li>
+          <li data-section="calculo"><i class='bx  bx-network-chart'  ></i>  Relatório</li>
+          <br>
+          <a href="../index.html" class="return-btn" title="Voltar para o início">
+              <i class='bx bx-undo'></i>
+          </a>
+          
+        </ul>
+      </nav>
+      <div class="theme-toggle">
+          <span><i class='bx  bx-moon'  ></i> </span>
+          <label class="switch">
+            <input type="checkbox" id="themeSwitch">
+            <span class="slider round"></span>
+          </label>
+          <span><i class='bx  bx-sun'  ></i> </span>
+        </div>
+    </aside>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="content">
+
+      <section id="dashboard" class="active">
+        <div class="dashboard-header">
+          <h1>Bem-vindo, Aluno!</h1>
+          <p>Acompanhe seu desempenho acadêmico e os últimos eventos da <strong>TIVIT Academy</strong>.</p>
+        </div>
+
+       
+
+        <!-- Último Evento -->
+        <div class="ultimo-evento">
+          <h2><i class='bx bx-calendar'></i> Próximo Evento</h2>
+          <div class="evento-card">
+            <div class="evento-info">
+              <div class="evento-data">
+                <span class="dia">20</span>
+                <span class="mes">OUT</span>
+              </div>
+              <div class="evento-detalhes">
+                <h3>Apresentação de Projetos</h3>
+                <p><strong>Horário:</strong> 09h00</p>
+                <p><strong>Local:</strong> Auditório Principal</p>
+                <p class="descricao">Os alunos apresentaram seus projetos finais do semestre para banca avaliadora.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- CALENDÁRIO -->
+      <section id="calendario">
+        <h1><i class='bx bx-calendar'></i> Calendário Escolar</h1>
+        <div class="calendar-container">
+          <div class="calendar-header">
+            <button id="prevYear">&laquo;</button>
+            <button id="prevMonth">&lt;</button>
+            <h2 id="monthYear"></h2>
+            <button id="nextMonth">&gt;</button>
+            <button id="nextYear">&raquo;</button>
+          </div>
+          <div class="calendar-days">
+            <div class="day-name">Dom</div>
+            <div class="day-name">Seg</div>
+            <div class="day-name">Ter</div>
+            <div class="day-name">Qua</div>
+            <div class="day-name">Qui</div>
+            <div class="day-name">Sex</div>
+            <div class="day-name">Sáb</div>
+          </div>
+          <div id="calendarDays" class="calendar-grid"></div>
+        </div>
+
+        <!-- Modal para adicionar evento -->
+        <div id="eventModal" class="modal">
+          <div class="modal-content">
+            <h3>Adicionar Evento</h3>
+
+            <label for="eventTitle">Título:</label>
+            <input type="text" id="eventTitle" placeholder="Título do evento" />
+
+            <label for="eventTime">Horário:</label>
+            <input type="time" id="eventTime" />
+
+            <label for="eventDescription">Descrição:</label>
+            <textarea id="eventDescription" placeholder="Descreva o evento..." rows="3"></textarea>
+
+            <div class="modal-actions">
+              <button id="saveEvent">Salvar</button>
+              <button id="closeModal">Cancelar</button>
+            </div>
+          </div>
+        </div>
+
+
+      </section>
+
+      <section id="desempenho-aluno" >
+        <div class="desempenho-header">
+            <h1><i class="bx bx-line-chart"></i> Seu Desempenho</h1>
+            <p>Acompanhe sua evolução e descubra em que nível você está!</p>
+        </div>
+
+        <!-- CARDS DE DESEMPENHO -->
+        <div class="desempenho-cards">
+            <div class="card">
+            <h3>Média Geral</h3>
+            <div class="valor destaque" id="mediaGeral">8.4</div>
+            </div>
+            <div class="card">
+            <h3>Melhor Curso</h3>
+            <div class="valor" id="melhorCurso">Desenvolvimento Web</div>
+            </div>
+            <div class="card">
+            <h3>Frequência</h3>
+            <div class="valor" id="frequencia">94%</div>
+            </div>
+            <div class="card nivel-card" id="nivelCard">
+            <h3>Nível Atual</h3>
+            <div class="nivel-label" id="nivelLabel">🏅 Ouro</div>
+            </div>
+        </div>
+
+        <!-- GRÁFICOS -->
+        <div class="graficos-container">
+            <div class="grafico">
+            <h3>Evolução das Notas</h3>
+            <canvas id="graficoEvolucao"></canvas>
+            </div>
+            <div class="grafico">
+            <h3>Distribuição de Notas por Curso</h3>
+            <canvas id="graficoPizza"></canvas>
+            </div>
+        </div>
+      </section>
+
+      <!-- ===== SECTION MATÉRIAS ===== -->
+      <section id="materias" >
+        <!-- === LISTA DE MATÉRIAS === -->
+        <div class="materias-view" id="materiasView">
+            <h2 class="titulo-materias"><i class='bx  bx-book'  ></i> Matérias</h2>
+            <p class="subtitulo-materias">Clique em uma matéria para ver os conteúdos disponíveis</p>
+
+            <div class="materias-cards">
+            <div class="materia" data-materia="matematica">
+                <i class="bx bxs-calculator"></i>
+                <h3>Matemática</h3>
+            </div>
+
+            <div class="materia" data-materia="programacao">
+                <i class="bx bx-code-alt"></i>
+                <h3>Programação Web</h3>
+            </div>
+
+            <div class="materia" data-materia="banco">
+                <i class="bx bxs-data"></i>
+                <h3>Banco de Dados</h3>
+            </div>
+
+            <div class="materia" data-materia="ia">
+                <i class="bx bxs-brain"></i>
+                <h3>Inteligência Artificial</h3>
+            </div>
+            </div>
+        </div>
+
+        <!-- === LISTA DE CONTEÚDOS === -->
+        <div class="materia-detalhes hidden" id="materiaDetalhes">
+            <button id="voltarMaterias" class="btn-voltar">← Voltar</button>
+            <h2 id="tituloMateria" class="titulo-detalhe"></h2>
+
+            <ul id="listaArquivos" class="lista-arquivos"></ul>
+        </div>
+        </section>
+
+
+
+
+
+
+
+      
+
+    </main>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</body>
+</html>
