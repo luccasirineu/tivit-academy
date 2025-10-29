@@ -124,7 +124,7 @@ window.onclick = (e) => {
 renderCalendar();
 
 document.addEventListener("DOMContentLoaded", () => {
-  const mediaGeral = 8.4; // Mock
+  const mediaGeral = 3.4; // Mock
   const melhorCurso = "Desenvolvimento Web";
   const frequencia = 94;
 
@@ -272,4 +272,131 @@ document.querySelectorAll(".materia").forEach(card => {
 voltarMaterias.addEventListener("click", () => {
   materiaDetalhes.classList.add("hidden");
   materiasView.style.display = "block";
+});
+
+
+// Dados simulados — pode integrar com API futuramente
+const notasAluno = {
+  "Matemática": [
+    { avaliacao: "Prova 1", nota: 7.5 },
+    { avaliacao: "Trabalho 1", nota: 8.2 },
+    { avaliacao: "Prova 2", nota: 9.0 },
+    { avaliacao: "Trabalho Final", nota: 8.8 }
+  ],
+  "Programação Web": [
+    { avaliacao: "Atividade 1", nota: 9.5 },
+    { avaliacao: "Projeto 1", nota: 8.9 },
+    { avaliacao: "Prova Final", nota: 9.7 }
+  ],
+  "Banco de Dados": [
+    { avaliacao: "Prova 1", nota: 6.5 },
+    { avaliacao: "Atividade 2", nota: 7.0 },
+    { avaliacao: "Trabalho Final", nota: 7.8 }
+  ],
+  "Inteligência Artificial": [
+    { avaliacao: "Trabalho 1", nota: 6.0 },
+    { avaliacao: "Prova 1", nota: 5.8 },
+    { avaliacao: "Projeto Final", nota: 7.2 }
+  ]
+};
+
+// === GERAR CONTEÚDO NA TELA ===
+const container = document.getElementById("relatorioContainer");
+
+Object.entries(notasAluno).forEach(([materia, avaliacoes]) => {
+  const media = (avaliacoes.reduce((acc, a) => acc + a.nota, 0) / avaliacoes.length).toFixed(1);
+  
+  let status = "";
+  if (media >= 7) status = `<span class="status-aprovado">Aprovado</span>`;
+  else if (media >= 5) status = `<span class="status-recuperacao">Recuperação</span>`;
+  else status = `<span class="status-reprovado">Reprovado</span>`;
+
+  const card = document.createElement("div");
+  card.classList.add("materia-card");
+
+  card.innerHTML = `
+    <div class="materia-header">
+      <h3>${materia}</h3>
+      <div class="media-geral">Média: ${media} | ${status}</div>
+    </div>
+    <table class="tabela-notas">
+      <thead>
+        <tr>
+          <th>Avaliação</th>
+          <th>Nota</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${avaliacoes.map(a => `
+          <tr>
+            <td>${a.avaliacao}</td>
+            <td>${a.nota.toFixed(1)}</td>
+          </tr>
+        `).join("")}
+      </tbody>
+    </table>
+  `;
+
+  container.appendChild(card);
+});
+
+// === GERAR PDF COM CORES FIXAS (PRETO E VERMELHO) ===
+document.getElementById("gerarRelatorioGeral").addEventListener("click", () => {
+  const relatorioClone = container.cloneNode(true);
+  relatorioClone.style.background = "#ffffff";
+  relatorioClone.style.color = "#000000";
+  relatorioClone.style.padding = "20px";
+  relatorioClone.style.fontFamily = "Arial, sans-serif";
+  relatorioClone.style.border = "2px solid #ff0000";
+  relatorioClone.style.borderRadius = "8px";
+
+  // Ajusta elementos internos
+  relatorioClone.querySelectorAll("*").forEach(el => {
+    el.style.color = "#000000";
+    el.style.backgroundColor = "#ffffff";
+    el.style.borderColor = "#ff0000";
+  });
+
+  // Título vermelho e destacado
+  const titulo = document.createElement("h2");
+  titulo.textContent = "📘 Relatório Geral de Desempenho";
+  titulo.style.textAlign = "center";
+  titulo.style.marginBottom = "20px";
+  titulo.style.color = "#ff0000";
+  titulo.style.textTransform = "uppercase";
+  titulo.style.letterSpacing = "1px";
+  relatorioClone.prepend(titulo);
+
+  // Estilização específica para tabelas e status
+  relatorioClone.querySelectorAll("table").forEach(tabela => {
+    tabela.style.width = "100%";
+    tabela.style.borderCollapse = "collapse";
+    tabela.style.marginTop = "10px";
+  });
+
+  relatorioClone.querySelectorAll("th, td").forEach(cel => {
+    cel.style.border = "1px solid #ff0000";
+    cel.style.padding = "6px";
+    cel.style.textAlign = "center";
+  });
+
+  relatorioClone.querySelectorAll(".materia-header h3").forEach(h3 => {
+    h3.style.color = "#ff0000";
+  });
+
+  relatorioClone.querySelectorAll(".media-geral").forEach(media => {
+    media.style.color = "#000000";
+    media.style.fontWeight = "bold";
+  });
+
+  // Configuração do PDF
+  const opt = {
+    margin: 20,
+    filename: "Relatorio_Geral_Aluno.pdf",
+    image: { type: "jpeg", quality: 1 },
+    html2canvas: { scale: 2, backgroundColor: "#ffffff" },
+    jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
+  };
+
+  html2pdf().set(opt).from(relatorioClone).save();
 });

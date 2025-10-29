@@ -31,7 +31,7 @@
           <li data-section="calendario"><i class='bx bx-calendar'></i> Calendário</li>
           <li data-section="desempenho-aluno"><i class="bx bx-line-chart"></i> Desempenho</li>
           <li data-section="materias"><i class='bx  bx-book'  ></i>  Máterias</li>
-          <li data-section="calculo"><i class='bx  bx-network-chart'  ></i>  Relatório</li>
+          <li data-section="relatorio"><i class='bx  bx-network-chart'  ></i>  Relatório</li>
           <br>
           <a href="../index.html" class="return-btn" title="Voltar para o início">
               <i class='bx bx-undo'></i>
@@ -207,6 +207,23 @@
         </section>
 
 
+      <section id="relatorio" class="relatorio-section">
+      <h2 class="titulo-relatorio"><i class='bx  bx-network-chart'  ></i> Relatório de Desempenho</h2>
+      <p class="subtitulo-relatorio">
+        Acompanhe suas notas ao longo do período em cada disciplina e gere um relatório completo em PDF.
+      </p>
+
+      <div class="relatorio-container" id="relatorioContainer">
+        <!-- Tabelas das matérias serão inseridas via JS -->
+      </div>
+
+      <button id="gerarRelatorioGeral" class="btn-gerar-pdf">
+        <i class='bx bxs-file-pdf'></i> Gerar Relatório Geral
+      </button>
+    </section>
+
+
+
 
 
 
@@ -220,6 +237,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="script.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
 
 </body>
 </html>

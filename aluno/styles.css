@@ -713,7 +713,7 @@ body:not(.light) select option {
 }
 
 #graficoEvolucao {
-  height: 65% !important;
+  height: 55% !important;
   width: 100% !important;
 
 }
@@ -855,5 +855,126 @@ body:not(.light) select option {
 @media (max-width: 900px) {
   .materias-cards { flex-direction: column; }
   .materia { width: 100%; }
+}
+
+
+/* === RELATÓRIO === */
+.relatorio-section {
+  padding: 40px;
+  animation: fadeIn 0.5s ease;
+}
+
+.titulo-relatorio {
+  color: var(--accent);
+  font-size: 2em;
+  margin-bottom: 10px;
+}
+
+.subtitulo-relatorio {
+  opacity: 0.8;
+  margin-bottom: 25px;
+}
+
+.relatorio-container {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+/* === CARD DE MATÉRIA === */
+.materia-card {
+  background: var(--bg-secondary);
+  border-radius: 15px;
+  box-shadow: 0 0 15px var(--shadow);
+  padding: 25px;
+  transition: transform 0.2s ease;
+}
+
+.materia-card:hover {
+  transform: translateY(-3px);
+}
+
+.materia-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.materia-header h3 {
+  color: var(--accent);
+  font-size: 1.3em;
+}
+
+.media-geral {
+  font-weight: bold;
+  font-size: 1.1em;
+  color: var(--text);
+}
+
+/* === TABELA === */
+.tabela-notas {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.tabela-notas th,
+.tabela-notas td {
+  padding: 10px;
+  text-align: left;
+}
+
+.tabela-notas thead {
+  background: var(--accent);
+  color: white;
+}
+
+.tabela-notas tbody tr {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tabela-notas tbody tr:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.status-aprovado {
+  color: #4caf50;
+  font-weight: bold;
+}
+
+.status-recuperacao {
+  color: #ffb300;
+  font-weight: bold;
+}
+
+.status-reprovado {
+  color: #e53935;
+  font-weight: bold;
+}
+
+/* === BOTÃO PDF === */
+.btn-gerar-pdf {
+  margin-top: 25px;
+  background: #e53935;
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: 0.3s;
+  align-self: flex-start;
+}
+
+.btn-gerar-pdf:hover {
+  background: #c62828;
+}
+
+.btn-gerar-pdf i {
+  font-size: 1.3em;
 }
 
