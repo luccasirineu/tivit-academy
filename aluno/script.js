@@ -32,18 +32,39 @@ themeSwitch.addEventListener("change", () => {
   updateChartColors(); // 🔥 Atualiza as cores dos gráficos ao mudar tema
 });
 
-// ===== CALENDÁRIO =====
 const calendarDays = document.getElementById("calendarDays");
 const monthYear = document.getElementById("monthYear");
-const eventModal = document.getElementById("eventModal");
-const eventTitle = document.getElementById("eventTitle");
-const eventTime = document.getElementById("eventTime");
-const saveEvent = document.getElementById("saveEvent");
-const closeModal = document.getElementById("closeModal");
+
+const viewEventModal = document.getElementById("viewEventModal");
+const viewTitle = document.getElementById("viewTitle");
+const viewTime = document.getElementById("viewTime");
+const viewDescription = document.getElementById("viewDescription");
+const closeViewModal = document.getElementById("closeViewModal");
 
 let currentDate = new Date();
-let selectedDate = null;
-let events = {}; 
+
+// 🔹 Exemplo com múltiplos eventos no mesmo dia
+let events = {
+  "2025-10-10": [
+    {
+      title: "Prova de Matemática",
+      time: "10:00",
+      description: "Prova sobre equações de 2º grau."
+    },
+    {
+      title: "Reunião de Grupo - Física",
+      time: "14:00",
+      description: "Reunião para revisar exercícios do capítulo 5."
+    }
+  ],
+  "2025-10-15": [
+    {
+      title: "Trabalho de História",
+      time: "15:00",
+      description: "Entrega do trabalho sobre a Revolução Francesa."
+    }
+  ]
+};
 
 function renderCalendar() {
   const year = currentDate.getFullYear();
@@ -73,14 +94,29 @@ function renderCalendar() {
       const dot = document.createElement("div");
       dot.classList.add("event-dot");
       dayDiv.appendChild(dot);
-    }
 
-    dayDiv.addEventListener("click", () => {
-      selectedDate = dateKey;
-      eventTitle.value = "";
-      eventTime.value = "";
-      eventModal.style.display = "flex";
-    });
+      dayDiv.addEventListener("click", () => {
+        const eventList = events[dateKey];
+
+        // Limpa o conteúdo anterior
+        viewDescription.innerHTML = "";
+
+        // Adiciona cada evento como um bloco
+        eventList.forEach(ev => {
+          const eventBlock = document.createElement("div");
+          eventBlock.classList.add("event-item");
+          eventBlock.innerHTML = `
+            <p><strong>${ev.title}</strong></p>
+            <p><i class='bx bx-time-five'></i> ${ev.time || "—"}</p>
+            <p>${ev.description || "Sem descrição."}</p>
+          `;
+          viewDescription.appendChild(eventBlock);
+        });
+
+        // Mostra o modal
+        viewEventModal.style.display = "flex";
+      });
+    }
 
     calendarDays.appendChild(dayDiv);
   }
@@ -103,28 +139,15 @@ document.getElementById("nextYear").onclick = () => {
   renderCalendar();
 };
 
-saveEvent.onclick = () => {
-  if (eventTitle.value.trim() === "") return alert("Informe o título do evento!");
-
-  if (!events[selectedDate]) events[selectedDate] = [];
-  events[selectedDate].push({
-    title: eventTitle.value,
-    time: eventTime.value,
-  });
-
-  eventModal.style.display = "none";
-  renderCalendar();
-};
-
-closeModal.onclick = () => (eventModal.style.display = "none");
+closeViewModal.onclick = () => (viewEventModal.style.display = "none");
 window.onclick = (e) => {
-  if (e.target === eventModal) eventModal.style.display = "none";
+  if (e.target === viewEventModal) viewEventModal.style.display = "none";
 };
 
 renderCalendar();
 
 document.addEventListener("DOMContentLoaded", () => {
-  const mediaGeral = 3.4; // Mock
+  const mediaGeral = 9.4; // Mock
   const melhorCurso = "Desenvolvimento Web";
   const frequencia = 94;
 
@@ -359,7 +382,7 @@ document.getElementById("gerarRelatorioGeral").addEventListener("click", () => {
 
   // Título vermelho e destacado
   const titulo = document.createElement("h2");
-  titulo.textContent = "📘 Relatório Geral de Desempenho";
+  titulo.textContent = " Relatório Geral de Desempenho";
   titulo.style.textAlign = "center";
   titulo.style.marginBottom = "20px";
   titulo.style.color = "#ff0000";

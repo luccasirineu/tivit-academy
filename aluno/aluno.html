@@ -18,7 +18,9 @@
     <aside class="sidebar">
       
       <div class="toggle-btn" id="toggleSidebar">
-        <i class='bx bx-menu'></i>
+        <i class='bx bx-menu'></i>          
+        <div class="notification-btn"><i class='bx  bx-bell'    ></i></div> 
+   
       </div>
 
       <div class="logo">
@@ -33,10 +35,10 @@
           <li data-section="materias"><i class='bx  bx-book'  ></i>  Máterias</li>
           <li data-section="relatorio"><i class='bx  bx-network-chart'  ></i>  Relatório</li>
           <br>
-          <a href="../index.html" class="return-btn" title="Voltar para o início">
-              <i class='bx bx-undo'></i>
-          </a>
-          
+          <div> 
+           <a href="../index.html" class="return-btn" title="Voltar para o início">
+              <i class='bx bx-undo'> </i>
+          </a>          
         </ul>
       </nav>
       <div class="theme-toggle">
@@ -52,6 +54,7 @@
     <!-- CONTEÚDO PRINCIPAL -->
     <main class="content">
 
+      <!-- DASHBOARD -->
       <section id="dashboard" class="active">
         <div class="dashboard-header">
           <h1>Bem-vindo, Aluno!</h1>
@@ -80,8 +83,7 @@
         </div>
       </section>
 
-
-      <!-- CALENDÁRIO -->
+     <!-- CALENDÁRIO -->
       <section id="calendario">
         <h1><i class='bx bx-calendar'></i> Calendário Escolar</h1>
         <div class="calendar-container">
@@ -92,6 +94,7 @@
             <button id="nextMonth">&gt;</button>
             <button id="nextYear">&raquo;</button>
           </div>
+
           <div class="calendar-days">
             <div class="day-name">Dom</div>
             <div class="day-name">Seg</div>
@@ -104,30 +107,19 @@
           <div id="calendarDays" class="calendar-grid"></div>
         </div>
 
-        <!-- Modal para adicionar evento -->
-        <div id="eventModal" class="modal">
+        <!-- Modal para visualizar evento -->
+        <div id="viewEventModal" class="modal">
           <div class="modal-content">
-            <h3>Adicionar Evento</h3>
-
-            <label for="eventTitle">Título:</label>
-            <input type="text" id="eventTitle" placeholder="Título do evento" />
-
-            <label for="eventTime">Horário:</label>
-            <input type="time" id="eventTime" />
-
-            <label for="eventDescription">Descrição:</label>
-            <textarea id="eventDescription" placeholder="Descreva o evento..." rows="3"></textarea>
-
+            <h3>Evento</h3>
+            <p id="viewDescription"></p>
             <div class="modal-actions">
-              <button id="saveEvent">Salvar</button>
-              <button id="closeModal">Cancelar</button>
+              <button id="closeViewModal">Fechar</button>
             </div>
           </div>
         </div>
-
-
       </section>
 
+      <!-- DESEMPENHO -->
       <section id="desempenho-aluno" >
         <div class="desempenho-header">
             <h1><i class="bx bx-line-chart"></i> Seu Desempenho</h1>
@@ -167,7 +159,7 @@
         </div>
       </section>
 
-      <!-- ===== SECTION MATÉRIAS ===== -->
+      <!--  MATÉRIAS  -->
       <section id="materias" >
         <!-- === LISTA DE MATÉRIAS === -->
         <div class="materias-view" id="materiasView">
@@ -206,7 +198,7 @@
         </div>
         </section>
 
-
+      <!-- RELATORIO -->
       <section id="relatorio" class="relatorio-section">
       <h2 class="titulo-relatorio"><i class='bx  bx-network-chart'  ></i> Relatório de Desempenho</h2>
       <p class="subtitulo-relatorio">
@@ -220,16 +212,7 @@
       <button id="gerarRelatorioGeral" class="btn-gerar-pdf">
         <i class='bx bxs-file-pdf'></i> Gerar Relatório Geral
       </button>
-    </section>
-
-
-
-
-
-
-
-
-      
+      </section>
 
     </main>
   </div>

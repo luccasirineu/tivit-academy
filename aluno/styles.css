@@ -245,7 +245,6 @@ body.light .stat-card {
 }
 
 
-
 #calendario {
   padding: 30px;
 }
@@ -328,14 +327,12 @@ body.light .stat-card {
   transform: translateX(-50%);
 }
 
-
-
 /* ===== Modal ===== */
 .modal {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.6); /* Fundo escurecido */
+  background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(4px);
   justify-content: center;
   align-items: center;
@@ -348,29 +345,12 @@ body.light .stat-card {
   border-radius: 15px;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
   width: 320px;
-  animation: fadeInUp 0.4s ease;
-  display: flex;
-  flex-direction: column;
   color: var(--text);
-  transition: background 0.3s ease, color 0.3s ease;
 }
 
-/* ===== AJUSTE PARA DARK MODE ===== */
-body:not(.light) .modal-content {
-  background: rgba(30, 30, 30, 0.95); /* fundo mais sólido e escuro */
-  box-shadow: 0 8px 25px rgba(255, 0, 84, 0.25); /* leve brilho na paleta */
-  border: 1px solid rgba(255, 0, 84, 0.2);
-}
-
-body.light .modal-content {
-  background: #fff;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-}
-
-/* ===== AÇÃO DOS BOTÕES ===== */
 .modal-actions {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   margin-top: 15px;
 }
 
@@ -389,46 +369,17 @@ body.light .modal-content {
   background: #ff3380;
 }
 
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(25px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-
-.modal-content label {
-  font-size: 14px;
-  color: var(--text);
-  font-weight: 600;
-  margin-top: 10px;
-  display: block;
-}
-
-.modal-content textarea {
-  width: 100%;
-  margin: 8px 0;
-  padding: 8px;
+.event-item {
+  background: rgba(255, 0, 84, 0.05);
+  border-left: 4px solid var(--accent);
   border-radius: 8px;
-  border: 1px solid #ccc;
-  resize: none;
-  background: var(--bg);
-  color: var(--text);
-  font-family: inherit;
+  padding: 10px;
+  margin-bottom: 10px;
+  transition: background 0.3s;
 }
 
-
-#saveEvent {
-  background: var(--accent);
-  color: #fff;
-}
-
-#closeModal {
-  background: #ccc;
+.event-item:hover {
+  background: rgba(255, 0, 84, 0.1);
 }
 
 
@@ -977,4 +928,5 @@ body:not(.light) select option {
 .btn-gerar-pdf i {
   font-size: 1.3em;
 }
+
 

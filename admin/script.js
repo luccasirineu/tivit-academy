@@ -86,12 +86,10 @@ form.addEventListener("submit", e => {
 
   emailjs.send("tivit_academy", "template_zdwi0zn", params)
     .then(() => {
-      alert("Cadastro realizado com sucesso! E-mail enviado ao usuário.");
       form.reset();
     })
     .catch((error) => {
       console.error("Erro ao enviar e-mail:", error);
-      alert("Cadastro realizado, mas não foi possível enviar o e-mail.");
     })
     .finally(() => {
       botao.disabled = false;

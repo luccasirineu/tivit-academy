@@ -1,0 +1,304 @@
+/* 
+VARIÁVEIS DE TEMA
+ */
+:root {
+  --bg: #120010;
+  --bg-secondary: rgb(33, 33, 33);
+  --text: #fff;
+  --accent: #ff0054;
+}
+
+body.light {
+  --bg: #f4f4f4;
+  --bg-secondary: #ffffff;
+  --text: #111;
+}
+
+/* 
+   RESET
+ */
+body {
+  margin: 0;
+  font-family: "Montserrat", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  transition: background 0.3s, color 0.3s;
+}
+
+/* 
+   TOGGLE DE TEMA
+ */
+.theme-toggle {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.switch {
+  position: relative;
+  width: 50px;
+  height: 24px;
+}
+
+.switch input {
+  display: none;
+}
+
+.slider {
+  position: absolute;
+  inset: 0;
+  background: #555;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: .3s;
+}
+
+.slider::before {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  left: 3px;
+  top: 3px;
+  background: #fff;
+  border-radius: 50%;
+  transition: .3s;
+}
+
+input:checked + .slider {
+  background: var(--accent);
+}
+
+input:checked + .slider::before {
+  transform: translateX(26px);
+}
+
+/* 
+   HERO
+ */
+.hero {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.hero h2 {
+  font-size: 42px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.hero p {
+  font-size: 18px;
+  opacity: 0.8;
+  margin-bottom: 30px;
+}
+
+/* ---- CARDS DE CURSOS ---- */
+
+.courses {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 25px;
+  padding: 0 20px;
+}
+
+.course-card {
+  background: var(--bg-secondary);
+  padding: 25px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 0, 84, 0.25);
+  box-shadow: 0 0 12px rgba(255, 0, 84, 0.1);
+  cursor: pointer;
+  transition: .3s ease;
+  text-align: center;
+}
+
+.course-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 0 20px rgba(255, 0, 84, 0.25);
+  border-color: var(--accent);
+}
+
+.course-icon {
+  font-size: 48px;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+
+.course-card h3 {
+  font-size: 22px;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+
+.course-card p {
+  font-size: 15px;
+  opacity: 0.75;
+}
+
+body.light .course-card {
+  border-color: rgba(255, 0, 84, 0.4);
+  box-shadow: 0 0 10px rgba(255,0,84,0.15);
+}
+
+body.light .course-card:hover {
+  box-shadow: 0 0 18px rgba(255,0,84,0.30);
+}
+
+/* 
+   FORMULÁRIO
+ */
+.form-section {
+  padding: 50px 20px;
+  background: var(--bg-secondary);
+  border-radius: 25px 25px 0 0;
+  margin-top: 40px;
+}
+
+.form-section h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: var(--accent);
+}
+
+form {
+  max-width: 450px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+input,
+select {
+  padding: 12px;
+  border-radius: 8px;
+  border: 2px solid var(--accent);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+}
+
+.btn-enviar {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 14px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: .3s;
+}
+
+.btn-enviar:hover {
+  opacity: 0.8;
+}
+
+/* HEADER HERO */
+.header-hero {
+  text-align: center;
+  padding: 40px 20px 10px;
+}
+
+.tivit-logo {
+  width: 12%;
+  height: 10%;
+  display: block;
+  margin: 0 auto 15px;
+  filter: drop-shadow(0px 0px 4px rgba(255,0,84,0.4));
+}
+
+.header-hero h1 {
+  font-size: 48px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  margin: 0;
+}
+
+.tivit-red {
+  color: #ff0054;
+}
+
+
+/* Botões dos cards */
+.card-buttons {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.card-buttons button {
+    padding: 8px 14px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.card-buttons button:first-child {
+    background: #ccc;
+}
+
+.card-buttons button:last-child {
+    background: #d40000;
+    color: white;
+}
+
+.card-buttons button:hover {
+    opacity: 0.8;
+}
+
+/* MODAL / POPUP */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.65);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: var(--bg-secondary);
+    color: var(--text);
+    padding: 25px;
+    width: 90%;
+    max-width: 450px;
+    border-radius: 10px;
+    text-align: center;
+    border: 1px solid var(--accent);
+}
+
+
+.close {
+    float: right;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: red;
+}
+
+.btn-inscrever {
+    background: #d40000;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 15px;
+    margin-top: 15px;
+}
+
+.btn-inscrever:hover {
+    opacity: 0.85;
+}
