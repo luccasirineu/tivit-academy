@@ -1,4 +1,3 @@
-// === TEMA ===
 const themeSwitch = document.getElementById("themeSwitch");
 themeSwitch.addEventListener("change", () => {
   document.body.classList.toggle("light");
@@ -23,7 +22,6 @@ document.getElementById("formMatricula").addEventListener("submit", (e) => {
   alert("Matrícula realizada com sucesso! 🎉");
 });
 
-// === DESCRIÇÃO DOS CURSOS ===
 const cursosDetalhes = {
   "Análise de Dados": 
     "Domine Python, SQL, visualização, dashboards e técnicas usadas por analistas de dados no mercado.",
@@ -42,17 +40,14 @@ function showDetails(curso) {
   document.getElementById("modal").style.display = "flex";
 }
 
-// === FECHAR MODAL ===
 function closeModal() {
   document.getElementById("modal").style.display = "none";
 }
 
-// === ROLAR ATÉ O FORM ===
 function goToForm() {
   document.getElementById("matricula").scrollIntoView({ behavior: "smooth" });
 }
 
-// === FECHAR MODAL AO CLICAR FORA ===
 window.onclick = function (event) {
   const modal = document.getElementById("modal");
   if (event.target === modal) {
