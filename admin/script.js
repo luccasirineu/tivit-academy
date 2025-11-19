@@ -38,19 +38,6 @@ const form = document.getElementById("cadastroForm");
 const tabelaBody = document.getElementById("tabelaBody");
 const filtro = document.getElementById("filtro");
 
-// ===== Mostrar campo de matrícula se for aluno =====
-const tipoSelect = document.getElementById("tipo");
-const matriculaGroup = document.getElementById("matriculaGroup");
-
-tipoSelect.addEventListener("change", () => {
-  if (tipoSelect.value === "aluno") {
-    matriculaGroup.classList.remove("hidden");
-    matriculaGroup.querySelector("input").setAttribute("required", "true");
-  } else {
-    matriculaGroup.classList.add("hidden");
-    matriculaGroup.querySelector("input").removeAttribute("required");
-  }
-});
 
 
 //confirma cadastro
