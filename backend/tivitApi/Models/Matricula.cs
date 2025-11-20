@@ -22,6 +22,8 @@ namespace tivitApi.Models
         [ForeignKey("Curso")]
         public int CursoId { get; set; }
 
+        public Curso curso { get; set; }
+
 
         public Matricula(string nome, string email, string cpf, int cursoId)
         {

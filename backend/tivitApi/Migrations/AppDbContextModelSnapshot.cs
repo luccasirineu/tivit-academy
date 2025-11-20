@@ -33,11 +33,12 @@ namespace tivitApi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ProfResponsavel")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("ProfResponsavel")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProfResponsavel");
 
                     b.ToTable("Cursos");
                 });
@@ -66,6 +67,8 @@ namespace tivitApi.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CursoId");
 
                     b.ToTable("Matriculas");
                 });
@@ -97,6 +100,28 @@ namespace tivitApi.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Professores");
+                });
+
+            modelBuilder.Entity("tivitApi.Models.Curso", b =>
+                {
+                    b.HasOne("tivitApi.Models.Professor", "Professor")
+                        .WithMany()
+                        .HasForeignKey("ProfResponsavel")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Professor");
+                });
+
+            modelBuilder.Entity("tivitApi.Models.Matricula", b =>
+                {
+                    b.HasOne("tivitApi.Models.Curso", "curso")
+                        .WithMany()
+                        .HasForeignKey("CursoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("curso");
                 });
 #pragma warning restore 612, 618
         }

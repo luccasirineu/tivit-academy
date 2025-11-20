@@ -1,0 +1,30 @@
+using Microsoft.AspNetCore.Mvc;
+using tivitApi.DTOs;
+using tivitApi.Models;
+using tivitApi.Services;
+
+namespace tivitApi.Controllers
+{
+    [ApiController]
+    [Route("api/[controller]")]
+    public class CursoController : ControllerBase
+    {
+        //injeção de dependência 
+        private readonly ICursoService _cursoService;
+
+        public CursoController(ICursoService cursoService)
+        {
+            _cursoService = cursoService;
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllCursos()
+        {
+            List<CursoDTO> cursosDTOs = await _cursoService.GetAllCursosAsync();
+
+            return Ok(cursosDTOs);
+        }
+
+    }
+}

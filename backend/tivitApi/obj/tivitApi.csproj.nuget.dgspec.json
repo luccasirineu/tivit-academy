@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\luccas.irineu\\source\\repos\\tivit-academy\\tivitApi\\tivitApi.csproj": {}
+    "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\tivitApi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\luccas.irineu\\source\\repos\\tivit-academy\\tivitApi\\tivitApi.csproj": {
+    "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\tivitApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\luccas.irineu\\source\\repos\\tivit-academy\\tivitApi\\tivitApi.csproj",
+        "projectUniqueName": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\tivitApi.csproj",
         "projectName": "tivitApi",
-        "projectPath": "C:\\Users\\luccas.irineu\\source\\repos\\tivit-academy\\tivitApi\\tivitApi.csproj",
+        "projectPath": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\tivitApi.csproj",
         "packagesPath": "C:\\Users\\luccas.irineu\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\luccas.irineu\\source\\repos\\tivit-academy\\tivitApi\\obj\\",
+        "outputPath": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "H3QgT7H0V6E=",
+  "dgSpecHash": "heUyeoaJByU=",
   "success": true,
-  "projectFilePath": "C:\\Users\\luccas.irineu\\source\\repos\\tivit-academy\\tivitApi\\tivitApi.csproj",
+  "projectFilePath": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\tivitApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\luccas.irineu\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\luccas.irineu\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",

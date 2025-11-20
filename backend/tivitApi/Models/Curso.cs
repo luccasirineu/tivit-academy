@@ -12,9 +12,12 @@ namespace tivitApi.Models
         [Required]
         public string Nome { get; set; }
 
-        // FK
+        // FK 
         [ForeignKey("Professor")]
-        public string ProfResponsavel { get; set; }
+        public int ProfResponsavel { get; set; }
+
+        // Navigation property
+        public Professor Professor { get; set; }
 
         public Curso(string nome)
         {
