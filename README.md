@@ -1,4 +1,4 @@
-#  Sistema de Gestão Escolar : TIVIT Academy — README
+#  Sistema de Gestão Escolar : TIVIT Academy
 
 Este repositório contém o **frontend completo** de um Sistema de Gestão Escolar moderno, desenvolvido em **HTML, CSS e JavaScript**, com foco em usabilidade, modularidade e expansão futura.
 
