@@ -48,7 +48,6 @@ namespace tivitApi.Services
                 arquivoBytes = ms.ToArray();
             }
 
-            // Cria entidade ComprovantePagamento
             ComprovantePagamento comprovantePagamento = new ComprovantePagamento
             (
                  matriculaId,
@@ -56,15 +55,12 @@ namespace tivitApi.Services
                  DateTime.Now
             );
 
-            //  Salva no banco
             _context.ComprovantesPagamento.Add(comprovantePagamento);
 
-            //  Atualiza o status da matrícula
             matricula.Status = "AGUARDANDO_DOCUMENTOS";
 
             await _context.SaveChangesAsync();
 
-            //  Retorna DTO
             return new ComprovantePagamentoDTO
             (
                  comprovantePagamento.MatriculaId,
@@ -72,6 +68,52 @@ namespace tivitApi.Services
                  comprovantePagamento.HoraEnvio
             );
         }
+
+        public async Task<DocumentosDTO> EnviarDocumentosAsync(int matriculaId, IFormFile documentoHistorico, IFormFile documentoCpf)
+        {
+            var matricula = await _context.Matriculas.FindAsync(matriculaId);
+
+            if (matricula == null)
+                throw new Exception("Matrícula não encontrada.");
+
+            // Converte IFormFile → byte[]
+            byte[] documentoHistoricoBytes;
+            using (var ms = new MemoryStream())
+            {
+                await documentoHistorico.CopyToAsync(ms);
+                documentoHistoricoBytes = ms.ToArray();
+            }
+
+            byte[] documentoCpfBytes;
+            using (var ms = new MemoryStream())
+            {
+                await documentoCpf.CopyToAsync(ms);
+                documentoCpfBytes = ms.ToArray();
+            }
+
+            Documentos documentos = new Documentos
+            (
+                 matriculaId,
+                 documentoHistoricoBytes,
+                 documentoCpfBytes,
+                 DateTime.Now
+            );
+
+            _context.Documentos.Add(documentos);
+
+            matricula.Status = "AGUARDANDO_APROVACAO";
+
+            await _context.SaveChangesAsync();
+
+            return new DocumentosDTO
+            (
+                 documentos.MatriculaId,
+                 documentos.DocumentoHistorico,
+                 documentos.DocumentoCpf,
+                 documentos.HoraEnvio
+            );
+        }
+
 
 
 

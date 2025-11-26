@@ -37,5 +37,16 @@ namespace tivitApi.Controllers
 
             return Ok(resultado);
         }
+
+        [HttpPost("{matriculaId}/documentos")]
+        public async Task<IActionResult> EnviarComprovantePagamento(int matriculaId, IFormFile documentoHistorico, IFormFile documentoCpf)
+        {
+            if ((documentoHistorico == null || documentoHistorico.Length == 0) || (documentoCpf == null || documentoCpf.Length == 0))
+                return BadRequest("Nenhum arquivo enviado.");
+
+            var resultado = await _matriculaService.EnviarDocumentosAsync(matriculaId, documentoHistorico, documentoCpf);
+
+            return Ok(resultado);
+        }
     }
 }

@@ -255,9 +255,8 @@ async function finalizarMatricula() {
   }
 
   const formData = new FormData();
-  for (const file of documentos.files) {
-    formData.append("documentos", file);
-  }
+  formData.append("documentoHistorico", documento_historico.files[0]);
+  formData.append("documentoCpf", documento_cpf.files[0]);
 
   try {
     const response = await fetch(`${API_URL}/Matricula/${matriculaId}/documentos`, {
@@ -270,7 +269,6 @@ async function finalizarMatricula() {
     if (!response.ok) throw data;
 
     alert("MATRÍCULA CONCLUÍDA COM SUCESSO! 🎉");
-
   } catch (err) {
     console.error("Erro etapa 3:", err);
     alert("Erro ao enviar documentos.");

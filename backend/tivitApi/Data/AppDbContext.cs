@@ -11,6 +11,7 @@ namespace tivitApi.Data
         public DbSet<Curso> Cursos { get; set; }
         public DbSet<Professor> Professores { get; set; }
         public DbSet<ComprovantePagamento> ComprovantesPagamento { get; set; }
+        public DbSet<Documentos> Documentos { get; set; }
 
     }
 }

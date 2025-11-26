@@ -33,7 +33,7 @@ namespace tivitApi.Models
             Nome = nome;
             Email = email;
             Cpf = cpf;
-            Status = "PENDENTE";
+            Status = "AGUARDANDO_PAGAMENTO";
             CursoId = cursoId;
         }
 
