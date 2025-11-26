@@ -18,6 +18,9 @@ namespace tivitApi.Models
         [Required]
         public string Cpf { get; set; }
 
+        [Required]
+        public string Status{ get; set; }
+
         // FK
         [ForeignKey("Curso")]
         public int CursoId { get; set; }
@@ -30,6 +33,7 @@ namespace tivitApi.Models
             Nome = nome;
             Email = email;
             Cpf = cpf;
+            Status = "PENDENTE";
             CursoId = cursoId;
         }
 

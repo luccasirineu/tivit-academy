@@ -11,8 +11,8 @@ using tivitApi.Data;
 namespace tivitApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251119235154_Initial")]
-    partial class Initial
+    [Migration("20251125132218_UpdateStatusMatricula")]
+    partial class UpdateStatusMatricula
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,6 +31,10 @@ namespace tivitApi.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nome")
                         .IsRequired()
@@ -66,6 +70,10 @@ namespace tivitApi.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

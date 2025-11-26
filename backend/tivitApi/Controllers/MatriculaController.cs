@@ -24,7 +24,18 @@ namespace tivitApi.Controllers
 
             var created = await _matriculaService.CriarMatriculaAsync(matricula);
 
-            return CreatedAtAction(nameof(CriarMatricula), new { id = created.Id }, created);
+            return Ok(new { matriculaId = created.Id });
+        }
+
+        [HttpPost("{matriculaId}/pagamento")]
+        public async Task<IActionResult> EnviarComprovantePagamento(int matriculaId, IFormFile arquivo)
+        {
+            if (arquivo == null || arquivo.Length == 0)
+                return BadRequest("Nenhum arquivo enviado.");
+
+            var resultado = await _matriculaService.EnviarComprovantePagamentoAsync(matriculaId, arquivo);
+
+            return Ok(resultado);
         }
     }
 }

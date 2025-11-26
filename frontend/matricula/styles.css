@@ -2,7 +2,7 @@
 VARIÁVEIS DE TEMA
  */
 :root {
-  --bg: #120010;
+  --bg: #141414;
   --bg-secondary: rgb(33, 33, 33);
   --text: #fff;
   --accent: #ff0054;
@@ -301,4 +301,95 @@ select {
 
 .btn-inscrever:hover {
     opacity: 0.85;
+}
+
+
+.wizard-container {
+  max-width: 70%;
+  margin: 30px auto;
+  background: var(--bg);
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.progress-bar {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 25px;
+}
+
+.progress-bar .step {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #ccc;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.progress-bar .active {
+  background: #0066ff;
+}
+
+.wizard-step {
+  display: none;
+}
+
+.wizard-step.active {
+  display: block;
+}
+
+.wizard-buttons {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+button {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.next {
+  background: #0066ff;
+  color: white;
+}
+
+.back {
+  background: #888;
+  color: white;
+}
+
+.finish {
+  background: green;
+  color: white;
+}
+
+.wizard-container input,
+.wizard-container select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.wizard-container label {
+  color: var(--text);
+}
+
+.progress-bar .step {
+  background: #777;
+}
+
+.progress-bar .active {
+  background: var(--accent);
 }

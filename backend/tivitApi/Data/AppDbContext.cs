@@ -10,6 +10,7 @@ namespace tivitApi.Data
         public DbSet<Matricula> Matriculas { get; set; }
         public DbSet<Curso> Cursos { get; set; }
         public DbSet<Professor> Professores { get; set; }
+        public DbSet<ComprovantePagamento> ComprovantesPagamento { get; set; }
 
     }
 }

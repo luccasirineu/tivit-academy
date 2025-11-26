@@ -62,7 +62,7 @@ erDiagram
     CURSOS {
         int id PK
         string nome
-        string prof_responsavel
+        int professor_id
     }
 
     TURMAS {

@@ -9,124 +9,117 @@
 </head>
 
 <body>
-  <div class="theme-toggle">
-    <span><i class='bx  bx-moon'  ></i> </span>
-    <label class="switch">
-      <input type="checkbox" id="themeSwitch">
-      <span class="slider"></span>
-    </label>
-    <span><i class='bx  bx-sun'  ></i> </span>
-  </div>
 
+<!-- ======================= TEMA ======================= -->
+<div class="theme-toggle">
+  <span><i class='bx bx-moon'></i></span>
+  <label class="switch">
+    <input type="checkbox" id="themeSwitch">
+    <span class="slider"></span>
+  </label>
+  <span><i class='bx bx-sun'></i></span>
+</div>
+
+<!-- ======================= HEADER ======================= -->
 <header class="header-hero">
 
-    <!-- LOGO DA TIVIT -->
-    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAk1BMVEXyACT////xAADyAA794ub4oKXyABfyACHyABv2dHvyAB7yABTxAAfxAAz/+/zyABb/9/n1TmD1Z3H1Xmr7tr791tryACfyEy37wMf+7/L6p7D4lZz+5+v8xcz+7fD4jZjzGzf0LEP0PE71VmP2bnb1VGH0N073iZD8zdL6rrf5oqv3kpj2eIL1QlbzJED90df3gYo3mUy0AAAD10lEQVR4nO3c63KiShSGYdIgICeRg6AoiJoEHTHc/9VNo2b2dtQRaR1cU9/zMzHab1o7uKyKJAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALwUTdMMQ99T/3P4gmHw73a9wLvxIF01Zdtie7IxmueL4fty6fue5636/f5q5Xm+7y/fh2W+izTzcEPLluVB3dx1wCX1LvGoQ5M+/1iuPpPNJJiFytjlHMd5u8Jx96ZhEa83yY+tX+5Gx15T1Y3ON3i/WzbfpmhX+tskCAplfK3lDs70Kw4mn6thHkkms+Q69a+3GbopMybl71614VvlPqDrcmtYrLPVchFZjG/qXwnVDL5pzNr5VRIr6bPKzkrH04Jv6kLjDy3rT+rkz0jTsmyjrCbx9Orr6tmlbrFO/Mi2+FP3kRuqGQObjfJhFRRpR2mnnDBOvMXcZLxTuM4wLaaV20047TrrzFiJMy+X+QtUJFP9qCbhI87HZ3HGxab6aP+EteKuC5phrQvNrOu1NzJtX6gvu158I7P2hUbe9eIbWdutC7XRa/x5uGE7aF0omWHXq2+iFPhzwWZdr76JucDljUzhMFVE3mSpXtfLb+DLah8oGWXXy29gLVKoRa98yXZUmQKFEnu9K+4zvi5U+PpXpk4u9BZKTroOuCkVm1eZVdcBNyntr0prbQ9Tx3HdcRoWcbCebJKsuHij9DPpbdZBPPtSxmPXbTkbETpK61Fo84dyU0UJ40lW9b33xS5Svye9tsx6F39AYbJsW4cxqyzNF0O/v802QREq0zuO8EwWKpTY7cdSvmb7kd8u0vlqbdlUfx/mytcKT36Xhv49LDfrXK/axEV4e5y3UgULr1+ZOmEwqYZz3dzPvv40oW5SeEI7Dpv5/Ublqrf+0whM7CiVJHtydpduGgbJtqzH77apNznJ7i48aVXrzwvk3MsmxXR8/mIVexn+fpim4Xq73Kn8dzu4ZzArUPiLUe8pi0ovi09mY4JH6f8O02nc8/ORZZktZs6PKDyod5SZ0cLrxcerrUC0UDPenDRIhiZj7efMjyv8XhTvZINhEqRvPcGjlN/bMuJxYh8WPLrwuDKdZ0Yib3+PHvBJyHMK9zr/iPHgiYUvAoX0oZA+FNKHQvpQSB8K6UMhfSikD4X0oZA+FNKHQvpQSB8K6UMhfSikD4X0oZA+FNKHQvpQSB8K6UMhfSikD4X0oZA+FNKHQvpQSB8K6UMhfSikD4X0oZA+FNKHQvpQSB8K6btSKPAfjl+NUfYv8YT+4eFrMdRL/qFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD4h/wECmVOFgO3Vo0AAAAASUVORK5CYII=" class="tivit-logo">
+  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAk1BMVEXyACT////xAADyAA794ub4oKXyABfyACHyABv2dHvyAB7yABTxAAfxAAz/+/zyABb/9/n1TmD1Z3H1Xmr7tr791tryACfyEy37wMf+7/L6p7D4lZz+5+v8xcz+7fD4jZjzGzf0LEP0PE71VmP2bnb1VGH0N073iZD8zdL6rrf5oqv3kpj2eIL1QlbzJED90df3gYo3mUy0AAAD10lEQVR4nO3c63KiShSGYdIgICeRg6AoiJoEHTHc/9VNo2b2dtQRaR1cU9/zMzHab1o7uKyKJAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALwUTdMMQ99T/3P4gmHw73a9wLvxIF01Zdtie7IxmueL4fty6fue5636/f5q5Xm+7y/fh2W+izTzcEPLluVB3dx1wCX1LvGoQ5M+/1iuPpPNJJiFytjlHMd5u8Jx96ZhEa83yY+tX+5Gx15T1Y3ON3i/WzbfpmhX+tskCAplfK3lDs70Kw4mn6thHkkms+Q69a+3GbopMybl71614VvlPqDrcmtYrLPVchFZjG/qXwnVDL5pzNr5VRIr6bPKzkrH04Jv6kLjDy3rT+rkz0jTsmyjrCbx9Orr6tmlbrFO/Mi2+FP3kRuqGQObjfJhFRRpR2mnnDBOvMXcZLxTuM4wLaaV20047TrrzFiJMy+X+QtUJFP9qCbhI87HZ3HGxab6aP+EteKuC5phrQvNrOu1NzJtX6gvu158I7P2hUbe9eIbWdutC7XRa/x5uGE7aF0omWHXq2+iFPhzwWZdr76JucDljUzhMFVE3mSpXtfLb+DLah8oGWXXy29gLVKoRa98yXZUmQKFEnu9K+4zvi5U+PpXpk4u9BZKTroOuCkVm1eZVdcBNyntr0prbQ9Tx3HdcRoWcbCebJKsuHij9DPpbdZBPPtSxmPXbTkbETpK61Fo84dyU0UJ40lW9b33xS5Svye9tsx6F39AYbJsW4cxqyzNF0O/v802QREq0zuO8EwWKpTY7cdSvmb7kd8u0vlqbdlUfx/mytcKT36Xhv49LDfrXK/axEV4e5y3UgULr1+ZOmEwqYZz3dzPvv40oW5SeEI7Dpv5/Ublqrf+0whM7CiVJHtydpduGgbJtqzH77apNznJ7i48aVXrzwvk3MsmxXR8/mIVexn+fpim4Xq73Kn8dzu4ZzArUPiLUe8pi0ovi09mY4JH6f8O02nc8/ORZZktZs6PKDyod5SZ0cLrxcerrUC0UDPenDRIhiZj7efMjyv8XhTvZINhEqRvPcGjlN/bMuJxYh8WPLrwuDKdZ0Yib3+PHvBJyHMK9zr/iPHgiYUvAoX0oZA+FNKHQvpQSB8K6UMhfSikD4X0oZA+FNKHQvpQSB8K6UMhfSikD4X0oZA+FNKHQvpQSB8K6UMhfSikD4X0oZA+FNKHQvpQSB8K6UMhfSikD4X0oZA+FNKHQvpQSB8K6btSKPAfjl+NUfYv8YT+4eFrMdRL/qFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD4h/wECmVOFgO3Vo0AAAAASUVORK5CYII=" class="tivit-logo">
 
-    <h1>
-        <span class="tivit-red">TIVIT</span> Academy
-    </h1>
-    <h3>
-        Aprenda habilidades do futuro. Matrículas abertas!
-    </h3>
-
+  <h1><span class="tivit-red">TIVIT</span> Academy</h1>
+  <h3>Aprenda habilidades do futuro. Matrículas abertas!</h3>
 </header>
 
+<!-- ======================= LISTA DE CURSOS ======================= -->
+<section class="hero">
+  <h2>Nossos Cursos</h2>
+  <p>Escolha um curso para iniciar sua inscrição</p>
 
+  <div class="courses" id="coursesContainer"></div>
+</section>
 
-    <section class="hero">
-        <h2>Nossos Cursos</h2>
-        <p>Escolha um curso para iniciar sua inscrição</p>
+<!-- ======================= MODAL ======================= -->
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <h2 id="modalTitle"></h2>
+    <p id="modalText"></p>
 
-        <div class="courses">
+    <button class="btn-inscrever" onclick="goToForm(); closeModal();">
+      Inscreva-se
+    </button>
+  </div>
+</div>
 
-            <div class="course-card">
-                <i class='bx bx-bar-chart-alt-2 course-icon'></i>
-                <h3>Análise de Dados</h3>
-                <p>Data Science • Python • Dashboards</p>
+<!-- ========================================================== -->
+<!-- =============== AQUI COMEÇA O NOVO WIZARD ================ -->
+<!-- ========================================================== -->
 
-                <div class="card-buttons">
-                    <button onclick="showDetails('Análise de Dados')">Saiba mais</button>
-                    <button onclick="goToForm()">Inscreva-se</button>
-                </div>
-            </div>
+<section id="matricula" class="form-section">
+  <h2>Matrícula</h2>
 
-            <div class="course-card">
-                <i class='bx bx-shield-quarter course-icon'></i>
-                <h3>Cibersegurança</h3>
-                <p>Proteção • Pentest • Infraestrutura</p>
+  <div class="wizard-container">
 
-                <div class="card-buttons">
-                    <button onclick="showDetails('Cibersegurança')">Saiba mais</button>
-                    <button onclick="goToForm()">Inscreva-se</button>
-                </div>
-            </div>
-
-            <div class="course-card">
-                <i class='bx bx-code-alt course-icon'></i>
-                <h3>Desenvolvimento Web</h3>
-                <p>HTML • CSS • JavaScript</p>
-
-                <div class="card-buttons">
-                    <button onclick="showDetails('Desenvolvimento Web')">Saiba mais</button>
-                    <button onclick="goToForm()">Inscreva-se</button>
-                </div>
-            </div>
-
-            <div class="course-card">
-                <i class='bx bx-brain course-icon'></i>
-                <h3>IA & Machine Learning</h3>
-                <p>Modelos • Treinamento • Automação</p>
-
-                <div class="card-buttons">
-                    <button onclick="showDetails('IA & Machine Learning')">Saiba mais</button>
-                    <button onclick="goToForm()">Inscreva-se</button>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <div id="modal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <h2 id="modalTitle"></h2>
-            <p id="modalText"></p>
-
-            <button class="btn-inscrever" onclick="goToForm(); closeModal();">
-                Inscreva-se
-            </button>
-        </div>
+    <!-- 🔵 Barra de progresso -->
+    <div class="progress-bar">
+      <div class="step active">1</div>
+      <div class="step">2</div>
+      <div class="step">3</div>
     </div>
 
+    <!-- 🟦 ETAPA 1 -->
+    <div class="wizard-step active" id="step1">
+      <h2>Dados Pessoais</h2>
 
-  <section id="matricula" class="form-section">
-    <h2>Formulário de Matrícula</h2>
+      <label>Nome Completo</label>
+      <input type="text" id="nome" required>
 
-    <form id="formMatricula">
-      <label>Nome completo:</label>
-      <input type="text" >
+      <label>Email</label>
+      <input type="email" id="email" required>
 
-      <label>Email:</label>
-      <input type="email" required placeholder="seuemail@exemplo.com">
+      <label>CPF</label>
+      <input type="text" id="cpf" required>
 
-      <label>CPF:</label>
-      <input type="text" id="cpf" required placeholder="000.000.000-00" maxlength="14">
+      <label>Curso</label>
+      <select id="cursoSelect"></select>
 
-      <label>Curso desejado:</label>
-      <select required>
-        <option value="" disabled selected>Selecione um curso...</option>
-        <option>Desenvolvimento FullStack</option>
-        <option>Segurança da Informação</option>
-        <option>Cloud Computing</option>
-        <option>Data Science</option>
-        <option>UX/UI Design</option>
-      </select>
+      <div class="wizard-buttons">
+        <button class="next" onclick="nextStep()">Próximo</button>
+      </div>
+    </div>
 
-      <button type="submit" class="btn-enviar">Finalizar Matrícula</button>
-    </form>
-  </section>
+    <!-- 🟦 ETAPA 2 -->
+    <div class="wizard-step" id="step2">
+      <h2>Comprovante de Pagamento</h2>
+      <p>Envie um PDF ou imagem.</p>
 
-  <script src="script.js"></script>
+      <input type="file" id="comprovante" accept="application/pdf,image/*" required>
+
+      <div class="wizard-buttons">
+        <button class="back" onclick="prevStep()">Voltar</button>
+        <button class="next" onclick="nextStep()">Próximo</button>
+      </div>
+    </div>
+
+    <!-- 🟦 ETAPA 3 -->
+    <div class="wizard-step" id="step3">
+      <h2>Documentos Finais</h2>
+      <p>Envie Histórico escolar.</p>
+
+      <input type="file" id="documento_historico" accept="application/pdf,image/*" multiple required>
+
+      <p>Envie CPF (RG, CNH).</p>
+
+      <input type="file" id="documento_cpf" accept="application/pdf,image/*" multiple required>
+
+      <div class="wizard-buttons">
+        <button class="back" onclick="prevStep()">Voltar</button>
+        <button class="finish" onclick="finalizarMatricula()">Finalizar</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script src="script.js"></script>
 </body>
 </html>

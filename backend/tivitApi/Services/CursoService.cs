@@ -17,7 +17,9 @@ namespace tivitApi.Services
         public CursoDTO ConvertCursoToCursoDTO(Curso curso)
         {
             return new CursoDTO(
+                curso.Id,
                 curso.Nome,
+                curso.Descricao,
                 curso.ProfResponsavel
                 );
         }

@@ -12,6 +12,9 @@ namespace tivitApi.Models
         [Required]
         public string Nome { get; set; }
 
+        [Required]
+        public string Descricao { get; set; }
+
         // FK 
         [ForeignKey("Professor")]
         public int ProfResponsavel { get; set; }
