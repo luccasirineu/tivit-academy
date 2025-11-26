@@ -155,6 +155,41 @@ function prevStep() {
   mostrarEtapa(etapaAtual);
 }
 
+// --- Funções do modal de sucesso ---
+function abrirModalSucesso() {
+  const modal = document.getElementById("modalSucesso");
+  const btnFechar = document.getElementById("btnFecharModal");
+  if (!modal) return;
+
+  modal.style.display = "flex";
+  // focar botão para acessibilidade
+  if (btnFechar) btnFechar.focus();
+
+  // fechar ao apertar ESC
+  function escListener(e) {
+    if (e.key === "Escape") fechar();
+  }
+  document.addEventListener("keydown", escListener);
+
+  // fechar clicando fora do conteúdo
+  function clickForaListener(e) {
+    if (e.target === modal) fechar();
+  }
+  modal.addEventListener("click", clickForaListener);
+
+  // função de fechar que limpa listeners
+  function fechar() {
+    modal.style.display = "none";
+    document.removeEventListener("keydown", escListener);
+    modal.removeEventListener("click", clickForaListener);
+  }
+
+  // botão fechar
+  if (btnFechar) {
+    btnFechar.onclick = fechar;
+  }
+}
+
 //
 // =========================
 // ETAPA 1 – Inscrição
@@ -268,7 +303,7 @@ async function finalizarMatricula() {
 
     if (!response.ok) throw data;
 
-    alert("MATRÍCULA CONCLUÍDA COM SUCESSO! 🎉");
+    abrirModalSucesso();
   } catch (err) {
     console.error("Erro etapa 3:", err);
     alert("Erro ao enviar documentos.");
