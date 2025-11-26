@@ -162,33 +162,54 @@ function abrirModalSucesso() {
   if (!modal) return;
 
   modal.style.display = "flex";
-  // focar botão para acessibilidade
+
   if (btnFechar) btnFechar.focus();
 
-  // fechar ao apertar ESC
   function escListener(e) {
     if (e.key === "Escape") fechar();
   }
   document.addEventListener("keydown", escListener);
 
-  // fechar clicando fora do conteúdo
   function clickForaListener(e) {
     if (e.target === modal) fechar();
   }
   modal.addEventListener("click", clickForaListener);
 
-  // função de fechar que limpa listeners
   function fechar() {
     modal.style.display = "none";
     document.removeEventListener("keydown", escListener);
     modal.removeEventListener("click", clickForaListener);
   }
 
-  // botão fechar
   if (btnFechar) {
     btnFechar.onclick = fechar;
   }
 }
+
+function resetarFormulario() {
+  etapaAtual = 1;
+  mostrarEtapa(etapaAtual);
+
+  matriculaId = null;
+
+  document.getElementById("nome").value = "";
+  document.getElementById("email").value = "";
+  document.getElementById("cpf").value = "";
+
+  const select = document.getElementById("cursoSelect");
+  select.selectedIndex = 0;
+
+  document.getElementById("comprovante").value = "";
+  document.getElementById("documento_historico").value = "";
+  document.getElementById("documento_cpf").value = "";
+
+  document.querySelectorAll(".progress-bar .step").forEach((step, index) => {
+    step.classList.toggle("active", index === 0);
+  });
+
+  document.getElementById("step1").scrollIntoView({ behavior: "smooth" });
+}
+
 
 //
 // =========================
@@ -201,11 +222,7 @@ async function enviarEtapa1() {
   const cpf = document.getElementById("cpf").value.trim();
   const curso = document.getElementById("cursoSelect").value;
 
-  console.log("📌 Valores capturados:");
-  console.log("nome:", nome);
-  console.log("email:", email);
-  console.log("cpf:", cpf);
-  console.log("curso (string):", curso);
+  
 
 
   if (!nome || !email || !cpf || !curso) {
@@ -230,7 +247,6 @@ async function enviarEtapa1() {
     if (!response.ok) throw data;
 
     matriculaId = data.matriculaId;
-    console.log("matricula:", matriculaId);
 
     etapaAtual = 2;
     mostrarEtapa(etapaAtual);
@@ -304,6 +320,7 @@ async function finalizarMatricula() {
     if (!response.ok) throw data;
 
     abrirModalSucesso();
+    resetarFormulario();
   } catch (err) {
     console.error("Erro etapa 3:", err);
     alert("Erro ao enviar documentos.");
