@@ -14,14 +14,15 @@ namespace tivitApi.Services
             _context = context;
         }
 
-        public async Task<Matricula> CriarMatriculaAsync(Matricula matricula)
+        public async Task<Matricula> CriarMatriculaAsync(MatriculaDTO matriculaDTO)
         {
+            var matricula = ConvertMatriculaDtoToMatricula(matriculaDTO);
             _context.Matriculas.Add(matricula);
             await _context.SaveChangesAsync();
             return matricula;
         }
 
-        public Matricula ConvertMatriculaDtoToMatricula(MatriculaDTO matriculaDTO)
+        private Matricula ConvertMatriculaDtoToMatricula(MatriculaDTO matriculaDTO)
         {
             return new Matricula(
                 matriculaDTO.Nome,
@@ -33,84 +34,78 @@ namespace tivitApi.Services
         }
 
 
-        public async Task<ComprovantePagamentoDTO> EnviarComprovantePagamentoAsync(int matriculaId, IFormFile arquivo)
+        private async Task<byte[]> LerArquivoAsync(IFormFile file)
         {
-            var matricula = await _context.Matriculas.FindAsync(matriculaId);
+            using var ms = new MemoryStream();
+            await file.CopyToAsync(ms);
+            return ms.ToArray();
+        }
 
+        private async Task<Matricula> ObterMatricula(int id)
+        {
+            var matricula = await _context.Matriculas.FindAsync(id);
             if (matricula == null)
                 throw new Exception("Matrícula não encontrada.");
 
-            // Converte IFormFile → byte[]
-            byte[] arquivoBytes;
-            using (var ms = new MemoryStream())
-            {
-                await arquivo.CopyToAsync(ms);
-                arquivoBytes = ms.ToArray();
-            }
+            return matricula;
+        }
 
-            ComprovantePagamento comprovantePagamento = new ComprovantePagamento
+        
+
+        public async Task<ComprovantePagamentoDTO> EnviarComprovantePagamentoAsync(int matriculaId, IFormFile arquivo)
+        {
+            var matricula = await ObterMatricula(matriculaId);
+
+            var arquivoBytes = await LerArquivoAsync(arquivo);
+
+            var comprovante = new ComprovantePagamento
             (
-                 matriculaId,
-                 arquivoBytes,
-                 DateTime.Now
+                matriculaId,
+                arquivoBytes,
+                DateTime.Now
             );
 
-            _context.ComprovantesPagamento.Add(comprovantePagamento);
+            _context.ComprovantesPagamento.Add(comprovante);
 
             matricula.Status = "AGUARDANDO_DOCUMENTOS";
-
             await _context.SaveChangesAsync();
 
             return new ComprovantePagamentoDTO
             (
-                 comprovantePagamento.MatriculaId,
-                 comprovantePagamento.Arquivo,
-                 comprovantePagamento.HoraEnvio
+                comprovante.MatriculaId,
+                comprovante.Arquivo,
+                comprovante.HoraEnvio
             );
         }
 
+        
+
         public async Task<DocumentosDTO> EnviarDocumentosAsync(int matriculaId, IFormFile documentoHistorico, IFormFile documentoCpf)
         {
-            var matricula = await _context.Matriculas.FindAsync(matriculaId);
+            var matricula = await ObterMatricula(matriculaId);
 
-            if (matricula == null)
-                throw new Exception("Matrícula não encontrada.");
+            var historicoBytes = await LerArquivoAsync(documentoHistorico);
+            var cpfBytes = await LerArquivoAsync(documentoCpf);
 
-            // Converte IFormFile → byte[]
-            byte[] documentoHistoricoBytes;
-            using (var ms = new MemoryStream())
-            {
-                await documentoHistorico.CopyToAsync(ms);
-                documentoHistoricoBytes = ms.ToArray();
-            }
-
-            byte[] documentoCpfBytes;
-            using (var ms = new MemoryStream())
-            {
-                await documentoCpf.CopyToAsync(ms);
-                documentoCpfBytes = ms.ToArray();
-            }
-
-            Documentos documentos = new Documentos
+            var documentos = new Documentos
             (
-                 matriculaId,
-                 documentoHistoricoBytes,
-                 documentoCpfBytes,
-                 DateTime.Now
+                matriculaId,
+                historicoBytes,
+                cpfBytes,
+                DateTime.Now
             );
 
             _context.Documentos.Add(documentos);
 
             matricula.Status = "AGUARDANDO_APROVACAO";
-
             await _context.SaveChangesAsync();
 
             return new DocumentosDTO
             (
-                 documentos.MatriculaId,
-                 documentos.DocumentoHistorico,
-                 documentos.DocumentoCpf,
-                 documentos.HoraEnvio
+                documentos.MatriculaId,
+                documentos.DocumentoHistorico,
+                documentos.DocumentoCpf,
+                documentos.HoraEnvio
             );
         }
 

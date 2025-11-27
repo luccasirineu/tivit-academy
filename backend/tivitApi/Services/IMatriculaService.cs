@@ -5,8 +5,7 @@ namespace tivitApi.Services
 {
     public interface IMatriculaService
     {
-        Task<Matricula> CriarMatriculaAsync(Matricula matricula);
-        Matricula ConvertMatriculaDtoToMatricula(MatriculaDTO dto);
+        Task<Matricula> CriarMatriculaAsync(MatriculaDTO matriculaDTO);
         Task<ComprovantePagamentoDTO> EnviarComprovantePagamentoAsync(int matriculaId, IFormFile arquivo);
         Task<DocumentosDTO> EnviarDocumentosAsync(int matriculaId, IFormFile documentoHistorico, IFormFile documentoCpf);
     }

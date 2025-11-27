@@ -20,9 +20,8 @@ namespace tivitApi.Controllers
         [HttpPost]
         public async Task<IActionResult> CriarMatricula([FromBody] MatriculaDTO dto)
         {
-            Matricula matricula = _matriculaService.ConvertMatriculaDtoToMatricula(dto);
 
-            var created = await _matriculaService.CriarMatriculaAsync(matricula);
+            var created = await _matriculaService.CriarMatriculaAsync(dto);
 
             return Ok(new { matriculaId = created.Id });
         }
