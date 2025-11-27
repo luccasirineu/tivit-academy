@@ -1,26 +1,25 @@
 ﻿using tivitApi.Data;
 using tivitApi.Models;
 using tivitApi.DTOs;
+using tivitApi.Exceptions;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 namespace tivitApi.Services
 {
     public class MatriculaService : IMatriculaService
     {
         private readonly AppDbContext _context;
+        private readonly ILogger<MatriculaService> _logger;
 
-        public MatriculaService(AppDbContext context)
+        public MatriculaService(AppDbContext context, ILogger<MatriculaService> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
-        public async Task<Matricula> CriarMatriculaAsync(MatriculaDTO matriculaDTO)
-        {
-            var matricula = ConvertMatriculaDtoToMatricula(matriculaDTO);
-            _context.Matriculas.Add(matricula);
-            await _context.SaveChangesAsync();
-            return matricula;
-        }
+
+
 
         private Matricula ConvertMatriculaDtoToMatricula(MatriculaDTO matriculaDTO)
         {
@@ -29,9 +28,40 @@ namespace tivitApi.Services
                 matriculaDTO.Email,
                 matriculaDTO.Cpf,
                 matriculaDTO.CursoId);
-               
+
 
         }
+
+        private string SomenteNumeros(string valor)
+        {
+            return new string(valor.Where(char.IsDigit).ToArray());
+        }
+
+
+        public async Task<Matricula> CriarMatriculaAsync(MatriculaDTO matriculaDTO)
+        {
+            _logger.LogInformation($"Iniciando criação de matrícula: {JsonSerializer.Serialize(matriculaDTO)}");
+
+            var matricula = ConvertMatriculaDtoToMatricula(matriculaDTO);
+            matricula.Cpf = SomenteNumeros(matricula.Cpf);
+
+            bool existeNoBanco = await _context.Matriculas.AnyAsync(m =>
+                  (m.Cpf == matricula.Cpf || m.Email == matriculaDTO.Email) &&
+                  (m.Status == "AGUARDANDO_APROVACAO" || m.Status == "APROVADO")
+              );
+
+            if (!existeNoBanco) {
+                _context.Matriculas.Add(matricula);
+                await _context.SaveChangesAsync();
+                _logger.LogInformation($"Matrícula criada com sucesso! ID gerado: {matricula.Id}");
+                return matricula;
+            }
+
+            _logger.LogWarning("Tentativa de cadastrar CPF ou Email já existente. CPF: {Cpf}, Email: {Email}", matricula.Cpf, matriculaDTO.Email);
+            throw new BusinessException("Email ou CPF já cadastrado");
+        }
+
+
 
 
         private async Task<byte[]> LerArquivoAsync(IFormFile file)

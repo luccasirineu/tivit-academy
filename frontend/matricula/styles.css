@@ -395,65 +395,66 @@ button {
 }
 
 
-/* Modal — usa suas variáveis de tema */
-.modal {
-  display: none; 
+/* MODAL DE ERRO */
+.modal-erro {
+  display: none;
   position: fixed;
-  z-index: 9999;
+  z-index: 1000;
   inset: 0;
-  background: rgba(0,0,0,0.55); /* overlay escuro */
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(2px);
   justify-content: center;
   align-items: center;
-  padding: 20px;
 }
 
-/* Caixa do modal corresponde ao tema */
-.modal-content {
+.modal-conteudo {
   background: var(--bg-secondary);
-  color: var(--text);
-  padding: 22px;
+  padding: 25px;
+  width: 350px;
   border-radius: 12px;
-  width: 100%;
-  max-width: 480px;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.35);
   text-align: center;
-  border: 1px solid rgba(255,255,255,0.04);
-  transform: translateY(6px);
-  animation: modalIn .22s ease-out both;
+  animation: aparecer 0.25s ease-out;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+  color: var(--text);
 }
 
-/* Tipografia */
-.modal-content h2 {
-  margin: 0 0 10px;
+@keyframes aparecer {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-fechar {
+  float: right;
   font-size: 22px;
+  font-weight: bold;
+  cursor: pointer;
+  color: var(--text);
+}
+
+.modal-fechar:hover {
   color: var(--accent);
 }
-.modal-content p {
-  margin: 0 0 18px;
-  opacity: 0.95;
-}
 
-/* Botão */
-.btn-modal {
+.btn-fechar {
+  margin-top: 15px;
+  padding: 10px 20px;
   background: var(--accent);
-  color: #fff;
   border: none;
-  padding: 10px 18px;
-  border-radius: 8px;
+  border-radius: 6px;
+  color: #fff;
   cursor: pointer;
-  font-weight: 600;
-  transition: transform .12s, opacity .12s;
-}
-.btn-modal:hover { opacity: .95; transform: translateY(-1px); }
-
-/* Animação */
-@keyframes modalIn {
-  from { opacity: 0; transform: translateY(10px) scale(.98); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
+  font-size: 15px;
+  transition: 0.2s;
 }
 
-/* Responsividade */
-@media (max-width: 420px) {
-  .modal-content { padding: 18px; max-width: 92%; }
-  .modal-content h2 { font-size: 20px; }
+.btn-fechar:hover {
+  opacity: 0.8;
 }

@@ -211,11 +211,19 @@ function resetarFormulario() {
 }
 
 
-//
-// =========================
-// ETAPA 1 – Inscrição
-// =========================
-//
+function mostrarErro(mensagem) {
+  document.getElementById("modalErroMensagem").textContent = mensagem;
+
+  const modal = document.getElementById("modalErro");
+  modal.style.display = "flex";
+}
+
+function fecharModalErro() {
+  const modal = document.getElementById("modalErro");
+  modal.style.display = "none";
+}
+
+
 async function enviarEtapa1() {
   const nome = document.getElementById("nome").value.trim();
   const email = document.getElementById("email").value.trim();
@@ -253,15 +261,11 @@ async function enviarEtapa1() {
 
   } catch (err) {
     console.error("Erro etapa 1:", err);
-    alert("Erro ao enviar inscrição.");
+    mostrarErro(err?.erro );
   }
 }
 
-//
-// =========================
-// ETAPA 2 – Comprovante de pagamento
-// =========================
-//
+
 async function enviarEtapa2() {
   const comprovante = document.getElementById("comprovante");
 
@@ -291,11 +295,7 @@ async function enviarEtapa2() {
   }
 }
 
-//
-// =========================
-// ETAPA 3 – Documentos finais
-// =========================
-//
+
 async function finalizarMatricula() {
   const documento_historico = document.getElementById("documento_historico");
   const documento_cpf = document.getElementById("documento_cpf");
