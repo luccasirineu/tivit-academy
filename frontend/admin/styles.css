@@ -262,166 +262,107 @@ body.light .stat-card {
   .stat-card { flex: 1 1 100%; max-width: 100%; }
 }
 
+/* MATRICULAS */
 
-/* === CADASTRO === */
-#cadastro {
-  justify-content: center;
-  align-items: center;
-  height: 100vh;              /* ocupa toda a altura da tela */
-  overflow: hidden;           /* remove o scroll vertical e horizontal */
-  padding: 0 20px;            /* um pequeno respiro lateral */
-  animation: fadeIn 0.5s ease-in-out;
-  height: 100%;
 
+/* Container principal */
+.matriculas-container {
+  max-width: 1100px;
+  margin: auto;
+  padding: 40px 20px;
 }
 
-.cadastro-container {
-  width: 100%;
-  max-width: 850px;
-  background: var(--bg-secondary);
-  padding: 35px 40px;
-  border-radius: 16px;
-  box-shadow: 0 4px 18px var(--shadow);
-  overflow: hidden;           
-}
-
-
-.cadastro-container h2 {
-  color: var(--accent);
-  font-size: 1.8rem;
+/* Título */
+.matriculas-container h2 {
+  font-size: 2rem;
+  color: var(--text);
   margin-bottom: 10px;
-  text-align: center;
 }
 
-.cadastro-container p {
-  text-align: center;
-  margin-bottom: 40px;
-  opacity: 0.8;
-  font-size: 0.95rem;
+.matriculas-container p {
+  color: var(--text-secondary);
+  margin-bottom: 25px;
 }
 
-/* GRID DO FORMULÁRIO */
-.form-grid {
+/* Grid dos cards */
+.matriculas-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 25px 30px;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
 }
 
-.form-group {
-  display: flex;
-  flex-direction: column;
+/* Card da matrícula */
+.matricula-card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.25);
+  border-left: 5px solid var(--primary);
+  transition: transform .2s ease;
 }
 
-label {
-  font-weight: 600;
-  margin-bottom: 6px;
+.matricula-card:hover {
+  transform: translateY(-4px);
 }
 
-input, select {
-  width: 100%;
-  padding: 10px 12px;
-  border-radius: 8px;
-  border: 1px solid transparent;
-  background: rgba(255, 255, 255, 0.1);
+.matricula-card h3 {
+  margin: 0 0 8px 0;
   color: var(--text);
-  transition: all 0.3s ease;
 }
 
-input::placeholder {
-  opacity: 0.6;
+.matricula-info {
+  margin-bottom: 18px;
 }
 
-input:focus, select:focus {
-  outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 2px rgba(255, 51, 128, 0.2);
+.matricula-info p {
+  margin: 3px 0;
+  color: var(--text-secondary);
 }
 
-/* Ocultar matricula */
-.hidden {
-  display: none;
-}
-
-/* Dark mode */
-body:not(.light) select option {
-  background-color: #111;   
-  color: #fff;              
-}
-
-/* MODO CLARO */
-body.light input,
-body.light select {
-  background: rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  color: #000;
-}
-
-body.light input:focus,
-body.light select:focus {
-  box-shadow: 0 0 0 2px rgba(255, 51, 128, 0.15);
-}
-
-/* === SENHA === */
-.senha-wrapper {
-  position: relative;
-}
-
-.toggle-senha {
-  position: absolute;
-  top: 50%;
-  right: 10px;
-  transform: translateY(-50%);
-  cursor: pointer;
-  color: var(--text);
-  font-size: 1.3rem;
-  transition: color 0.3s;
-}
-
-.toggle-senha:hover {
-  color: var(--accent);
-}
-
-/* === BOTÃO === */
-.btn {
-  width: 100%;
-  padding: 14px;
-  background: var(--accent);
-  border: none;
-  border-radius: 10px;
+.status-tag {
+  display: inline-block;
+  background: var(--primary);
+  padding: 3px 10px;
+  border-radius: 6px;
   color: #fff;
-  font-weight: 600;
-  font-size: 1rem;
-  margin-top: 30px;
+  font-size: .75rem;
+  margin-top: 5px;
+}
+
+/* Botões */
+.card-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-aprovar,
+.btn-reprovar {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
   cursor: pointer;
-  transition: background 0.3s, transform 0.2s;
+  font-weight: bold;
+  transition: 0.2s ease-in-out;
 }
 
-.btn:hover {
-  background: #ff3380;
-  transform: translateY(-2px);
+.btn-aprovar {
+  background: #00c853;
+  color: white;
 }
 
-/* === ANIMAÇÃO === */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+.btn-aprovar:hover {
+  background: #00e676;
 }
 
-/* === RESPONSIVO === */
-@media (max-width: 800px) {
-  .form-grid {
-    grid-template-columns: 1fr;
-  }
-
-  #cadastro {
-    padding: 30px;
-  }
-
-  .cadastro-container {
-    padding: 30px;
-  }
+.btn-reprovar {
+  background: #d50000;
+  color: white;
 }
 
+.btn-reprovar:hover {
+  background: #ff1744;
+}
 
 /* ===CURSOS === */
 #cursos-cursos {

@@ -27,9 +27,22 @@ namespace tivitApi.Services
                 matriculaDTO.Nome,
                 matriculaDTO.Email,
                 matriculaDTO.Cpf,
+                matriculaDTO.Status,
                 matriculaDTO.CursoId);
 
 
+        }
+
+        private MatriculaDTO ConvertMatriculaToMatriculaDTO(Matricula matricula)
+        {
+            return new MatriculaDTO(
+                matricula.Id,
+                matricula.Nome,
+                matricula.Email,
+                matricula.Cpf,
+                matricula.Status,
+                matricula.CursoId
+                );
         }
 
         private string SomenteNumeros(string valor)
@@ -137,6 +150,22 @@ namespace tivitApi.Services
                 documentos.DocumentoCpf,
                 documentos.HoraEnvio
             );
+        }
+
+        public async Task<List<MatriculaDTO>> GetAllMatriculas()
+        {
+            _logger.LogInformation("Pegando todos os cursos");
+
+            var matriculas = await _context.Matriculas.ToListAsync();
+
+            List<MatriculaDTO> matriculasDTO = new List<MatriculaDTO>();
+
+            foreach (var matricula in matriculas)
+            {
+                matriculasDTO.Add(ConvertMatriculaToMatriculaDTO(matricula));
+            }
+
+            return matriculasDTO;
         }
 
 

@@ -49,5 +49,13 @@ namespace tivitApi.Controllers
 
             return Ok(resultado);
         }
+
+        [HttpGet("getAllMatriculas")]
+        public async Task<IActionResult> GetAllMatriculas()
+        {
+            List<MatriculaDTO> matriculaDTOs = await _matriculaService.GetAllMatriculas();
+
+            return Ok(matriculaDTOs);
+        }
     }
 }

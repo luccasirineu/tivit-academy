@@ -37,6 +37,15 @@ namespace tivitApi.Models
             CursoId = cursoId;
         }
 
+        public Matricula(string nome, string email, string cpf, string status, int cursoId)
+        {
+            Nome = nome;
+            Email = email;
+            Cpf = cpf;
+            Status = status;
+            CursoId = cursoId;
+        }
+
         public Matricula() { }
 
     }

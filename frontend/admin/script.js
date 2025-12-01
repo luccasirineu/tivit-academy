@@ -1,8 +1,10 @@
-(function(){
+(function () {
   emailjs.init("uXff3S5w8KeovuO4C");
 })();
 
-// ===== Alternar entre seções =====
+/* ============================
+   CONTROLE DE SEÇÕES
+============================ */
 const menuItems = document.querySelectorAll(".sidebar nav ul li");
 const dashboardButtons = document.querySelectorAll(".dashboard-btn");
 const sections = document.querySelectorAll("main section");
@@ -14,113 +16,138 @@ function showSection(sectionId) {
 
   const menuItem = [...menuItems].find(i => i.dataset.section === sectionId);
   if (menuItem) menuItem.classList.add("active");
+
+  // Quando entrar na seção de matrículas → carregar lista
+  if (sectionId === "gerenciarMatriculas") {
+    carregarMatriculasPendentes();
+  }
 }
 
-// Clicar no menu lateral
 menuItems.forEach(item => {
   item.addEventListener("click", () => showSection(item.dataset.section));
 });
-
-// Clicar nos botões do dashboard
 dashboardButtons.forEach(btn => {
   btn.addEventListener("click", () => showSection(btn.dataset.section));
 });
 
-
-// ===== Alternar tema claro/escuro =====
+/* ============================
+   TEMA DARK/LIGHT
+============================ */
 const themeSwitch = document.getElementById("themeSwitch");
 themeSwitch.addEventListener("change", () => {
   document.body.classList.toggle("light", themeSwitch.checked);
 });
 
-// ===== Cadastro e listagem =====
-const form = document.getElementById("cadastroForm");
-const tabelaBody = document.getElementById("tabelaBody");
-const filtro = document.getElementById("filtro");
+/* ============================
+   MODAL DE ERRO
+============================ */
+function abrirModalErro(msg) {
+  const modal = document.getElementById("modalErro");
+  const modalMsg = document.getElementById("modalErroMsg");
+  modalMsg.textContent = msg;
+  modal.classList.remove("hidden");
+}
 
-// ===== Mostrar campo de matrícula se for aluno =====
-const tipoSelect = document.getElementById("tipo");
-const matriculaGroup = document.getElementById("materiaGroup");
+function fecharModalErro() {
+  document.getElementById("modalErro").classList.add("hidden");
+}
 
-tipoSelect.addEventListener("change", () => {
-  if (tipoSelect.value === "aluno") {
-    matriculaGroup.classList.remove("hidden");
-    matriculaGroup.querySelector("input").setAttribute("required", "true");
-  } else {
-    matriculaGroup.classList.add("hidden");
-    matriculaGroup.querySelector("input").removeAttribute("required");
-  }
-});
+/* ============================
+   LISTAR MATRÍCULAS PENDENTES
+============================ */
+const API_MATRICULAS = "http://localhost:5027/api/Matricula/getAllMatriculas";
+
+async function carregarMatriculasPendentes() {
+  const lista = document.getElementById("listaMatriculas");
+  lista.innerHTML = "<p>Carregando...</p>";
+
+  try {
+    const response = await fetch(API_MATRICULAS);
+    const dados = await response.json(); 
+
+    if (!response.ok) {
+      throw dados;
+    }
 
 
-//confirma cadastro
-form.addEventListener("submit", e => {
-  e.preventDefault();
+    const pendentes = dados.filter(m =>
+      m.status?.toUpperCase() === "AGUARDANDO_APROVACAO"
+    );
 
-  const tipo = document.getElementById("tipo").value;
-  const nome = document.getElementById("nome").value.trim();
-  const email = document.getElementById("email").value.trim();
-  const senha = document.getElementById("senha").value.trim();
-  const curso = document.getElementById("curso").value.trim();
+    if (pendentes.length === 0) {
+      lista.innerHTML = "<p>Nenhuma matrícula pendente.</p>";
+      return;
+    }
 
-  if (!tipo || !nome || !email || !senha || !curso) {
-    alert("Preencha todos os campos!");
-    return;
-  }
+    lista.innerHTML = "";
 
-  if (!email.includes("@")) {
-    alert("E-mail inválido!");
-    return;
-  }
+    pendentes.forEach(m => {
+      const card = document.createElement("div");
+      card.classList.add("matricula-card");
 
-  const params = { tipo, nome, email, senha, curso };
+      card.innerHTML = `
+        <h3>${m.nome}</h3>
+        <div class="matricula-info">
+          <p><strong>E-mail:</strong> ${m.email}</p>
+          <p><strong>CPF:</strong> ${m.cpf}</p>
+          <p><strong>Curso :</strong> ${m.cursoId}</p>
+        </div>
 
-  // temporario enquanto ainda nao tem o back
-  const row = document.createElement("tr");
-  row.innerHTML = `<td>${tipo}</td><td>${nome}</td><td>${email}</td><td>${curso}</td>`;
-  tabelaBody.appendChild(row);
+        <div class="card-actions">
+          <button class="btn-aprovar" onclick="aprovar('${m.cpf}')">Aprovar</button>
+          <button class="btn-reprovar" onclick="reprovar('${m.cpf}')">Reprovar</button>
+        </div>
+      `;
 
-  const botao = form.querySelector(".btn");
-  botao.disabled = true;
-  botao.textContent = "Enviando...";
-
-  emailjs.send("tivit_academy", "template_zdwi0zn", params)
-    .then(() => {
-      form.reset();
-    })
-    .catch((error) => {
-      console.error("Erro ao enviar e-mail:", error);
-    })
-    .finally(() => {
-      botao.disabled = false;
-      botao.textContent = "Cadastrar";
+      lista.appendChild(card);
     });
-});
 
-// ===== Filtro =====
-filtro.addEventListener("input", () => {
-  const valor = filtro.value.toLowerCase();
-  const linhas = tabelaBody.querySelectorAll("tr");
-
-  linhas.forEach(linha => {
-    const nome = linha.children[1].textContent.toLowerCase();
-    linha.style.display = nome.includes(valor) ? "" : "none";
-  });
-});
-
-// ===== Mostrar/Ocultar Senha =====
-const toggleSenha = document.getElementById('toggleSenha');
-const inputSenha = document.getElementById('senha');
-
-toggleSenha.addEventListener('click', () => {
-  const isPassword = inputSenha.type === 'password';
-  inputSenha.type = isPassword ? 'text' : 'password';
-  toggleSenha.classList.toggle('bx-show', isPassword);
-  toggleSenha.classList.toggle('bx-hide', !isPassword);
-});
+  } catch (err) {
+    console.error("Erro:", err);
+    abrirModalErro("Erro ao carregar solicitações.");
+  }
+}
 
 
-// === POPUP DE NOVO CURSO ===
+/* ============================
+   APROVAR / REPROVAR
+============================ */
+async function aprovar(id) {
+  try {
+    const response = await fetch(`http://localhost:5027/api/Matricula/aprovar/${id}`, {
+      method: "POST"
+    });
+
+    if (!response.ok) throw await response.json();
+
+    carregarMatriculasPendentes();
+
+  } catch (err) {
+    console.error(err);
+    abrirModalErro("Erro ao aprovar matrícula.");
+  }
+}
+
+async function reprovar(id) {
+  try {
+    const response = await fetch(`http://localhost:5027/api/Matricula/reprovar/${id}`, {
+      method: "POST"
+    });
+
+    if (!response.ok) throw await response.json();
+
+    carregarMatriculasPendentes();
+
+  } catch (err) {
+    console.error(err);
+    abrirModalErro("Erro ao reprovar matrícula.");
+  }
+}
+
+/* ============================
+   POPUPS DE CURSO E TURMA 
+   (sem alterações)
+============================ */
 const btnNovoCurso = document.getElementById("btnNovoCurso");
 const popupNovaCursos = document.getElementById("popupNovaCursos");
 const btnFecharCurso = document.getElementById("btnFecharPopup");
@@ -141,8 +168,6 @@ formNovaCursos.addEventListener("submit", (e) => {
   popupNovaCursos.classList.add("hidden");
 });
 
-
-// === POPUP NOVA TURMA ===
 const btnNovaTurma = document.getElementById("btnNovaTurma");
 const popupNovaTurma = document.getElementById("popupNovaTurma");
 const fecharPopupTurma = document.getElementById("fecharPopup");
@@ -194,6 +219,9 @@ formTurma.addEventListener("submit", (e) => {
   popupNovaTurma.classList.add("hidden");
 });
 
+/* ============================
+   SIDEBAR
+============================ */
 const toggleBtn = document.getElementById("toggleSidebar");
 const sidebar = document.querySelector(".sidebar");
 const body = document.body;
