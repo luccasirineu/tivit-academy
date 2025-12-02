@@ -36,6 +36,17 @@ namespace tivitApi.Services
             return resultado;
         }
 
+        public async Task<CursoDTO> GetCursoById(int cursoId)
+        {
+            var curso = await _context.Cursos.FindAsync(cursoId);
+            if (curso == null)
+                throw new Exception("Curso não encontrado.");
+
+            CursoDTO cursoDTO =  ConvertCursoToCursoDTO(curso);
+            return cursoDTO;
+        }
+
+
     }
 }
     

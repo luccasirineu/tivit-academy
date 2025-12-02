@@ -52,10 +52,25 @@ function fecharModalErro() {
   document.getElementById("modalErro").classList.add("hidden");
 }
 
+async function getCursoNome(cursoId) {
+  try {
+    const API_CURSOS = "http://localhost:5027/api/Curso";
+
+    const response = await fetch(`${API_CURSOS}/${cursoId}`);
+    const curso = await response.json();
+
+    if (!response.ok) throw curso;
+    return curso.nome; 
+  } catch (err) {
+    console.error("Erro ao buscar curso:", err);
+    return "Nome indisponível";
+  }
+}
+
 /* ============================
    LISTAR MATRÍCULAS PENDENTES
 ============================ */
-const API_MATRICULAS = "http://localhost:5027/api/Matricula/getAllMatriculas";
+const API_MATRICULAS = "http://localhost:5027/api/Matricula/getAllMatriculasPendentes";
 
 async function carregarMatriculasPendentes() {
   const lista = document.getElementById("listaMatriculas");
@@ -69,19 +84,17 @@ async function carregarMatriculasPendentes() {
       throw dados;
     }
 
-
-    const pendentes = dados.filter(m =>
-      m.status?.toUpperCase() === "AGUARDANDO_APROVACAO"
-    );
-
-    if (pendentes.length === 0) {
+    if (dados.length === 0) {
       lista.innerHTML = "<p>Nenhuma matrícula pendente.</p>";
       return;
     }
 
     lista.innerHTML = "";
 
-    pendentes.forEach(m => {
+    for (const m of dados) {
+
+      const cursoNome = await getCursoNome(m.cursoId);
+
       const card = document.createElement("div");
       card.classList.add("matricula-card");
 
@@ -90,7 +103,7 @@ async function carregarMatriculasPendentes() {
         <div class="matricula-info">
           <p><strong>E-mail:</strong> ${m.email}</p>
           <p><strong>CPF:</strong> ${m.cpf}</p>
-          <p><strong>Curso :</strong> ${m.cursoId}</p>
+          <p><strong>Curso:</strong> ${cursoNome}</p>
         </div>
 
         <div class="card-actions">
@@ -100,7 +113,7 @@ async function carregarMatriculasPendentes() {
       `;
 
       lista.appendChild(card);
-    });
+    }
 
   } catch (err) {
     console.error("Erro:", err);

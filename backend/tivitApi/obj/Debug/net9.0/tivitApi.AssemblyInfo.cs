@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("tivitApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+545c50d8b30eb3c6603b65b86cb2550ddb766750")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e1d1b52484992458e1722f0b09cb5ba89dfffd42")]
 [assembly: System.Reflection.AssemblyProductAttribute("tivitApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("tivitApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

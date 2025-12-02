@@ -26,5 +26,15 @@ namespace tivitApi.Controllers
             return Ok(cursosDTOs);
         }
 
+        [HttpGet("{cursoId}")]
+        public async Task<IActionResult> GetCursoId(int cursoId)
+        {
+            CursoDTO cursoDTO = await _cursoService.GetCursoById(cursoId);
+
+            return Ok(cursoDTO);
+        }
+
+
+
     }
 }

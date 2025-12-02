@@ -152,11 +152,11 @@ namespace tivitApi.Services
             );
         }
 
-        public async Task<List<MatriculaDTO>> GetAllMatriculas()
+        public async Task<List<MatriculaDTO>> GetAllMatriculasPendentes()
         {
-            _logger.LogInformation("Pegando todos os cursos");
+            _logger.LogInformation("Pegando todos as matriculas pendentes");
 
-            var matriculas = await _context.Matriculas.ToListAsync();
+            var matriculas = await _context.Matriculas.Where(c => c.Status == "AGUARDANDO_APROVACAO").ToListAsync();
 
             List<MatriculaDTO> matriculasDTO = new List<MatriculaDTO>();
 

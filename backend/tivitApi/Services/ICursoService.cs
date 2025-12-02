@@ -8,6 +8,8 @@ namespace tivitApi.Services
          CursoDTO ConvertCursoToCursoDTO(Curso curso);
 
         Task<List<CursoDTO>> GetAllCursosAsync();
+        Task<CursoDTO> GetCursoById(int cursoId);
+
 
 
     }
