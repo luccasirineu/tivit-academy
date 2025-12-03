@@ -9,5 +9,8 @@ namespace tivitApi.Services
         Task<ComprovantePagamentoDTO> EnviarComprovantePagamentoAsync(int matriculaId, IFormFile arquivo);
         Task<DocumentosDTO> EnviarDocumentosAsync(int matriculaId, IFormFile documentoHistorico, IFormFile documentoCpf);
         Task<List<MatriculaDTO>> GetAllMatriculasPendentes();
+        Task AprovarMatricula(string matriculaId);
+        Task RecusarMatricula(string matriculaId);
+
     }
 }

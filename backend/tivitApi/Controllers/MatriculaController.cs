@@ -22,9 +22,9 @@ namespace tivitApi.Controllers
         {
             
           
-            var created = await _matriculaService.CriarMatriculaAsync(dto);
+            var matriculaCriada = await _matriculaService.CriarMatriculaAsync(dto);
 
-            return Ok(new { matriculaId = created.Id });
+            return Ok(new { matriculaId = matriculaCriada.Id });
             
         }
 
@@ -57,5 +57,22 @@ namespace tivitApi.Controllers
 
             return Ok(matriculaDTOs);
         }
+
+        [HttpPost("aprovar/{matriculaId}")]
+        public async Task<IActionResult> AprovarMatricula(string matriculaId)
+        {
+             await _matriculaService.AprovarMatricula(matriculaId);
+
+            return Ok();
+        }
+
+        [HttpPost("recusar/{matriculaId}")]
+        public async Task<IActionResult> RecusarMatricula(string matriculaId)
+        {
+            await _matriculaService.RecusarMatricula(matriculaId);
+
+            return Ok();
+        }
+
     }
 }

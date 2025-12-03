@@ -93,6 +93,7 @@ async function carregarMatriculasPendentes() {
 
     for (const m of dados) {
 
+      console.log("dados:", m.id);
       const cursoNome = await getCursoNome(m.cursoId);
 
       const card = document.createElement("div");
@@ -107,8 +108,8 @@ async function carregarMatriculasPendentes() {
         </div>
 
         <div class="card-actions">
-          <button class="btn-aprovar" onclick="aprovar('${m.cpf}')">Aprovar</button>
-          <button class="btn-reprovar" onclick="reprovar('${m.cpf}')">Reprovar</button>
+          <button class="btn-aprovar" onclick="aprovar('${m.id}')">Aprovar</button>
+          <button class="btn-reprovar" onclick="reprovar('${m.id}')">Reprovar</button>
         </div>
       `;
 
@@ -143,7 +144,7 @@ async function aprovar(id) {
 
 async function reprovar(id) {
   try {
-    const response = await fetch(`http://localhost:5027/api/Matricula/reprovar/${id}`, {
+    const response = await fetch(`http://localhost:5027/api/Matricula/recusar/${id}`, {
       method: "POST"
     });
 

@@ -27,7 +27,6 @@ namespace tivitApi.Services
                 matriculaDTO.Nome,
                 matriculaDTO.Email,
                 matriculaDTO.Cpf,
-                matriculaDTO.Status,
                 matriculaDTO.CursoId);
 
 
@@ -168,6 +167,32 @@ namespace tivitApi.Services
             return matriculasDTO;
         }
 
+
+        public async Task AprovarMatricula(string matriculaId)
+        {
+            _logger.LogInformation($"Aprovando matricula: {matriculaId}");
+
+            int matriculaIdConvertida = int.Parse(matriculaId);
+            var matricula = await ObterMatricula(matriculaIdConvertida);
+
+
+            matricula.Status = "APROVADO";
+            await _context.SaveChangesAsync();
+
+        }
+
+
+        public async Task RecusarMatricula(string matriculaId)
+        {
+            _logger.LogInformation($"Reprovando matricula: {matriculaId}");
+
+            int matriculaIdConvertida = int.Parse(matriculaId);
+            var matricula = await ObterMatricula(matriculaIdConvertida);
+
+            matricula.Status = "RECUSADO";
+            await _context.SaveChangesAsync();
+
+        }
 
 
 

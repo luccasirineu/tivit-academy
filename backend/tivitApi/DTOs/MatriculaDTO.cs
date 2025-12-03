@@ -6,8 +6,17 @@ namespace tivitApi.DTOs
         public string Nome { get; set; }
 		public string Email { get; set; }
 		public string Cpf { get; set; }
-        public string Status { get; set; }
+        public string? Status { get; set; }
         public int CursoId { get; set; }
+
+        public MatriculaDTO(string nome, string email, string cpf, int cursoId)
+        {
+            Nome = nome;
+            Email = email;
+            Cpf = cpf;
+            Status = "AGUARDANDO_PAGAMENTO";
+            CursoId = cursoId;
+        }
 
         public MatriculaDTO(string nome, string email, string cpf, string status, int cursoId)
         {
