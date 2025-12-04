@@ -51,43 +51,52 @@ Abaixo está o diagrama das tabelas do banco de dados.
 
 ```mermaid
 erDiagram
+
+    PROFESSORES {
+        int id PK
+        string nome
+        string email
+        string senha
+        string rm
+    }
+
+    CURSOS {
+        int id PK
+        string nome
+        string descricao
+        int professor_id FK
+    }
+
     MATRICULAS {
         int id PK
         string nome
         string email
         string cpf
         int curso_id FK
+        string status
     }
 
-    CURSOS {
+    COMPROVANTE_PAGAMENTO {
         int id PK
-        string nome
-        int professor_id
+        int matricula_id FK
+        bytes arquivo
+        datetime hora_envio
     }
 
-    TURMAS {
+    DOCUMENTOS {
         int id PK
-        string nome
-        string prof
-        int curso_id FK
-        int qntd_aluno
-        string turno
-    }
-
-    ALUNO {
-        int id PK
-        string nome
-        string email
-        string cpf
-        string senha
-        string rm
+        int matricula_id FK
+        bytes documento_historico
+        bytes documento_cpf
+        datetime hora_envio
     }
 
     %% RELACIONAMENTOS
-    CURSOS ||--o{ MATRICULAS : "oferece"
-    CURSOS ||--o{ TURMAS : "possui"
-    CURSOS ||--o{ ALUNO : "relaciona"
-    TURMAS ||--o{ ALUNO : "contém"
+    PROFESSORES ||--o{ CURSOS : "ministrado por"
+    CURSOS ||--o{ MATRICULAS : "recebe"
+    MATRICULAS ||--o{ COMPROVANTE_PAGAMENTO : "possui"
+    MATRICULAS ||--o{ DOCUMENTOS : "possui"
+
 ```
 
 ---
@@ -111,7 +120,7 @@ A comunicação será feita via **API RESTful**.
 * HTML5
 * CSS3
 * JavaScript
-* (Em breve) C# .NET + SQL Server
+* C# .NET + SQL Server
 
 ---
 
