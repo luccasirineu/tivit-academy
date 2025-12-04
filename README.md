@@ -101,7 +101,7 @@ erDiagram
 
 ---
 
-# Integração Futura (Backend — .NET + SQL Server)
+# Integração Futura (Backend .NET + SQL Server)
 
 A integração irá permitir:
 
