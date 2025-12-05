@@ -58,9 +58,11 @@ namespace tivitApi.Services
             matricula.Cpf = SomenteNumeros(matricula.Cpf);
 
             bool existeNoBanco = await _context.Matriculas.AnyAsync(m =>
-                  (m.Cpf == matricula.Cpf || m.Email == matriculaDTO.Email) &&
-                  (m.Status == "AGUARDANDO_APROVACAO" || m.Status == "APROVADO")
-              );
+                m.Cpf == matricula.Cpf &&                 // 1) Mesmo CPF
+                m.CursoId == matricula.CursoId &&         // 2) Mesmo curso
+                (m.Status == "AGUARDANDO_APROVACAO" ||    // 3) Status válido
+                 m.Status == "APROVADO")
+            );
 
             if (!existeNoBanco) {
                 _context.Matriculas.Add(matricula);
@@ -69,8 +71,8 @@ namespace tivitApi.Services
                 return matricula;
             }
 
-            _logger.LogWarning("Tentativa de cadastrar CPF ou Email já existente. CPF: {Cpf}, Email: {Email}", matricula.Cpf, matriculaDTO.Email);
-            throw new BusinessException("Email ou CPF já cadastrado");
+            _logger.LogWarning("Tentativa de cadastrar CPF já matriculado. CPF: {Cpf}", matricula.Cpf);
+            throw new BusinessException("CPF já está em processo de matricula");
         }
 
 
