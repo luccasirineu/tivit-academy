@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using tivitApi.Data;
 using tivitApi.Services;
 using tivitApi.Exceptions;
+using tivitApi.Infra.SQS;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<IMatriculaService, MatriculaService>();
 builder.Services.AddScoped<ICursoService, CursoService>();
+builder.Services.AddSingleton<SQSProducer>();
 
 builder.Services.AddCors(options =>
 {

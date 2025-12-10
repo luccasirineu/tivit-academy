@@ -2,11 +2,11 @@
   "ExpandedNodes": [
     "",
     "\\tivitApi",
-    "\\tivitApi\\Controllers",
-    "\\tivitApi\\Exceptions",
-    "\\tivitApi\\Models",
+    "\\tivitApi\\DTOs",
+    "\\tivitApi\\Infra",
+    "\\tivitApi\\Infra\\SQS",
     "\\tivitApi\\Services"
   ],
-  "SelectedNode": "\\tivitApi\\Services\\MatriculaService.cs",
+  "SelectedNode": "\\tivitApi\\appsettings.json",
   "PreviewInSolutionExplorer": false
 }

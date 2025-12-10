@@ -8,13 +8,34 @@
     ".NETCoreApp,Version=v9.0": {
       "tivitApi/1.0.0": {
         "dependencies": {
+          "AWSSDK.SQS": "4.0.2.6",
           "Microsoft.AspNetCore.OpenApi": "9.0.0",
           "Microsoft.EntityFrameworkCore.Design": "9.0.0",
           "Microsoft.EntityFrameworkCore.SqlServer": "9.0.0",
-          "Microsoft.EntityFrameworkCore.Tools": "9.0.0"
+          "Microsoft.EntityFrameworkCore.Tools": "9.0.0",
+          "Newtonsoft.Json": "13.0.4"
         },
         "runtime": {
           "tivitApi.dll": {}
+        }
+      },
+      "AWSSDK.Core/4.0.3.4": {
+        "runtime": {
+          "lib/net8.0/AWSSDK.Core.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.0.3.4"
+          }
+        }
+      },
+      "AWSSDK.SQS/4.0.2.6": {
+        "dependencies": {
+          "AWSSDK.Core": "4.0.3.4"
+        },
+        "runtime": {
+          "lib/net8.0/AWSSDK.SQS.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.0.2.6"
+          }
         }
       },
       "Azure.Core/1.38.0": {
@@ -702,6 +723,14 @@
           }
         }
       },
+      "Newtonsoft.Json/13.0.4": {
+        "runtime": {
+          "lib/net6.0/Newtonsoft.Json.dll": {
+            "assemblyVersion": "13.0.0.0",
+            "fileVersion": "13.0.4.30916"
+          }
+        }
+      },
       "System.ClientModel/1.0.0": {
         "dependencies": {
           "System.Memory.Data": "1.0.2",
@@ -965,6 +994,20 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "AWSSDK.Core/4.0.3.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Bykx2u1jNLfPr/otJBPb1QwXiEip4GbjX72Ah+Rhv7QiazUZGo+d+zuhi4uT1HCnzGK7JfQZ7V+vzTysaLcObw==",
+      "path": "awssdk.core/4.0.3.4",
+      "hashPath": "awssdk.core.4.0.3.4.nupkg.sha512"
+    },
+    "AWSSDK.SQS/4.0.2.6": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-sTC3QWp7Ob7rZpDd2C/sePXU2WXA3coXjzinumwEL/tFEFKqPJgka3SGrotm5k53koFgA4rtxrLBFRnQjHzdWA==",
+      "path": "awssdk.sqs/4.0.2.6",
+      "hashPath": "awssdk.sqs.4.0.2.6.nupkg.sha512"
     },
     "Azure.Core/1.38.0": {
       "type": "package",
@@ -1294,6 +1337,13 @@
       "sha512": "sha512-YqueG52R/Xej4VVbKuRIodjiAhV0HR/XVbLbNrJhCZnzjnSjgMJ/dCdV0akQQxavX6hp/LC6rqLGLcXeQYU7XA==",
       "path": "mono.texttemplating/3.0.0",
       "hashPath": "mono.texttemplating.3.0.0.nupkg.sha512"
+    },
+    "Newtonsoft.Json/13.0.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-pdgNNMai3zv51W5aq268sujXUyx7SNdE2bj1wZcWjAQrKMFZV260lbqYop1d2GM67JI1huLRwxo9ZqnfF/lC6A==",
+      "path": "newtonsoft.json/13.0.4",
+      "hashPath": "newtonsoft.json.13.0.4.nupkg.sha512"
     },
     "System.ClientModel/1.0.0": {
       "type": "package",

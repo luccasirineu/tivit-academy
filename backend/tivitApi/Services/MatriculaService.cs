@@ -1,9 +1,14 @@
 ﻿using tivitApi.Data;
 using tivitApi.Models;
 using tivitApi.DTOs;
+using tivitApi.Infra.SQS;
 using tivitApi.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
+using System.Text;
+using System.Security.Cryptography;
+
+
 
 namespace tivitApi.Services
 {
@@ -11,11 +16,14 @@ namespace tivitApi.Services
     {
         private readonly AppDbContext _context;
         private readonly ILogger<MatriculaService> _logger;
+        private readonly SQSProducer _queue;
 
-        public MatriculaService(AppDbContext context, ILogger<MatriculaService> logger)
+        public MatriculaService(AppDbContext context, ILogger<MatriculaService> logger, SQSProducer queue)
         {
             _context = context;
             _logger = logger;
+            _queue = queue;
+
         }
 
 
@@ -49,6 +57,24 @@ namespace tivitApi.Services
             return new string(valor.Where(char.IsDigit).ToArray());
         }
 
+        private string GerarSenha(int tamanho = 12)
+        {
+            const string caracteres =
+                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%&*";
+
+            // Gera bytes criptograficamente seguros
+            byte[] bytes = RandomNumberGenerator.GetBytes(tamanho);
+
+            var sb = new StringBuilder();
+
+            foreach (byte b in bytes)
+            {
+                sb.Append(caracteres[b % caracteres.Length]);
+            }
+
+            return sb.ToString();
+        }
+
 
         public async Task<Matricula> CriarMatriculaAsync(MatriculaDTO matriculaDTO)
         {
@@ -64,7 +90,8 @@ namespace tivitApi.Services
                  m.Status == "APROVADO")
             );
 
-            if (!existeNoBanco) {
+            if (!existeNoBanco)
+            {
                 _context.Matriculas.Add(matricula);
                 await _context.SaveChangesAsync();
                 _logger.LogInformation($"Matrícula criada com sucesso! ID gerado: {matricula.Id}");
@@ -74,8 +101,6 @@ namespace tivitApi.Services
             _logger.LogWarning("Tentativa de cadastrar CPF já matriculado. CPF: {Cpf}", matricula.Cpf);
             throw new BusinessException("CPF já está em processo de matricula");
         }
-
-
 
 
         private async Task<byte[]> LerArquivoAsync(IFormFile file)
@@ -94,7 +119,7 @@ namespace tivitApi.Services
             return matricula;
         }
 
-        
+
 
         public async Task<ComprovantePagamentoDTO> EnviarComprovantePagamentoAsync(int matriculaId, IFormFile arquivo)
         {
@@ -122,7 +147,7 @@ namespace tivitApi.Services
             );
         }
 
-        
+
 
         public async Task<DocumentosDTO> EnviarDocumentosAsync(int matriculaId, IFormFile documentoHistorico, IFormFile documentoCpf)
         {
@@ -174,13 +199,39 @@ namespace tivitApi.Services
         {
             _logger.LogInformation($"Aprovando matricula: {matriculaId}");
 
-            int matriculaIdConvertida = int.Parse(matriculaId);
-            var matricula = await ObterMatricula(matriculaIdConvertida);
+            try
+            {
+                int matriculaIdConvertida = int.Parse(matriculaId);
+                var matricula = await ObterMatricula(matriculaIdConvertida);
+
+                matricula.Status = "APROVADO";
+                await _context.SaveChangesAsync();
+
+                var senhaGerada = GerarSenha();
+
+                try
+                {
+                    await _queue.EnviarEventoAsync(new MatriculaStatusEvento
+                    {
+                        MatriculaId = matricula.Id,
+                        Nome = matricula.Nome,
+                        Email = matricula.Email,
+                        Status = "APROVADO",
+                        SenhaGerada = senhaGerada
+                    });
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError($"Erro ao enviar evento para SQS: {ex.Message}");
+                }
 
 
-            matricula.Status = "APROVADO";
-            await _context.SaveChangesAsync();
-
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Erro ao aprovar matricula: {ex.Message}");
+                throw;
+            }
         }
 
 
@@ -188,15 +239,40 @@ namespace tivitApi.Services
         {
             _logger.LogInformation($"Reprovando matricula: {matriculaId}");
 
-            int matriculaIdConvertida = int.Parse(matriculaId);
-            var matricula = await ObterMatricula(matriculaIdConvertida);
 
-            matricula.Status = "RECUSADO";
-            await _context.SaveChangesAsync();
+            try
+            {
+                int matriculaIdConvertida = int.Parse(matriculaId);
+                var matricula = await ObterMatricula(matriculaIdConvertida);
 
+                matricula.Status = "RECUSADO";
+                await _context.SaveChangesAsync();
+
+
+                try
+                {
+                    await _queue.EnviarEventoAsync(new MatriculaStatusEvento
+                    {
+                        MatriculaId = matricula.Id,
+                        Nome = matricula.Nome,
+                        Email = matricula.Email,
+                        Status = "RECUSADO"
+                    });
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError($"Erro ao enviar evento para SQS: {ex.Message}");
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Erro ao aprovar matricula: {ex.Message}");
+                throw;
+            }
         }
-
-
 
     }
 }
+
