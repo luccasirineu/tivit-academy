@@ -12,8 +12,6 @@ namespace tivitApi.Infra.SQS
         public SQSProducer(IConfiguration config)
         {
             _sqs = new AmazonSQSClient(
-                config["AWS:AccessKey"],
-                config["AWS:SecretKey"],
                 Amazon.RegionEndpoint.GetBySystemName(config["AWS:Region"])
             );
 
@@ -31,4 +29,5 @@ namespace tivitApi.Infra.SQS
             await _sqs.SendMessageAsync(message);
         }
     }
+
 }

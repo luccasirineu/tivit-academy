@@ -40,3 +40,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+Console.WriteLine("ACCESS KEY: " + Environment.GetEnvironmentVariable("AWS_ACCESS_KEY_ID"));
+Console.WriteLine("SECRET KEY: " + Environment.GetEnvironmentVariable("AWS_SECRET_ACCESS_KEY"));

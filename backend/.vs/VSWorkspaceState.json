@@ -5,8 +5,9 @@
     "\\tivitApi\\DTOs",
     "\\tivitApi\\Infra",
     "\\tivitApi\\Infra\\SQS",
+    "\\tivitApi\\Models",
     "\\tivitApi\\Services"
   ],
-  "SelectedNode": "\\tivitApi\\appsettings.json",
+  "SelectedNode": "\\tivitApi\\Program.cs",
   "PreviewInSolutionExplorer": false
 }

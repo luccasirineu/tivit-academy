@@ -2,3 +2,6 @@ backend/.vs/
 appsettings.json
 appsettings.Development.json
 appsettings.Production.json
+.aws/
+*.env
+.env.*
