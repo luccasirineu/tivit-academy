@@ -75,6 +75,39 @@ namespace tivitApi.Services
             return sb.ToString();
         }
 
+        private async Task<byte[]> LerArquivoAsync(IFormFile file)
+        {
+            using var ms = new MemoryStream();
+            await file.CopyToAsync(ms);
+            return ms.ToArray();
+        }
+
+        private async Task<Matricula> ObterMatricula(int id)
+        {
+            var matricula = await _context.Matriculas.FindAsync(id);
+            if (matricula == null)
+                throw new Exception("Matrícula não encontrada.");
+
+            return matricula;
+        }
+
+        private async Task<Aluno> CriarAlunoAPartirDaMatricula(Matricula matricula, string senha)
+        {
+            var aluno = new Aluno
+            {
+                Nome = matricula.Nome,
+                Email = matricula.Email,
+                Cpf = matricula.Cpf,
+                Senha = senha,
+                MatriculaId = matricula.Id,
+            };
+
+            _context.Alunos.Add(aluno);
+            await _context.SaveChangesAsync();
+
+            return aluno;
+        }
+
 
         public async Task<Matricula> CriarMatriculaAsync(MatriculaDTO matriculaDTO)
         {
@@ -102,25 +135,6 @@ namespace tivitApi.Services
             throw new BusinessException("CPF já está em processo de matricula");
         }
 
-
-        private async Task<byte[]> LerArquivoAsync(IFormFile file)
-        {
-            using var ms = new MemoryStream();
-            await file.CopyToAsync(ms);
-            return ms.ToArray();
-        }
-
-        private async Task<Matricula> ObterMatricula(int id)
-        {
-            var matricula = await _context.Matriculas.FindAsync(id);
-            if (matricula == null)
-                throw new Exception("Matrícula não encontrada.");
-
-            return matricula;
-        }
-
-
-
         public async Task<ComprovantePagamentoDTO> EnviarComprovantePagamentoAsync(int matriculaId, IFormFile arquivo)
         {
             var matricula = await ObterMatricula(matriculaId);
@@ -146,8 +160,6 @@ namespace tivitApi.Services
                 comprovante.HoraEnvio
             );
         }
-
-
 
         public async Task<DocumentosDTO> EnviarDocumentosAsync(int matriculaId, IFormFile documentoHistorico, IFormFile documentoCpf)
         {
@@ -209,6 +221,9 @@ namespace tivitApi.Services
 
                 var senhaGerada = GerarSenha();
 
+                await CriarAlunoAPartirDaMatricula(matricula, senhaGerada);
+
+
                 try
                 {
                     await _queue.EnviarEventoAsync(new MatriculaStatusEvento
@@ -233,7 +248,6 @@ namespace tivitApi.Services
                 throw;
             }
         }
-
 
         public async Task RecusarMatricula(string matriculaId)
         {

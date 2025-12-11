@@ -12,6 +12,25 @@ namespace tivitApi.Data
         public DbSet<Professor> Professores { get; set; }
         public DbSet<ComprovantePagamento> ComprovantesPagamento { get; set; }
         public DbSet<Documentos> Documentos { get; set; }
+        public DbSet<Aluno> Alunos { get; set; }
+
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Aluno>()
+                .HasOne(a => a.Matricula)
+                .WithOne()
+                .HasForeignKey<Aluno>(a => a.MatriculaId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Matricula>()
+                .HasOne(m => m.curso)
+                .WithMany()
+                .HasForeignKey(m => m.CursoId)
+                .OnDelete(DeleteBehavior.Restrict);
+        }
 
     }
 }
