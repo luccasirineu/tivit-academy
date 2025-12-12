@@ -13,6 +13,8 @@ namespace tivitApi.Data
         public DbSet<ComprovantePagamento> ComprovantesPagamento { get; set; }
         public DbSet<Documentos> Documentos { get; set; }
         public DbSet<Aluno> Alunos { get; set; }
+        public DbSet<Administrador> Administradores { get; set; }
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
