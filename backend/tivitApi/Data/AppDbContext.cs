@@ -14,6 +14,8 @@ namespace tivitApi.Data
         public DbSet<Documentos> Documentos { get; set; }
         public DbSet<Aluno> Alunos { get; set; }
         public DbSet<Administrador> Administradores { get; set; }
+        public DbSet<Evento> Eventos{ get; set; }
+
 
 
 

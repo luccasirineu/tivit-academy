@@ -15,6 +15,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<IMatriculaService, MatriculaService>();
 builder.Services.AddScoped<ICursoService, CursoService>();
 builder.Services.AddScoped<ILoginService, LoginService>();
+builder.Services.AddScoped<IEventoService, EventoService>();
 
 builder.Services.AddSingleton<SQSProducer>();
 
