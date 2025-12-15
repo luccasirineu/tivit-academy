@@ -18,14 +18,18 @@ namespace tivitApi.Services
     public class LoginService : ILoginService
     {
         private readonly AppDbContext _context;
+        private readonly ILogger<LoginService> _logger;
 
-        public LoginService(AppDbContext context)
+        public LoginService(AppDbContext context, ILogger<LoginService> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         public async Task<object> LoginAsync(LoginDTO loginDTO)
         {
+            _logger.LogInformation($"Logando usuario : {loginDTO.Email}");
+
             if (loginDTO == null)
                 return "Requisição inválida";
 

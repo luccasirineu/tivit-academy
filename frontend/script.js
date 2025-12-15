@@ -10,28 +10,55 @@ toggleSenha.addEventListener('click', () => {
   toggleSenha.classList.toggle('bx-hide', !isPassword);
 });
 
-form.addEventListener('submit', (e) => {
+form.addEventListener('submit', async (e) => {
   e.preventDefault();
-  
+
   const tipo = document.getElementById('tipo').value;
   const usuario = document.getElementById('usuario').value;
-  const senhaValor = document.getElementById('senha').value;
+  const senha = document.getElementById('senha').value;
 
-  if (!tipo || !usuario || !senhaValor) {
+  if (!tipo || !usuario || !senha) {
     alert('Por favor, preencha todos os campos.');
     return;
   }
 
-  if (tipo === "administrador" && usuario === "admin123" && senhaValor === "admin123") {
-    window.location.href = "admin/admin.html"; 
-  }
+  try {
+    const response = await fetch('http://localhost:5027/api/Login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        Tipo: tipo,
+        Email: usuario,
+        Senha: senha
+      })
+    });
 
-  if (tipo === "professor" && usuario === "prof123" && senhaValor === "prof123") {
-    window.location.href = "professor/professor.html"; 
-  }
+    if (!response == 200) {
+      const erro = await response.json();
+      alert(erro.mensagem || 'Erro ao realizar login');
+      return;
+    }
 
-  if (tipo === "aluno" && usuario === "aluno123" && senhaValor === "aluno123") {
-    window.location.href = "aluno/aluno.html"; 
-  }
+    const data = await response.json();
 
+    // salva token (se tiver JWT)
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('tipo', data.tipo);
+
+    // redirecionamento por tipo retornado do backend
+    if (data.tipo === 'administrador') {
+      window.location.href = 'admin/admin.html';
+    } else if (data.tipo === 'professor') {
+      window.location.href = 'professor/professor.html';
+    } else if (data.tipo === 'aluno') {
+      window.location.href = 'aluno/aluno.html';
+    }
+
+  } catch (error) {
+    console.error(error);
+    alert('Erro de conexão com o servidor');
+  }
 });
+
