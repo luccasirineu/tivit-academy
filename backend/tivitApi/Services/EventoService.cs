@@ -13,6 +13,9 @@ namespace tivitApi.Services
     public interface IEventoService
     {
         Task<object> criarEvento(EventoDTO eventoDTO);
+        Task<EventoDTO> obterProximoEvento();
+        Task<List<EventoDTO>> getAllEvents();
+
 
     }
 
@@ -26,6 +29,17 @@ namespace tivitApi.Services
             _context = context;
             _logger = logger;
         }
+
+        private EventoDTO ConvertEventoToEventoDTO(Evento evento)
+        {
+            return new EventoDTO(
+                evento.Id,
+                evento.Titulo,
+                evento.Descricao,
+                evento.Horario
+                );
+        }
+
 
         public async Task<object> criarEvento(EventoDTO eventoDTO)
         {
@@ -51,7 +65,6 @@ namespace tivitApi.Services
                 _context.Eventos.Add(evento);
                 await _context.SaveChangesAsync();
 
-                // ===== Retorno =====
                 return new
                 {
                     eventoId = evento.Id,
@@ -65,6 +78,48 @@ namespace tivitApi.Services
             }
         }
 
+        public async Task<EventoDTO> obterProximoEvento()
+        {
+
+            try
+            {
+                var agora = DateTime.Now;
+
+                var proximoEvento = await _context.Eventos
+                    .Where(e => e.Horario > agora)
+                    .OrderBy(e => e.Horario)
+                    .FirstOrDefaultAsync();
+
+                if (proximoEvento == null)
+                    throw new BusinessException("Nenhum evento futuro encontrado.");
+
+                
+                return new EventoDTO
+                {
+                    Titulo = proximoEvento.Titulo,
+                    Descricao = proximoEvento.Descricao,
+                    Horario = proximoEvento.Horario
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao buscar próximo evento no calendário");
+                throw new Exception("Erro interno ao buscar evento.");
+            }
+
+
+        }
+
+        public async Task<List<EventoDTO>> getAllEvents()
+        {
+            var eventos = await _context.Eventos.ToListAsync();
+
+            var resultado = eventos
+            .Select(evento => ConvertEventoToEventoDTO(evento))
+            .ToList();
+
+            return resultado;
+        }
 
     }
 }

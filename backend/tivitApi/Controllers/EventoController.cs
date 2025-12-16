@@ -28,6 +28,29 @@ namespace tivitApi.Controllers
 			return Ok(resultado);
 		}
 
+		[HttpGet("proximoEvento")]
+		public async Task<IActionResult> ProximoEvento()
+		{
+			var eventoDTO = await _eventoService.obterProximoEvento();
+
+
+			return Ok(new
+			{
+				eventoDTO.Titulo,
+				eventoDTO.Descricao,
+				eventoDTO.Horario
+			});
+		}
+
+		[HttpGet("getAllEvents")]
+		public async Task<IActionResult> GetAllEvents()
+		{
+			var eventosDTO = await _eventoService.getAllEvents();
+
+
+			return Ok(eventosDTO);
+		}
+
 
 	}
 }
