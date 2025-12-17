@@ -32,7 +32,7 @@
           <li class="active" data-section="dashboard" > <i class='bx  bx-home'  ></i> Dashboard</li> 
           <li data-section="calendario"><i class='bx bx-calendar'></i> Calendário</li>
           <li data-section="desempenho-aluno"><i class="bx bx-line-chart"></i> Desempenho</li>
-          <li data-section="materias"><i class='bx  bx-book'  ></i>  Máterias</li>
+          <li data-section="materias"><i class='bx  bx-book'  ></i>  Matérias</li>
           <li data-section="relatorio"><i class='bx  bx-network-chart'  ></i>  Relatório</li>
           <br>
           <div> 
@@ -66,21 +66,25 @@
         <!-- Último Evento -->
         <div class="ultimo-evento">
           <h2><i class='bx bx-calendar'></i> Próximo Evento</h2>
+
           <div class="evento-card">
             <div class="evento-info">
+              
               <div class="evento-data">
-                <span class="dia">20</span>
-                <span class="mes">OUT</span>
+                <span class="dia" id="evento-dia">--</span>
+                <span class="mes" id="evento-mes">---</span>
               </div>
+
               <div class="evento-detalhes">
-                <h3>Apresentação de Projetos</h3>
-                <p><strong>Horário:</strong> 09h00</p>
-                <p><strong>Local:</strong> Auditório Principal</p>
-                <p class="descricao">Os alunos apresentaram seus projetos finais do semestre para banca avaliadora.</p>
+                <h3 id="evento-titulo">Carregando...</h3>
+                <p><strong>Horário:</strong> <span id="evento-horario">--:--</span></p>
+                <p class="descricao" id="evento-descricao"></p>
               </div>
+
             </div>
           </div>
         </div>
+
       </section>
 
      <!-- CALENDÁRIO -->

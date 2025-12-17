@@ -44,27 +44,42 @@ const closeViewModal = document.getElementById("closeViewModal");
 let currentDate = new Date();
 
 // 🔹 Exemplo com múltiplos eventos no mesmo dia
-let events = {
-  "2025-10-10": [
-    {
-      title: "Prova de Matemática",
-      time: "10:00",
-      description: "Prova sobre equações de 2º grau."
-    },
-    {
-      title: "Reunião de Grupo - Física",
-      time: "14:00",
-      description: "Reunião para revisar exercícios do capítulo 5."
-    }
-  ],
-  "2025-10-15": [
-    {
-      title: "Trabalho de História",
-      time: "15:00",
-      description: "Entrega do trabalho sobre a Revolução Francesa."
-    }
-  ]
-};
+let events = {};
+
+async function carregarEventos() {
+  try {
+    const response = await fetch("http://localhost:5027/api/Evento/getAllEvents");
+    const data = await response.json();
+
+    events = {};
+
+    data.forEach(ev => {
+      const date = new Date(ev.horario);
+
+      // Normaliza para o início do dia (00:00)
+      date.setHours(0, 0, 0, 0);
+
+      const dayTimestamp = date.getTime();
+
+      if (!events[dayTimestamp]) {
+        events[dayTimestamp] = [];
+      }
+
+      events[dayTimestamp].push({
+        title: ev.titulo,
+        time: new Date(ev.horario).toLocaleTimeString("pt-BR", {
+          hour: "2-digit",
+          minute: "2-digit"
+        }),
+        description: ev.descricao
+      });
+    });
+
+  } catch (error) {
+    console.error("Erro ao carregar eventos:", error);
+  }
+}
+
 
 function renderCalendar() {
   const year = currentDate.getFullYear();
@@ -85,8 +100,9 @@ function renderCalendar() {
   }
 
   for (let day = 1; day <= lastDate; day++) {
-    const dateKey = `${year}-${month + 1}-${day}`;
-    const dayDiv = document.createElement("div");
+    const dateObj = new Date(year, month, day);
+    dateObj.setHours(0, 0, 0, 0);
+    const dateKey = dateObj.getTime();    const dayDiv = document.createElement("div");
     dayDiv.classList.add("calendar-day");
     dayDiv.textContent = day;
 
@@ -144,7 +160,11 @@ window.onclick = (e) => {
   if (e.target === viewEventModal) viewEventModal.style.display = "none";
 };
 
-renderCalendar();
+(async () => {
+  await carregarEventos();
+  renderCalendar();
+})();
+
 
 document.addEventListener("DOMContentLoaded", () => {
   const mediaGeral = 9.4; // Mock
@@ -423,3 +443,41 @@ document.getElementById("gerarRelatorioGeral").addEventListener("click", () => {
 
   html2pdf().set(opt).from(relatorioClone).save();
 });
+
+
+//ultimo evento 
+
+async function carregarProximoEvento() {
+  try {
+    const response = await fetch('http://localhost:5027/api/Evento/proximoEvento');
+
+    if (!response.ok) {
+      throw new Error('Erro ao buscar próximo evento');
+    }
+
+    const evento = await response.json();
+
+    const data = new Date(evento.horario);
+
+    const dia = data.getDate();
+    const mes = data.toLocaleString('pt-BR', { month: 'short' }).toUpperCase();
+    const horario = data.toLocaleTimeString('pt-BR', {
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+
+    // Preencher HTML
+    document.getElementById('evento-dia').textContent = dia;
+    document.getElementById('evento-mes').textContent = mes;
+    document.getElementById('evento-titulo').textContent = evento.titulo;
+    document.getElementById('evento-horario').textContent = horario;
+    document.getElementById('evento-descricao').textContent = evento.descricao;
+
+
+  } catch (error) {
+    console.error(error);
+    document.getElementById('evento-titulo').textContent = 'Nenhum evento encontrado';
+  }
+}
+
+carregarProximoEvento();
