@@ -2,12 +2,12 @@
   "ExpandedNodes": [
     "",
     "\\tivitApi",
-    "\\tivitApi\\DTOs",
+    "\\tivitApi\\Controllers",
     "\\tivitApi\\Infra",
     "\\tivitApi\\Infra\\SQS",
     "\\tivitApi\\Models",
     "\\tivitApi\\Services"
   ],
-  "SelectedNode": "\\tivitApi\\Program.cs",
+  "SelectedNode": "\\tivitApi\\Controllers\\EventoController.cs",
   "PreviewInSolutionExplorer": false
 }

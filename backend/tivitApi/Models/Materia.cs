@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace tivitApi.Models
 {
-    public class Curso
+    public class Materia
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -16,14 +16,21 @@ namespace tivitApi.Models
         public string Descricao { get; set; }
 
         // FK 
-        [ForeignKey("Professor")]
-        public int ProfResponsavel { get; set; }
-        public Professor Professor { get; set; }
+        [ForeignKey("Curso")]
+        public int CursoId { get; set; }
+        public Curso curso { get; set; }
 
-        public Curso(string nome)
+        public ICollection<Conteudo> Conteudos { get; set; }
+
+
+        public Materia(string nome, string descricao, int cursoId)
         {
             Nome = nome;
+            Descricao = descricao;
+            CursoId = cursoId;
         }
+
+        public Materia() { }
 
     }
 }
