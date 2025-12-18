@@ -9,6 +9,8 @@ namespace tivitApi.Services
     public interface IMateriaService
     {
         Task<Materia> CriarMateriaAsync(MateriaDTO materiaDTO);
+        Task<List<Materia>> GetMateriasByCursoIdAsync(int cursoId);
+
     }
 
 
@@ -53,6 +55,19 @@ namespace tivitApi.Services
             await _context.SaveChangesAsync();
 
             return materia;
+        }
+
+        public async Task<List<Materia>> GetMateriasByCursoIdAsync(int cursoId)
+        {
+            // (Opcional) valida se o curso existe
+            var cursoExiste = await _context.Cursos.AnyAsync(c => c.Id == cursoId);
+            if (!cursoExiste)
+                throw new Exception("Curso não encontrado");
+
+            return await _context.Materias
+                .Where(m => m.CursoId == cursoId)
+                .OrderBy(m => m.Nome)
+                .ToListAsync();
         }
     }
 }

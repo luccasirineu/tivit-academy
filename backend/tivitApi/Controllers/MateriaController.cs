@@ -18,7 +18,7 @@ namespace tivitApi.Controllers
         }
 
 
-        [HttpPost]
+        [HttpPost("criarMateria")]
         public async Task<IActionResult> CriarMateria([FromBody] MateriaDTO dto)
         {
             var materia = await _materiaService.CriarMateriaAsync(dto);
@@ -28,6 +28,14 @@ namespace tivitApi.Controllers
                 new { id = materia.Id },
                 materia
             );
+        }
+
+        [HttpGet("getMateriasByCursoId/{cursoId}")]
+        public async Task<IActionResult> GetMateriasByCursoId(int cursoId)
+        {
+            var materias = await _materiaService.GetMateriasByCursoIdAsync(cursoId);
+
+            return Ok(materias);
         }
     }
 }
