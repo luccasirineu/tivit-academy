@@ -35,7 +35,7 @@ form.addEventListener('submit', async (e) => {
       })
     });
 
-    if (!response == 200) {
+    if (!response.ok) {
       const erro = await response.json();
       alert(erro.mensagem || 'Erro ao realizar login');
       return;
@@ -43,11 +43,16 @@ form.addEventListener('submit', async (e) => {
 
     const data = await response.json();
 
-    // salva token (se tiver JWT)
-    localStorage.setItem('token', data.token);
-    localStorage.setItem('tipo', data.tipo);
+    localStorage.setItem('usuarioLogado', JSON.stringify({
+      id: data.id,          
+      nome: data.nome,
+      tipo: data.tipo
+    }));
 
-    // redirecionamento por tipo retornado do backend
+    if (data.token) {
+      localStorage.setItem('token', data.token);
+    }
+
     if (data.tipo === 'administrador') {
       window.location.href = 'admin/admin.html';
     } else if (data.tipo === 'professor') {

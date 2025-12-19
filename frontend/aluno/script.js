@@ -22,6 +22,9 @@ menuItems.forEach(item => {
     sections.forEach(sec => sec.classList.remove("active"));
     item.classList.add("active");
     document.getElementById(item.dataset.section).classList.add("active");
+    if (item.dataset.section === "materias") {
+      carregarMateriasDoAluno();
+    }
   });
 });
 
@@ -262,60 +265,87 @@ function updateChartColors() {
     window.graficoPizza.update();
   }
 }
-
-// Dados simulados das matérias e arquivos
-const materiasData = {
-  matematica: [
-    "Lista de Exercícios 1.pdf",
-    "Funções e Gráficos.pptx",
-    "Aula 5 - Equações.mp4"
-  ],
-  programacao: [
-    "Projeto HTML - Estrutura Base.zip",
-    "Guia CSS Flexbox.pdf",
-    "Vídeo Aula - DOM e Eventos.mp4"
-  ],
-  banco: [
-    "Modelo Relacional.pdf",
-    "Aula 3 - SQL Básico.mp4",
-    "Script de Criação de Tabelas.sql"
-  ],
-  ia: [
-    "Introdução à IA.pdf",
-    "Redes Neurais - Material de Apoio.pdf"
-  ]
-};
-
 const materiasView = document.getElementById("materiasView");
 const materiaDetalhes = document.getElementById("materiaDetalhes");
 const tituloMateria = document.getElementById("tituloMateria");
 const listaArquivos = document.getElementById("listaArquivos");
 const voltarMaterias = document.getElementById("voltarMaterias");
 
-// Evento: clicar em uma matéria
-document.querySelectorAll(".materia").forEach(card => {
-  card.addEventListener("click", () => {
-    const materiaKey = card.dataset.materia;
-    const arquivos = materiasData[materiaKey];
-    tituloMateria.textContent = card.querySelector("h3").textContent;
+const API_BASE = "http://localhost:5027/api";
 
-    listaArquivos.innerHTML = "";
-    arquivos.forEach(nome => {
-      const li = document.createElement("li");
-      li.innerHTML = `<i class='bx bx-link'></i> ${nome}`;
-      listaArquivos.appendChild(li);
-    });
+const materiasCards = document.getElementById("materiasCards");
 
-    materiasView.style.display = "none";
-    materiaDetalhes.classList.remove("hidden");
+function renderizarMaterias(materias) {
+  if (!materiasCards) {
+    console.error("Elemento materiasCards não encontrado");
+    return;
+  }
+
+  materiasCards.innerHTML = "";
+
+  if (!materias || materias.length === 0) {
+    materiasCards.innerHTML = "<p>Nenhuma matéria encontrada.</p>";
+    return;
+  }
+
+  materias.forEach(materia => {
+    const card = document.createElement("div");
+    card.classList.add("materia");
+
+    card.innerHTML = `
+      <i class="bx bx-book"></i>
+      <h3>${materia.nome}</h3>
+    `;
+
+    card.addEventListener("click", () => abrirMateria(materia));
+    materiasCards.appendChild(card);
   });
-});
+}
 
-// Evento: voltar para a lista de matérias
-voltarMaterias.addEventListener("click", () => {
+async function carregarMateriasDoAluno() {
+  try {
+    const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
+    if (!usuarioLogado || !usuarioLogado.id) {
+      console.warn("Usuário não logado ou id inexistente");
+      return;
+    }
+    const alunoId = usuarioLogado.id;
+    console.log("alunoId:", alunoId);
+
+    const cursoResponse = await fetch(`${API_BASE}/Materia/getCursoId/${alunoId}`);
+    const { cursoId } = await cursoResponse.json();
+
+    const materiasResponse = await fetch(
+      `${API_BASE}/Materia/getMateriasByCursoId/${cursoId}`
+    );
+    const materias = await materiasResponse.json();
+
+    renderizarMaterias(materias);
+
+  } catch (error) {
+    console.error("Erro ao carregar matérias:", error);
+  }
+}
+
+
+function abrirMateria(materia) {
+  tituloMateria.textContent = materia.nome;
+  listaArquivos.innerHTML = `
+    <li><i class='bx bx-info-circle'></i> Conteúdos ainda não cadastrados</li>
+  `;
+
+  materiasView.style.display = "none";
+  materiaDetalhes.classList.remove("hidden");
+  
+  voltarMaterias.addEventListener("click", () => {
   materiaDetalhes.classList.add("hidden");
   materiasView.style.display = "block";
 });
+}
+
+
+
+
 
 
 // Dados simulados — pode integrar com API futuramente
