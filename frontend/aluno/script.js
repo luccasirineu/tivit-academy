@@ -328,21 +328,70 @@ async function carregarMateriasDoAluno() {
 }
 
 
-function abrirMateria(materia) {
-  tituloMateria.textContent = materia.nome;
-  listaArquivos.innerHTML = `
-    <li><i class='bx bx-info-circle'></i> Conteúdos ainda não cadastrados</li>
-  `;
+async function abrirMateria(materia) {
+  try {
+    tituloMateria.textContent = materia.nome;
+    listaArquivos.innerHTML = "<li>Carregando conteúdos...</li>";
 
-  materiasView.style.display = "none";
-  materiaDetalhes.classList.remove("hidden");
-  
-  voltarMaterias.addEventListener("click", () => {
-  materiaDetalhes.classList.add("hidden");
-  materiasView.style.display = "block";
-});
+    const response = await fetch(
+      `${API_BASE}/Conteudo/getAllConteudos/${materia.id}`
+    );
+
+    if (!response.ok) {
+      throw new Error("Erro ao buscar conteúdos");
+    }
+
+    const data = await response.json();
+    renderizarConteudos(data.conteudos);
+
+    materiasView.style.display = "none";
+    materiaDetalhes.classList.remove("hidden");
+
+    voltarMaterias.addEventListener("click", () => {
+      materiaDetalhes.classList.add("hidden");
+      materiasView.style.display = "block";
+    });
+
+  } catch (error) {
+    console.error(error);
+    listaArquivos.innerHTML = `
+      <li><i class='bx bx-error'></i> Erro ao carregar conteúdos</li>
+    `;
+  }
 }
 
+function renderizarConteudos(conteudos) {
+  listaArquivos.innerHTML = "";
+
+  if (!conteudos || conteudos.length === 0) {
+    listaArquivos.innerHTML = `
+      <li><i class='bx bx-info-circle'></i> Nenhum conteúdo disponível</li>
+    `;
+    return;
+  }
+
+  conteudos.forEach(conteudo => {
+    const li = document.createElement("li");
+
+    if (conteudo.tipo.toLowerCase() === "pdf") {
+      li.innerHTML = `
+        <i class='bx bx-file'></i>
+        <a href="http://localhost:5027${conteudo.caminhoOuUrl}" target="_blank">
+          ${conteudo.titulo}
+        </a>
+      `;
+    } else {
+      li.innerHTML = `
+        <i class='bx bx-link'></i>
+        <a href="${conteudo.caminhoOuUrl}" target="_blank">
+          ${conteudo.titulo}
+        </a>
+      `;
+    }
+
+    listaArquivos.appendChild(li);
+  });
+}
 
 
 

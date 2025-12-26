@@ -3,35 +3,44 @@
   "WorkspaceRootPath": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:tivitApi\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\Controllers\\ConteudoController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:tivitApi\\Controllers\\ConteudoController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:tivitApi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\Services\\ConteudoService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:tivitApi\\Services\\ConteudoService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\Infra\\SQS\\SQSProducer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:tivitApi\\Infra\\SQS\\SQSProducer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\Models\\Conteudo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:tivitApi\\Models\\Conteudo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\DTOs\\MatriculaStatusEvento.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:tivitApi\\DTOs\\MatriculaStatusEvento.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\Services\\MateriaService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:tivitApi\\Services\\MateriaService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\Services\\MatriculaService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:tivitApi\\Services\\MatriculaService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\Controllers\\MateriaController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:tivitApi\\Controllers\\MateriaController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\Models\\Matricula.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:tivitApi\\Models\\Matricula.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\Controllers\\LoginController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:tivitApi\\Controllers\\LoginController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|ViewDataWindow_MSSQL__/_localdb__MSSQLLocalDB/TivitDB/True/SqlTable/dbo.Matriculas.sql||{0058A1F7-65F3-4DB9-B3D0-CA7E64DD73CD}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\DTOs\\CreateConteudoLinkDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:tivitApi\\DTOs\\CreateConteudoLinkDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\DTOs\\CursoDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:tivitApi\\DTOs\\CursoDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\DTOs\\CreateConteudoPdfDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:tivitApi\\DTOs\\CreateConteudoPdfDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\DTOs\\LoginDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:tivitApi\\DTOs\\LoginDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\Models\\Materia.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:tivitApi\\Models\\Materia.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -41,105 +50,134 @@
       "DocumentGroups": [
         {
           "DockedWidth": 76,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ConteudoController.cs",
+              "DocumentMoniker": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\Controllers\\ConteudoController.cs",
+              "RelativeDocumentMoniker": "tivitApi\\Controllers\\ConteudoController.cs",
+              "ToolTip": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\Controllers\\ConteudoController.cs",
+              "RelativeToolTip": "tivitApi\\Controllers\\ConteudoController.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAABgAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-22T17:11:03.567Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\appsettings.json",
-              "RelativeDocumentMoniker": "tivitApi\\appsettings.json",
-              "ToolTip": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\appsettings.json",
-              "RelativeToolTip": "tivitApi\\appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-12-10T18:21:55.133Z",
+              "Title": "ConteudoService.cs",
+              "DocumentMoniker": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\Services\\ConteudoService.cs",
+              "RelativeDocumentMoniker": "tivitApi\\Services\\ConteudoService.cs",
+              "ToolTip": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\Services\\ConteudoService.cs",
+              "RelativeToolTip": "tivitApi\\Services\\ConteudoService.cs",
+              "ViewState": "AgIAAB4AAAAAAAAAAAAAACsAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-22T15:31:42.143Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 6,
-              "Title": "dbo.Matriculas.sql",
-              "DocumentMoniker": "ViewDataWindow_MSSQL__/_localdb__MSSQLLocalDB/TivitDB/True/SqlTable/dbo.Matriculas.sql",
-              "ToolTip": "ViewDataWindow_MSSQL__/_localdb__MSSQLLocalDB/TivitDB/True/SqlTable/dbo.Matriculas.sql",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
-              "WhenOpened": "2025-12-09T16:58:52.406Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "CursoDTO.cs",
-              "DocumentMoniker": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\DTOs\\CursoDTO.cs",
-              "RelativeDocumentMoniker": "tivitApi\\DTOs\\CursoDTO.cs",
-              "ToolTip": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\DTOs\\CursoDTO.cs",
-              "RelativeToolTip": "tivitApi\\DTOs\\CursoDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Title": "CreateConteudoLinkDTO.cs",
+              "DocumentMoniker": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\DTOs\\CreateConteudoLinkDTO.cs",
+              "RelativeDocumentMoniker": "tivitApi\\DTOs\\CreateConteudoLinkDTO.cs",
+              "ToolTip": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\DTOs\\CreateConteudoLinkDTO.cs",
+              "RelativeToolTip": "tivitApi\\DTOs\\CreateConteudoLinkDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-09T15:02:29.555Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "MatriculaStatusEvento.cs",
-              "DocumentMoniker": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\DTOs\\MatriculaStatusEvento.cs",
-              "RelativeDocumentMoniker": "tivitApi\\DTOs\\MatriculaStatusEvento.cs",
-              "ToolTip": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\DTOs\\MatriculaStatusEvento.cs",
-              "RelativeToolTip": "tivitApi\\DTOs\\MatriculaStatusEvento.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-09T13:43:45.227Z",
+              "WhenOpened": "2025-12-22T15:26:30.514Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\Program.cs",
-              "RelativeDocumentMoniker": "tivitApi\\Program.cs",
-              "ToolTip": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\Program.cs",
-              "RelativeToolTip": "tivitApi\\Program.cs",
-              "ViewState": "AgIAABsAAAAAAAAAAAAAACoAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 7,
+              "Title": "CreateConteudoPdfDTO.cs",
+              "DocumentMoniker": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\DTOs\\CreateConteudoPdfDTO.cs",
+              "RelativeDocumentMoniker": "tivitApi\\DTOs\\CreateConteudoPdfDTO.cs",
+              "ToolTip": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\DTOs\\CreateConteudoPdfDTO.cs",
+              "RelativeToolTip": "tivitApi\\DTOs\\CreateConteudoPdfDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-09T12:47:09.371Z",
+              "WhenOpened": "2025-12-22T15:25:56.341Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "SQSProducer.cs",
-              "DocumentMoniker": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\Infra\\SQS\\SQSProducer.cs",
-              "RelativeDocumentMoniker": "tivitApi\\Infra\\SQS\\SQSProducer.cs",
-              "ToolTip": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\Infra\\SQS\\SQSProducer.cs",
-              "RelativeToolTip": "tivitApi\\Infra\\SQS\\SQSProducer.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "Title": "Conteudo.cs",
+              "DocumentMoniker": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\Models\\Conteudo.cs",
+              "RelativeDocumentMoniker": "tivitApi\\Models\\Conteudo.cs",
+              "ToolTip": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\Models\\Conteudo.cs",
+              "RelativeToolTip": "tivitApi\\Models\\Conteudo.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAABIAAAAiAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-09T12:43:18.574Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "MatriculaService.cs",
-              "DocumentMoniker": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\Services\\MatriculaService.cs",
-              "RelativeDocumentMoniker": "tivitApi\\Services\\MatriculaService.cs",
-              "ToolTip": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\Services\\MatriculaService.cs",
-              "RelativeToolTip": "tivitApi\\Services\\MatriculaService.cs",
-              "ViewState": "AgIAAHkAAAAAAAAAAAAAAO0AAAA+AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-01T15:09:51.278Z",
+              "WhenOpened": "2025-12-22T15:13:32.969Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 5,
-              "Title": "Matricula.cs",
-              "DocumentMoniker": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\Models\\Matricula.cs",
-              "RelativeDocumentMoniker": "tivitApi\\Models\\Matricula.cs",
-              "ToolTip": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\Models\\Matricula.cs",
-              "RelativeToolTip": "tivitApi\\Models\\Matricula.cs",
-              "ViewState": "AgIAAA8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Title": "LoginController.cs",
+              "DocumentMoniker": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\Controllers\\LoginController.cs",
+              "RelativeDocumentMoniker": "tivitApi\\Controllers\\LoginController.cs",
+              "ToolTip": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\Controllers\\LoginController.cs",
+              "RelativeToolTip": "tivitApi\\Controllers\\LoginController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-01T15:10:03.966Z",
+              "WhenOpened": "2025-12-19T13:03:22.165Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "LoginDTO.cs",
+              "DocumentMoniker": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\DTOs\\LoginDTO.cs",
+              "RelativeDocumentMoniker": "tivitApi\\DTOs\\LoginDTO.cs",
+              "ToolTip": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\DTOs\\LoginDTO.cs",
+              "RelativeToolTip": "tivitApi\\DTOs\\LoginDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-19T13:02:03.218Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Materia.cs",
+              "DocumentMoniker": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\Models\\Materia.cs",
+              "RelativeDocumentMoniker": "tivitApi\\Models\\Materia.cs",
+              "ToolTip": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\Models\\Materia.cs",
+              "RelativeToolTip": "tivitApi\\Models\\Materia.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-19T12:22:29.089Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "MateriaController.cs",
+              "DocumentMoniker": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\Controllers\\MateriaController.cs",
+              "RelativeDocumentMoniker": "tivitApi\\Controllers\\MateriaController.cs",
+              "ToolTip": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\Controllers\\MateriaController.cs",
+              "RelativeToolTip": "tivitApi\\Controllers\\MateriaController.cs",
+              "ViewState": "AgIAABgAAAAAAAAAAAAUwCAAAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-18T20:33:55.517Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "MateriaService.cs",
+              "DocumentMoniker": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\Services\\MateriaService.cs",
+              "RelativeDocumentMoniker": "tivitApi\\Services\\MateriaService.cs",
+              "ToolTip": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\Services\\MateriaService.cs",
+              "RelativeToolTip": "tivitApi\\Services\\MateriaService.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-18T20:33:53.049Z",
               "EditorCaption": ""
             }
           ]

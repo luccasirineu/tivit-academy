@@ -311,3 +311,4 @@ C:\Users\luccas.irineu\Documents\Projeto\backend\tivitApi\obj\Debug\net9.0\ref\t
 C:\Users\luccas.irineu\Documents\Projeto\backend\tivitApi\bin\Debug\net9.0\AWSSDK.Core.dll
 C:\Users\luccas.irineu\Documents\Projeto\backend\tivitApi\bin\Debug\net9.0\AWSSDK.SQS.dll
 C:\Users\luccas.irineu\Documents\Projeto\backend\tivitApi\bin\Debug\net9.0\Newtonsoft.Json.dll
+C:\Users\luccas.irineu\Documents\Projeto\backend\tivitApi\bin\Debug\net9.0\tivitApi.staticwebassets.runtime.json

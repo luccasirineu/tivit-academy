@@ -17,6 +17,8 @@ builder.Services.AddScoped<ICursoService, CursoService>();
 builder.Services.AddScoped<ILoginService, LoginService>();
 builder.Services.AddScoped<IEventoService, EventoService>();
 builder.Services.AddScoped<IMateriaService, MateriaService>();
+builder.Services.AddScoped<IConteudoService,ConteudoService>();
+
 
 builder.Services.AddSingleton<SQSProducer>();
 
@@ -40,6 +42,7 @@ if (app.Environment.IsDevelopment())
 app.UseRouting();
 app.UseCors("AllowAll");
 app.UseAuthorization();
+app.UseStaticFiles();
 
 app.MapControllers();
 

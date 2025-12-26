@@ -16,7 +16,7 @@ namespace tivitApi.Models
         public string Tipo { get; set; }
 
         [Required]
-        public string UrlArquivo { get; set; }
+        public string CaminhoOuUrl { get; set; }
 
         [Required]
         public DateTime DataPublicacao { get; set; }

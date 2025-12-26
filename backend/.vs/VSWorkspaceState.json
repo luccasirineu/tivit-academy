@@ -3,11 +3,12 @@
     "",
     "\\tivitApi",
     "\\tivitApi\\Controllers",
-    "\\tivitApi\\Infra",
-    "\\tivitApi\\Infra\\SQS",
-    "\\tivitApi\\Models",
-    "\\tivitApi\\Services"
+    "\\tivitApi\\Data",
+    "\\tivitApi\\DTOs",
+    "\\tivitApi\\Services",
+    "\\tivitApi\\wwwroot",
+    "\\tivitApi\\wwwroot\\uploads",
+    "\\tivitApi\\wwwroot\\uploads\\materia_2"
   ],
-  "SelectedNode": "\\tivitApi\\Controllers\\EventoController.cs",
   "PreviewInSolutionExplorer": false
 }
