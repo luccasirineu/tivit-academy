@@ -11,6 +11,7 @@ namespace tivitApi.Services
         Task<Materia> CriarMateriaAsync(MateriaDTO materiaDTO);
         Task<List<Materia>> GetMateriasByCursoIdAsync(int cursoId);
         Task<int> GetCursoIdByAlunoIdAsync(int alunoId);
+        Task<String> GetMateriaNomeByMateriaIdAsync(int materiaId);
     }
 
 
@@ -86,6 +87,19 @@ namespace tivitApi.Services
                 throw new Exception("Matrícula não encontrada.");
 
             return matricula.CursoId;
+        }
+
+        public async Task<String> GetMateriaNomeByMateriaIdAsync(int materiaId)
+        {
+
+            //  Buscar matrícula usando MatriculaId
+            var materia = await _context.Materias
+                .FirstOrDefaultAsync(m => m.Id == materiaId);
+
+            if (materia == null)
+                throw new Exception("Matéria não encontrada.");
+
+            return materia.Nome;
         }
     }
 }

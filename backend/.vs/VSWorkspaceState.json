@@ -2,13 +2,15 @@
   "ExpandedNodes": [
     "",
     "\\tivitApi",
-    "\\tivitApi\\Controllers",
-    "\\tivitApi\\Data",
-    "\\tivitApi\\DTOs",
+    "\\tivitApi\\Exceptions",
+    "\\tivitApi\\Infra",
+    "\\tivitApi\\Infra\\SQS",
+    "\\tivitApi\\Migrations",
+    "\\tivitApi\\Models",
     "\\tivitApi\\Services",
     "\\tivitApi\\wwwroot",
-    "\\tivitApi\\wwwroot\\uploads",
-    "\\tivitApi\\wwwroot\\uploads\\materia_2"
+    "\\tivitApi\\wwwroot\\uploads"
   ],
+  "SelectedNode": "\\tivitApi\\Program.cs",
   "PreviewInSolutionExplorer": false
 }

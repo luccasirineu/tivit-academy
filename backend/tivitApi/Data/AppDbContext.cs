@@ -17,6 +17,7 @@ namespace tivitApi.Data
         public DbSet<Evento> Eventos{ get; set; }
         public DbSet<Conteudo> Conteudos { get; set; }
         public DbSet<Materia> Materias { get; set; }
+        public DbSet<Nota> Notas { get; set; }
 
 
 
@@ -42,6 +43,10 @@ namespace tivitApi.Data
                 .WithMany()
                 .HasForeignKey(c => c.ProfessorId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Nota>()
+                .HasIndex(n => new { n.AlunoId, n.MateriaId })
+                .IsUnique();
 
         }
 

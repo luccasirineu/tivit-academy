@@ -48,5 +48,15 @@ namespace tivitApi.Controllers
             return Ok(new { cursoId });
             
         }
+
+        [HttpGet("getNomeMateria/{materiaId}")]
+        public async Task<IActionResult> GetMateriaNome(int materiaId)
+        {
+
+            var materiaNome = await _materiaService.GetMateriaNomeByMateriaIdAsync(materiaId);
+
+            return Ok(new { materiaNome });
+
+        }
     }
 }

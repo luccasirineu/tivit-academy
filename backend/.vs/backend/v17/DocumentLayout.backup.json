@@ -75,8 +75,7 @@
               "RelativeToolTip": "tivitApi\\Services\\ConteudoService.cs",
               "ViewState": "AgIAAB4AAAAAAAAAAAAAACsAAAAbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-22T15:31:42.143Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-12-22T15:31:42.143Z"
             },
             {
               "$type": "Document",
@@ -88,8 +87,7 @@
               "RelativeToolTip": "tivitApi\\DTOs\\CreateConteudoLinkDTO.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-22T15:26:30.514Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-12-22T15:26:30.514Z"
             },
             {
               "$type": "Document",
@@ -101,8 +99,7 @@
               "RelativeToolTip": "tivitApi\\DTOs\\CreateConteudoPdfDTO.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-22T15:25:56.341Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-12-22T15:25:56.341Z"
             },
             {
               "$type": "Document",
@@ -114,8 +111,7 @@
               "RelativeToolTip": "tivitApi\\Models\\Conteudo.cs",
               "ViewState": "AgIAAAMAAAAAAAAAAAAAABIAAAAiAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-22T15:13:32.969Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-12-22T15:13:32.969Z"
             },
             {
               "$type": "Document",
@@ -127,8 +123,7 @@
               "RelativeToolTip": "tivitApi\\Controllers\\LoginController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-19T13:03:22.165Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-12-19T13:03:22.165Z"
             },
             {
               "$type": "Document",
@@ -164,8 +159,7 @@
               "RelativeToolTip": "tivitApi\\Controllers\\MateriaController.cs",
               "ViewState": "AgIAABgAAAAAAAAAAAAUwCAAAAAmAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-18T20:33:55.517Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-12-18T20:33:55.517Z"
             },
             {
               "$type": "Document",
@@ -177,8 +171,7 @@
               "RelativeToolTip": "tivitApi\\Services\\MateriaService.cs",
               "ViewState": "AgIAAAYAAAAAAAAAAAAAABMAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-18T20:33:53.049Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-12-18T20:33:53.049Z"
             }
           ]
         }
