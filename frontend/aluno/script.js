@@ -28,6 +28,13 @@ menuItems.forEach(item => {
     if (item.dataset.section === "relatorio") {
       carregarRelatorioAluno();
     }
+    if (item.dataset.section === "desempenho-aluno") {
+      setTimeout(() => {
+        carregarGraficosAluno();
+      }, 150);
+    }
+
+
   });
 });
 
@@ -35,7 +42,7 @@ menuItems.forEach(item => {
 const themeSwitch = document.getElementById("themeSwitch");
 themeSwitch.addEventListener("change", () => {
   document.body.classList.toggle("light", themeSwitch.checked);
-  updateChartColors(); // 🔥 Atualiza as cores dos gráficos ao mudar tema
+  updateChartColors(); 
 });
 
 const calendarDays = document.getElementById("calendarDays");
@@ -49,7 +56,6 @@ const closeViewModal = document.getElementById("closeViewModal");
 
 let currentDate = new Date();
 
-// 🔹 Exemplo com múltiplos eventos no mesmo dia
 let events = {};
 
 async function carregarEventos() {
@@ -171,82 +177,102 @@ window.onclick = (e) => {
   renderCalendar();
 })();
 
+let graficoEvolucao = null;
+let graficoPizza = null;
 
-document.addEventListener("DOMContentLoaded", () => {
-  const mediaGeral = 9.4; // Mock
-  const melhorCurso = "Desenvolvimento Web";
-  const frequencia = 94;
+async function carregarGraficosAluno() {
+  try {
+    const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
+    if (!usuarioLogado?.id) return;
 
-  document.getElementById("mediaGeral").textContent = mediaGeral;
-  document.getElementById("melhorCurso").textContent = melhorCurso;
-  document.getElementById("frequencia").textContent = `${frequencia}%`;
+    const response = await fetch(
+      `${API_BASE}/Nota/aluno/${usuarioLogado.id}/getAllNotas`
+    );
 
-  const nivelLabel = document.getElementById("nivelLabel");
-  const nivelCard = document.getElementById("nivelCard");
+    if (!response.ok) {
+      throw new Error("Erro ao buscar notas do aluno");
+    }
 
-  if (mediaGeral >= 8) {
-    nivelLabel.textContent = "🏅 Ouro";
-    nivelCard.style.background = "linear-gradient(135deg, #ffd70055, #ffcc00)";
-  } else if (mediaGeral >= 6) {
-    nivelLabel.textContent = "🥈 Prata";
-    nivelCard.style.background = "linear-gradient(135deg, #c0c0c055, #aaaaaa)";
-  } else {
-    nivelLabel.textContent = "🥉 Bronze";
-    nivelCard.style.background = "linear-gradient(135deg, #cd7f3255, #b87333)";
+    const notas = await response.json();
+
+    if (!notas.length) return;
+
+    const notasComMateria = await resolverNomeDasMaterias(notas);
+
+    inicializarOuAtualizarGraficos(notasComMateria);
+
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+async function resolverNomeDasMaterias(notas) {
+  const cache = {};
+
+  return Promise.all(
+    notas.map(async nota => {
+      if (!cache[nota.materiaId]) {
+        const resp = await fetch(
+          `${API_BASE}/Materia/getNomeMateria/${nota.materiaId}`
+        );
+        cache[nota.materiaId] = await resp.text();
+      }
+
+      return {
+        ...nota,
+        nomeMateria: cache[nota.materiaId]
+      };
+    })
+  );
+}
+
+async function criarOuAtualizarGraficoEvolucao(notas) {
+  const ctx = document.getElementById("graficoEvolucao").getContext("2d");
+
+  const labels = [];
+  const medias = [];
+
+  for (const nota of notas) {
+    const nomeMateria = await buscarNomeMateria(nota.materiaId);
+    labels.push(nomeMateria);      // ✅ string
+    medias.push(nota.media);
   }
 
-  // === GRÁFICO DE EVOLUÇÃO ===
-  const ctxEvolucao = document.getElementById("graficoEvolucao");
-  window.graficoEvolucao = new Chart(ctxEvolucao, {
-    type: "line",
-    data: {
-      labels: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun"],
-      datasets: [{
-        label: "Notas",
-        data: [6.5, 7.0, 7.8, 8.2, 8.5, 8.9],
-        borderColor: "#ff0054",
-        backgroundColor: "rgba(255, 0, 84, 0.2)",
-        fill: true,
-        tension: 0.3,
-        pointRadius: 5,
-        pointBackgroundColor: "#ff0054"
-      }]
-    },
-    options: {
-      plugins: {
-        legend: {
-          labels: { color: getTextColor() }
-        }
+  if (!graficoEvolucao) {
+    graficoEvolucao = new Chart(ctx, {
+      type: "line",
+      data: {
+        labels,
+        datasets: [{
+          label: "Média por Matéria",
+          data: medias,
+          tension: 0.4
+        }]
       },
-      scales: {
-        x: { ticks: { color: getTextColor() } },
-        y: { ticks: { color: getTextColor() }, beginAtZero: true, max: 10 }
-      }
-    }
-  });
-
-  // === GRÁFICO DE PIZZA ===
-  const ctxPizza = document.getElementById("graficoPizza");
-  window.graficoPizza = new Chart(ctxPizza, {
-    type: "doughnut",
-    data: {
-      labels: ["Matemática", "Web", "Banco de Dados", "IA"],
-      datasets: [{
-        data: [4, 9.0, 8.0, 7],
-        backgroundColor: ["#ff0054", "#00c2ff", "#ffaa00", "#9b5de5"],
-        hoverOffset: 10
-      }]
-    },
-    options: {
-      plugins: {
-        legend: {
-          position: "bottom",
-          labels: { color: getTextColor() }
+      options: {
+        responsive: true,
+        scales: {
+          y: { min: 0, max: 10 }
         }
       }
-    }
+    });
+  } else {
+    graficoEvolucao.data.labels = labels;
+    graficoEvolucao.data.datasets[0].data = medias;
+    graficoEvolucao.update();
+  }
+
+  updateChartColors();
+}
+
+
+
+function inicializarOuAtualizarGraficos(notas) {
+  requestAnimationFrame(() => {
+    criarOuAtualizarGraficoEvolucao(notas);
   });
-});
+}
+
 
 // === Funções auxiliares ===
 function getTextColor() {
@@ -268,6 +294,7 @@ function updateChartColors() {
     window.graficoPizza.update();
   }
 }
+
 const materiasView = document.getElementById("materiasView");
 const materiaDetalhes = document.getElementById("materiaDetalhes");
 const tituloMateria = document.getElementById("tituloMateria");
@@ -407,12 +434,16 @@ async function buscarNomeMateria(materiaId) {
     }
 
     const data = await response.json();
-    return data.materiaNome; 
+
+    // ✅ RETORNA APENAS A STRING
+    return data.materiaNome;
+
   } catch (error) {
     console.error(`Erro ao buscar nome da matéria ${materiaId}:`, error);
     return `Matéria ${materiaId}`;
   }
 }
+
 
 
 const relatorioContainer = document.getElementById("relatorioContainer");
@@ -428,7 +459,7 @@ async function carregarRelatorioAluno() {
 
     const alunoId = usuarioLogado.id;
 
-    const response = await fetch(`${API_BASE}/Nota/aluno/${alunoId}`);
+    const response = await fetch(`${API_BASE}/Nota/aluno/${alunoId}/getAllNotas`);
     if (!response.ok) throw new Error("Erro ao buscar notas");
 
     const notas = await response.json();

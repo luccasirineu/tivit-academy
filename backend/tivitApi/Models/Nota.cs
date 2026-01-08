@@ -18,6 +18,8 @@ namespace tivitApi.Models
 
         public decimal Nota2 { get; set; }
 
+        public decimal Media { get; set; }
+
         public int QtdFaltas { get; set; }
 
         [MaxLength(20)]
@@ -27,15 +29,15 @@ namespace tivitApi.Models
         public Materia Materia { get; set; }
 
 
-        public Nota(int alunoId, int materiaId, decimal nota1, decimal nota2, int qtdFaltas, string status)
+        public Nota(int alunoId, int materiaId, decimal nota1, decimal nota2, decimal media, int qtdFaltas, string status )
         {
             AlunoId = alunoId;
             MateriaId = materiaId;
             Nota1 = nota1;
             Nota2 = nota2;
+            Media = media;
             QtdFaltas = qtdFaltas;
             Status = status;
-
         }
     }
 

@@ -1,6 +1,6 @@
 namespace tivitApi.DTOs
 {
-	public class NotaDTO
+	public class NotaDTOResponse
 	{
 		
 		public int AlunoId { get; set; }
@@ -8,11 +8,12 @@ namespace tivitApi.DTOs
 
 		public decimal Nota1 { get; set; }
 		public decimal Nota2 { get; set; }
+		public decimal Media { get; set; }
 
 		public int QtdFaltas { get; set; }
 		public string Status { get; set; }
 
-		public NotaDTO(int alunoId, int materiaId, decimal nota1, decimal nota2, int qtdFaltas, string status)
+		public NotaDTOResponse(int alunoId, int materiaId, decimal nota1, decimal nota2, int qtdFaltas, string status)
 		{
 			AlunoId = alunoId;
 			MateriaId = materiaId;
@@ -23,7 +24,7 @@ namespace tivitApi.DTOs
 
 		}
 
-		public NotaDTO() { }
+		public NotaDTOResponse() { }
 
 
 

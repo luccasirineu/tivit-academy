@@ -644,43 +644,31 @@ body:not(.light) select option {
 /* GRÁFICOS */
 .graficos-container {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
   gap: 40px;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .grafico {
   background: var(--bg-secondary);
   padding: 20px;
   border-radius: 16px;
-  box-shadow: 0 4px 15px var(--shadow);
-  width: 43%;
+  width: 45%;
+  height: 350px; 
 }
 
-.grafico h3 {
-  text-align: center;
-  color: var(--accent);
-  margin-bottom: 15px;
-}
-
-#graficoEvolucao {
-  height: 55% !important;
+.grafico canvas {
   width: 100% !important;
-
+  height: 100% !important;
 }
 
-
-/* RESPONSIVIDADE */
 @media (max-width: 900px) {
-  .graficos-container {
-    flex-direction: column;
-    align-items: center;
-  }
   .grafico {
     width: 100%;
     max-width: 500px;
   }
 }
+
 /* === SEÇÃO DE MATÉRIAS === */
 .materias-section {
   padding: 30px;

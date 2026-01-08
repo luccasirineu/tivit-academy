@@ -17,7 +17,7 @@ namespace tivitApi.Controllers
 
         
         [HttpPost("adicionarNota")]
-        public async Task<IActionResult> AdicionarNota([FromBody] NotaDTO dto)
+        public async Task<IActionResult> AdicionarNota([FromBody] NotaDTORequest dto)
         {
 
             try
@@ -38,13 +38,13 @@ namespace tivitApi.Controllers
             }
         }
 
-        [HttpGet("aluno/{alunoId}")]
-        public async Task<IActionResult> BuscarNotasPorAluno(int alunoId)
+        [HttpGet("aluno/{alunoId}/getDesempenho")]
+        public async Task<IActionResult> GetDesempenhoByAlunoId(int alunoId)
         {
             try
             {
-                var notas = await _notaService.BuscarNotasPorAlunoAsync(alunoId);
-                return Ok(notas);
+                var desempenho = await _notaService.GetDesempenhoByAlunoId(alunoId);
+                return Ok(desempenho);
             }
             catch (Exception ex)
             {
@@ -55,5 +55,21 @@ namespace tivitApi.Controllers
             }
         }
 
+        [HttpGet("aluno/{alunoId}/getAllNotas")]
+        public async Task<IActionResult> GetAllNotasByAlunoId(int alunoId)
+        {
+            try
+            {
+                var notas = await _notaService.GetAllNotasByAlunoId(alunoId);
+                return Ok(notas);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    erro = ex.Message
+                });
+            }
+        }
     }
 }

@@ -9,8 +9,10 @@ namespace tivitApi.Services
 
     public interface INotaService
     {
-        Task<NotaDTO> AdicionarNotaAsync(NotaDTO notaDTO);
-        Task<List<NotaDTO>> BuscarNotasPorAlunoAsync(int alunoId);
+        Task<NotaDTOResponse> AdicionarNotaAsync(NotaDTORequest notaDTO);
+        Task<List<NotaDTOResponse>> GetAllNotasByAlunoId(int alunoId);
+        Task<DesempenhoDTO> GetDesempenhoByAlunoId(int alunoId);
+
     }
 
     public class NotaService : INotaService
@@ -22,29 +24,37 @@ namespace tivitApi.Services
             _context = context;
         }
 
-        private Nota ConvertNotaDtoToNota(NotaDTO notaDTO)
+        private Nota ConvertNotaDtoToNota(NotaDTORequest notaDTO, decimal media, string status)
         {
             return new Nota(
                 notaDTO.AlunoId,
                 notaDTO.MateriaId,
                 notaDTO.Nota1,
                 notaDTO.Nota2,
+                media,
                 notaDTO.QtdFaltas,
-                notaDTO.Status
+                status
                 );
         }
 
-        private string CalcularStatusNota(decimal nota1, decimal nota2, int qntdFaltas)
+
+        private decimal CalcularMedia(decimal nota1, decimal nota2)
         {
-            if (qntdFaltas > 20) return "REPROVADO";
 
             var media = (nota1 + nota2) / 2;
+
+            return media;
+        }
+
+        private string CalcularStatusNota(decimal media, int qntdFaltas)
+        {
+            if (qntdFaltas > 20) return "REPROVADO";
 
             if (media >= 6) return "APROVADO";
             return "REPROVADO";
         }
 
-        public async Task<NotaDTO> AdicionarNotaAsync(NotaDTO dto)
+        public async Task<NotaDTOResponse> AdicionarNotaAsync(NotaDTORequest dto)
         {
             var alunoExiste = await _context.Alunos
                 .AnyAsync(a => a.Id == dto.AlunoId);
@@ -66,8 +76,9 @@ namespace tivitApi.Services
             if (dto.QtdFaltas < 0)
                 throw new Exception("Quantidade de faltas inválida.");
 
-            dto.Status = CalcularStatusNota(dto.Nota1, dto.Nota2, dto.QtdFaltas);
-            var nota = ConvertNotaDtoToNota(dto);
+            decimal media = CalcularMedia(dto.Nota1, dto.Nota2);
+            string status = CalcularStatusNota(media, dto.QtdFaltas);
+            var nota = ConvertNotaDtoToNota(dto,media,status);
 
             _context.Notas.Add(nota);
 
@@ -80,20 +91,19 @@ namespace tivitApi.Services
                 throw new Exception("Erro ao salvar a nota. Verifique se já existe cadastro para este aluno e matéria.");
             }
 
-            return new NotaDTO
+            return new NotaDTOResponse
             {
                 AlunoId = nota.AlunoId,
                 MateriaId = nota.MateriaId,
                 Nota1 = nota.Nota1,
                 Nota2 = nota.Nota2,
+                Media = media,
                 QtdFaltas = nota.QtdFaltas,
-                Status = nota.Status
+                Status = status
             };
         }
 
-
-
-        public async Task<List<NotaDTO>> BuscarNotasPorAlunoAsync(int alunoId)
+        public async Task<List<NotaDTOResponse>> GetAllNotasByAlunoId(int alunoId)
         {
             // Valida se o aluno existe
             var alunoExiste = await _context.Alunos.AnyAsync(a => a.Id == alunoId);
@@ -102,12 +112,13 @@ namespace tivitApi.Services
 
             var notas = await _context.Notas
                 .Where(n => n.AlunoId == alunoId)
-                .Select(n => new NotaDTO
+                .Select(n => new NotaDTOResponse
                 {
                     AlunoId = n.AlunoId,
                     MateriaId = n.MateriaId,
                     Nota1 = n.Nota1,
                     Nota2 = n.Nota2,
+                    Media = n.Media,
                     QtdFaltas = n.QtdFaltas,
                     Status = n.Status
                 })
@@ -116,6 +127,41 @@ namespace tivitApi.Services
             return notas;
         }
 
+        public async Task<DesempenhoDTO> GetDesempenhoByAlunoId(int alunoId)
+        {
+            var notasAluno = await _context.Notas
+                .Where(n => n.AlunoId == alunoId)
+                .OrderByDescending(n => n.Media)
+                .FirstOrDefaultAsync();
+
+            if (notasAluno == null)
+                throw new Exception("Nenhuma nota encontrada para este aluno.");
+
+            var materia = await _context.Materias
+                .Where(m => m.Id == notasAluno.MateriaId)
+                .Select(m => m.Nome)
+                .FirstOrDefaultAsync();
+
+            if (materia == null)
+                throw new Exception("Matéria não encontrada.");
+
+            string nivel;
+
+            if (notasAluno.Media < 6)
+                nivel = "BRONZE";
+            else if (notasAluno.Media <= 8)
+                nivel = "PRATA";
+            else
+                nivel = "OURO";
+
+            return new DesempenhoDTO
+            {
+                NomeMateria = materia,
+                Media = notasAluno.Media,
+                QtdFaltas = notasAluno.QtdFaltas,
+                Nivel = nivel
+            };
+        }
 
 
 
