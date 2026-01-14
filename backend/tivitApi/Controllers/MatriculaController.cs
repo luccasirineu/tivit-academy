@@ -74,5 +74,13 @@ namespace tivitApi.Controllers
             return Ok();
         }
 
+        [HttpGet("getAlunosAtivosProfessor/{professorId}")]
+        public async Task<IActionResult> GetAlunosAtivosProfessor(int professorId)
+        {
+            int qntdAlunosAtivos = await _matriculaService.GetTotalAlunosAtivosPorProfessor(professorId);
+
+            return Ok(qntdAlunosAtivos);
+        }
+
     }
 }

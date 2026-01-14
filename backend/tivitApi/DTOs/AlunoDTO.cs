@@ -10,6 +10,7 @@ namespace tivitApi.DTOs
         public string Senha { get; set; }
         public int MatriculaId { get; set; }
 
+        public string? CursoNome { get; set; }
 
         public AlunoDTO(string nome, string email, string cpf, string senha, int matriculaId)
         {

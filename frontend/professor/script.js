@@ -17,269 +17,6 @@ themeSwitch.addEventListener("change", () => {
   document.body.classList.toggle("light", themeSwitch.checked);
 });
 
-// ===== CALENDÁRIO SIMPLES =====
-const calendarDays = document.getElementById("calendarDays");
-const monthYear = document.getElementById("monthYear");
-const eventModal = document.getElementById("eventModal");
-const eventTitle = document.getElementById("eventTitle");
-const eventTime = document.getElementById("eventTime");
-const saveEvent = document.getElementById("saveEvent");
-const closeModal = document.getElementById("closeModal");
-
-let currentDate = new Date();
-let selectedDate = null;
-let events = {}; 
-
-function renderCalendar() {
-  const year = currentDate.getFullYear();
-  const month = currentDate.getMonth();
-
-  monthYear.textContent = `${currentDate.toLocaleString("pt-BR", {
-    month: "long",
-  })} ${year}`;
-
-  calendarDays.innerHTML = "";
-
-  const firstDay = new Date(year, month, 1).getDay();
-  const lastDate = new Date(year, month + 1, 0).getDate();
-
-  // Espaços vazios antes do primeiro dia
-  for (let i = 0; i < firstDay; i++) {
-    const empty = document.createElement("div");
-    calendarDays.appendChild(empty);
-  }
-
-  for (let day = 1; day <= lastDate; day++) {
-    const dateKey = `${year}-${month + 1}-${day}`;
-    const dayDiv = document.createElement("div");
-    dayDiv.classList.add("calendar-day");
-    dayDiv.textContent = day;
-
-    // Se tiver evento
-    if (events[dateKey]) {
-      const dot = document.createElement("div");
-      dot.classList.add("event-dot");
-      dayDiv.appendChild(dot);
-    }
-
-    dayDiv.addEventListener("click", () => {
-      selectedDate = dateKey;
-      eventTitle.value = "";
-      eventTime.value = "";
-      eventModal.style.display = "flex";
-    });
-
-    calendarDays.appendChild(dayDiv);
-  }
-}
-
-document.getElementById("prevMonth").onclick = () => {
-  currentDate.setMonth(currentDate.getMonth() - 1);
-  renderCalendar();
-};
-document.getElementById("nextMonth").onclick = () => {
-  currentDate.setMonth(currentDate.getMonth() + 1);
-  renderCalendar();
-};
-document.getElementById("prevYear").onclick = () => {
-  currentDate.setFullYear(currentDate.getFullYear() - 1);
-  renderCalendar();
-};
-document.getElementById("nextYear").onclick = () => {
-  currentDate.setFullYear(currentDate.getFullYear() + 1);
-  renderCalendar();
-};
-
-saveEvent.onclick = () => {
-  if (eventTitle.value.trim() === "") return alert("Informe o título do evento!");
-
-  if (!events[selectedDate]) events[selectedDate] = [];
-  events[selectedDate].push({
-    title: eventTitle.value,
-    time: eventTime.value,
-  });
-
-  eventModal.style.display = "none";
-  renderCalendar();
-};
-
-closeModal.onclick = () => (eventModal.style.display = "none");
-window.onclick = (e) => {
-  if (e.target === eventModal) eventModal.style.display = "none";
-};
-
-renderCalendar();
-
-
-//MOCKS BOLETINS
-const alunos = [
-  {
-    nome: "Luccas Gonçalves",
-    curso: "Engenharia de Software",
-    materias: [
-      { nome: "Algoritmos", media: 8.5, freq: "96%" },
-      { nome: "Banco de Dados", media: 7.8, freq: "92%" },
-      { nome: "Programação Web", media: 9.2, freq: "98%" },
-    ],
-  },
-  {
-    nome: "Marina Silva",
-    curso: "Análise e Desenvolvimento de Sistemas",
-    materias: [
-      { nome: "Engenharia de Software", media: 8.2, freq: "94%" },
-      { nome: "JavaScript Avançado", media: 9.0, freq: "97%" },
-    ],
-  },
-];
-
-document.getElementById("btnBuscarAluno").addEventListener("click", () => {
-  const pesquisa = document.getElementById("searchAluno").value.toLowerCase();
-  const aluno = alunos.find(a => a.nome.toLowerCase().includes(pesquisa));
-
-  const resultadoBox = document.getElementById("resultadoAluno");
-  const tabela = document.getElementById("tabelaMaterias");
-  tabela.innerHTML = "";
-
-  if (aluno) {
-    document.getElementById("alunoNome").textContent = aluno.nome;
-    document.getElementById("alunoCurso").textContent = aluno.curso;
-
-    aluno.materias.forEach(m => {
-      const row = `<tr>
-        <td>${m.nome}</td>
-        <td>${m.media}</td>
-        <td>${m.freq}</td>
-      </tr>`;
-      tabela.innerHTML += row;
-    });
-
-    resultadoBox.classList.remove("hidden");
-
-    // Atualiza o PDF atual com os dados do aluno
-    window.alunoSelecionado = aluno;
-
-  } else {
-    resultadoBox.classList.add("hidden");
-    alert("Aluno não encontrado!");
-  }
-});
-
-
-// ===== GERAR BOLETIM (PDF) =====
-function gerarBoletim() {
-  const aluno = window.alunoSelecionado;
-
-  // Se nenhum aluno foi selecionado ainda
-  if (!aluno) {
-    alert("Por favor, pesquise e selecione um aluno antes de gerar o boletim!");
-    return;
-  }
-
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF("p", "mm", "a4");
-
-  // ======= ESTILO BASE =======
-  const corPrincipal = [255, 0, 84]; // Rosa TIVIT
-  const corTexto = [40, 40, 40];
-  const margem = 20;
-
-  // ======= CABEÇALHO =======
-  doc.setFillColor(...corPrincipal);
-  doc.rect(0, 0, 210, 30, "F");
-
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(18);
-  doc.setTextColor(255, 255, 255);
-  doc.text("TIVIT Academy", margem, 20);
-
-  doc.setFontSize(12);
-  doc.text("Boletim Escolar", 200 - margem, 20, { align: "right" });
-
-  // ======= DADOS DO ALUNO =======
-  const nome = aluno.nome;
-  const curso = aluno.curso;
-  const semestre = "2º Semestre - 2025";
-  const disciplinas = aluno.materias;
-
-  doc.setTextColor(...corTexto);
-  doc.setFontSize(12);
-  doc.setFont("helvetica", "bold");
-  doc.text("Nome do Aluno:", margem, 45);
-  doc.setFont("helvetica", "normal");
-  doc.text(nome, 60, 45);
-
-  doc.setFont("helvetica", "bold");
-  doc.text("Curso:", margem, 52);
-  doc.setFont("helvetica", "normal");
-  doc.text(curso, 35, 52);
-
-  doc.setFont("helvetica", "bold");
-  doc.text("Período:", margem, 59);
-  doc.setFont("helvetica", "normal");
-  doc.text(semestre, 45, 59);
-
-  // ======= TABELA =======
-  const inicioTabelaY = 75;
-  const larguraTotal = 170;
-
-  // Cabeçalho
-  doc.setFillColor(245, 245, 245);
-  doc.rect(margem, inicioTabelaY, larguraTotal, 10, "F");
-  doc.setTextColor(...corPrincipal);
-  doc.setFont("helvetica", "bold");
-
-  doc.text("Disciplina", margem + 5, inicioTabelaY + 7);
-  doc.text("Média Final", 105, inicioTabelaY + 7);
-  doc.text("Frequência", 175, inicioTabelaY + 7, { align: "right" });
-
-  // Linhas de conteúdo
-  let y = inicioTabelaY + 17;
-  doc.setTextColor(...corTexto);
-  doc.setFont("helvetica", "normal");
-
-  disciplinas.forEach((d) => {
-    doc.text(d.nome, margem + 5, y);
-    doc.text(String(d.media), 115, y);
-    doc.text(String(d.freq), 170, y, { align: "right" });
-    y += 9;
-  });
-
-
-  // ======= MÉDIA GERAL =======
-  const mediaGeral =
-    disciplinas.reduce((acc, d) => acc + parseFloat(d.media), 0) /
-    disciplinas.length;
-  doc.setFont("helvetica", "bold");
-  doc.setTextColor(...corPrincipal);
-  doc.text(
-    `Média Geral: ${mediaGeral.toFixed(1)}`,
-    200 - margem,
-    y + 5,
-    { align: "right" }
-  );
-
-  // ======= RODAPÉ =======
-  doc.setDrawColor(...corPrincipal);
-  doc.line(margem, y + 15, 190, y + 15);
-
-  doc.setFont("helvetica", "italic");
-  doc.setFontSize(10);
-  doc.setTextColor(120, 120, 120);
-  doc.text(
-    "Documento gerado automaticamente pelo sistema TIVIT Academy",
-    105,
-    285,
-    { align: "center" }
-  );
-
-  // ======= SALVAR =======
-  const nomeArquivo = `Boletim_${nome.replace(/\s+/g, "_")}.pdf`;
-  doc.save(nomeArquivo);
-}
-
-
-document.getElementById("btnBoletim").addEventListener("click", gerarBoletim);
-
 
 // ===== CÁLCULO DE MÉDIAS E FREQUÊNCIA =====
 document.getElementById("calcularBtn").addEventListener("click", () => {
@@ -324,3 +61,379 @@ function toggleSidebar() {
 
 if (toggleBtn) toggleBtn.addEventListener("click", toggleSidebar);
 if (floatingBtn) floatingBtn.addEventListener("click", toggleSidebar);
+
+
+//ultimo evento 
+
+async function carregarProximoEvento() {
+  try {
+    const response = await fetch('http://localhost:5027/api/Evento/proximoEvento');
+
+    if (!response.ok) {
+      throw new Error('Erro ao buscar próximo evento');
+    }
+
+    const evento = await response.json();
+
+    const data = new Date(evento.horario);
+
+    const dia = data.getDate();
+    const mes = data.toLocaleString('pt-BR', { month: 'short' }).toUpperCase();
+    const horario = data.toLocaleTimeString('pt-BR', {
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+
+    document.getElementById('evento-dia').textContent = dia;
+    document.getElementById('evento-mes').textContent = mes;
+    document.getElementById('evento-titulo').textContent = evento.titulo;
+    document.getElementById('evento-horario').textContent = horario;
+    document.getElementById('evento-descricao').textContent = evento.descricao;
+
+
+  } catch (error) {
+    console.error(error);
+    document.getElementById('evento-titulo').textContent = 'Nenhum evento encontrado';
+  }
+}
+
+carregarProximoEvento();
+
+const API_BASE = "http://localhost:5027/api";
+
+async function carregarResumoProfessor() {
+  try {
+    const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
+
+    if (!usuarioLogado || !usuarioLogado.id) {
+      console.warn("Professor não identificado");
+      return;
+    }
+
+    const professorId = usuarioLogado.id;
+
+    await Promise.all([
+      carregarAlunosAtivos(professorId),
+      carregarQtdTurmas(professorId),
+      carregarEventosProximaSemana()
+    ]);
+
+  } catch (error) {
+    console.error("Erro ao carregar resumo:", error);
+  }
+}
+
+
+async function carregarAlunosAtivos(professorId) {
+  const response = await fetch(
+    `${API_BASE}/Matricula/getAlunosAtivosProfessor/${professorId}`
+  );
+
+  if (!response.ok) throw new Error("Erro ao buscar alunos ativos");
+
+  const qtdAlunos = await response.json();
+
+  document.getElementById("qtdAlunosAtivos").textContent = qtdAlunos;
+}
+
+async function carregarQtdTurmas(professorId) {
+  const response = await fetch(
+    `${API_BASE}/Curso/getQntdCursosProf/${professorId}`
+  );
+
+  if (!response.ok) throw new Error("Erro ao buscar turmas");
+
+  const qtdTurmas = await response.json();
+
+  document.getElementById("qtdTurmas").textContent = qtdTurmas;
+}
+
+async function carregarEventosProximaSemana() {
+  const response = await fetch(
+    `${API_BASE}/Evento/getNextWeekEvents`
+  );
+
+  if (!response.ok) throw new Error("Erro ao buscar eventos");
+
+  const eventos = await response.json();
+
+  document.getElementById("qtdEventosSemana").textContent = eventos;
+}
+
+document.addEventListener("DOMContentLoaded", carregarResumoProfessor);
+
+
+const calendarDays = document.getElementById("calendarDays");
+const monthYear = document.getElementById("monthYear");
+
+const viewEventModal = document.getElementById("viewEventModal");
+const viewTitle = document.getElementById("viewTitle");
+const viewTime = document.getElementById("viewTime");
+const viewDescription = document.getElementById("viewDescription");
+const closeViewModal = document.getElementById("closeViewModal");
+
+let currentDate = new Date();
+
+let events = {};
+
+async function carregarEventos() {
+  try {
+    const response = await fetch("http://localhost:5027/api/Evento/getAllEvents");
+    const data = await response.json();
+
+    events = {};
+
+    data.forEach(ev => {
+      const date = new Date(ev.horario);
+
+      // Normaliza para o início do dia (00:00)
+      date.setHours(0, 0, 0, 0);
+
+      const dayTimestamp = date.getTime();
+
+      if (!events[dayTimestamp]) {
+        events[dayTimestamp] = [];
+      }
+
+      events[dayTimestamp].push({
+        title: ev.titulo,
+        time: new Date(ev.horario).toLocaleTimeString("pt-BR", {
+          hour: "2-digit",
+          minute: "2-digit"
+        }),
+        description: ev.descricao
+      });
+    });
+
+  } catch (error) {
+    console.error("Erro ao carregar eventos:", error);
+  }
+}
+
+
+function renderCalendar() {
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth();
+
+  monthYear.textContent = `${currentDate.toLocaleString("pt-BR", {
+    month: "long",
+  })} ${year}`;
+
+  calendarDays.innerHTML = "";
+
+  const firstDay = new Date(year, month, 1).getDay();
+  const lastDate = new Date(year, month + 1, 0).getDate();
+
+  for (let i = 0; i < firstDay; i++) {
+    const empty = document.createElement("div");
+    calendarDays.appendChild(empty);
+  }
+
+  for (let day = 1; day <= lastDate; day++) {
+    const dateObj = new Date(year, month, day);
+    dateObj.setHours(0, 0, 0, 0);
+    const dateKey = dateObj.getTime();    const dayDiv = document.createElement("div");
+    dayDiv.classList.add("calendar-day");
+    dayDiv.textContent = day;
+
+    if (events[dateKey]) {
+      const dot = document.createElement("div");
+      dot.classList.add("event-dot");
+      dayDiv.appendChild(dot);
+
+      dayDiv.addEventListener("click", () => {
+        const eventList = events[dateKey];
+
+        // Limpa o conteúdo anterior
+        viewDescription.innerHTML = "";
+
+        // Adiciona cada evento como um bloco
+        eventList.forEach(ev => {
+          const eventBlock = document.createElement("div");
+          eventBlock.classList.add("event-item");
+          eventBlock.innerHTML = `
+            <p><strong>${ev.title}</strong></p>
+            <p><i class='bx bx-time-five'></i> ${ev.time || "—"}</p>
+            <p>${ev.description || "Sem descrição."}</p>
+          `;
+          viewDescription.appendChild(eventBlock);
+        });
+
+        // Mostra o modal
+        viewEventModal.style.display = "flex";
+      });
+    }
+
+    calendarDays.appendChild(dayDiv);
+  }
+}
+
+document.getElementById("prevMonth").onclick = () => {
+  currentDate.setMonth(currentDate.getMonth() - 1);
+  renderCalendar();
+};
+document.getElementById("nextMonth").onclick = () => {
+  currentDate.setMonth(currentDate.getMonth() + 1);
+  renderCalendar();
+};
+document.getElementById("prevYear").onclick = () => {
+  currentDate.setFullYear(currentDate.getFullYear() - 1);
+  renderCalendar();
+};
+document.getElementById("nextYear").onclick = () => {
+  currentDate.setFullYear(currentDate.getFullYear() + 1);
+  renderCalendar();
+};
+
+closeViewModal.onclick = () => (viewEventModal.style.display = "none");
+window.onclick = (e) => {
+  if (e.target === viewEventModal) viewEventModal.style.display = "none";
+};
+
+(async () => {
+  await carregarEventos();
+  renderCalendar();
+})();
+
+document.getElementById("btnBuscarAluno").addEventListener("click", buscarBoletimAluno);
+
+async function buscarBoletimAluno() {
+  const valorBusca = document.getElementById("searchAluno").value.trim();
+
+  if (!valorBusca) {
+    return;
+  }
+
+  let url = "";
+
+  // Verifica se é matrícula (somente números)
+  if (/^\d+$/.test(valorBusca)) {
+    url = `${API_BASE}/Nota/aluno/${valorBusca}/getAllNotasByMatriculaId`;
+  } else {
+    url = `${API_BASE}/Nota/aluno/getAllNotasByNome?nome=${encodeURIComponent(valorBusca)}`;
+  }
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error("Aluno não encontrado");
+
+    const notas = await response.json();
+
+    if (!notas || notas.length === 0) {
+      return;
+    }
+
+    renderizarBoletim(notas);
+
+  } catch (error) {
+    console.error(error);
+  }
+}
+async function renderizarBoletim(notas) {
+  const resultadoBox = document.getElementById("resultadoAluno");
+  resultadoBox.classList.remove("hidden");
+
+  // Limpa resultados anteriores
+  resultadoBox.innerHTML = "<h3>Resultados da busca</h3>";
+
+  const notasPorAluno = agruparNotasPorAluno(notas);
+
+  for (const alunoId in notasPorAluno) {
+    const notasAluno = notasPorAluno[alunoId];
+
+    const alunoInfo = await buscarInfoAluno(alunoId);
+
+    const alunoDiv = document.createElement("div");
+    alunoDiv.classList.add("boletim-aluno");
+
+    alunoDiv.innerHTML = `
+      <h4>Informações do aluno</h4>
+      <p><strong>Nome:</strong> ${alunoInfo.nome}</p>
+      <p><strong>Curso:</strong> ${alunoInfo.cursoNome}</p>
+      <p><strong>Matricula:</strong> ${alunoInfo.matriculaId}</p>
+
+
+      <table class="tabela-notas">
+        <thead>
+          <tr>
+            <th>Disciplina</th>
+            <th>Média Final</th>
+            <th>Frequência</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
+      <button class="btn-pdf">
+        <i class='bx bx-file'></i> Gerar Boletim em PDF
+      </button>
+
+      <hr/>
+    `;
+
+    const tbody = alunoDiv.querySelector("tbody");
+
+    for (const nota of notasAluno) {
+      const nomeMateria = await buscarNomeMateria(nota.materiaId);
+
+      const frequencia = Math.max(
+        0,
+        Math.round(((70 - nota.qtdFaltas) / 70) * 100)
+      );
+
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${nomeMateria}</td>
+        <td>${nota.media.toFixed(1)}</td>
+        <td>${frequencia}%</td>
+      `;
+
+      tbody.appendChild(tr);
+    }
+
+    alunoDiv.querySelector(".btn-pdf").addEventListener("click", () => {
+      gerarPdfBoletim(alunoInfo, notasAluno);
+    });
+
+    resultadoBox.appendChild(alunoDiv);
+  }
+}
+
+
+async function buscarNomeMateria(materiaId) {
+  try {
+    const response = await fetch(
+      `${API_BASE}/Materia/getNomeMateria/${materiaId}`
+    );
+
+    if (!response.ok) throw new Error();
+
+    const data = await response.json();
+    return data.materiaNome; 
+
+  } catch {
+    return `Matéria ${materiaId}`;
+  }
+}
+
+function agruparNotasPorAluno(notas) {
+  return notas.reduce((acc, nota) => {
+    if (!acc[nota.alunoId]) {
+      acc[nota.alunoId] = [];
+    }
+    acc[nota.alunoId].push(nota);
+    return acc;
+  }, {});
+}
+
+async function buscarInfoAluno(alunoId) {
+  const response = await fetch(
+    `http://localhost:5027/api/Aluno/contextMe/${alunoId}`
+  );
+
+  if (!response.ok) {
+    return { nome: `Aluno ${alunoId}`, curso: "—" };
+  }
+
+  return await response.json(); 
+}

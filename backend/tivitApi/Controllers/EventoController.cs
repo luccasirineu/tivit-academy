@@ -10,11 +10,10 @@ namespace tivitApi.Controllers
 	public class EventoController : ControllerBase
 	{
 		private readonly IEventoService _eventoService;
-
 		public EventoController(IEventoService eventoService)
 		{
 			_eventoService = eventoService;
-		}
+        }
 
 
 		[HttpPost("adicionarEvento")]
@@ -51,6 +50,15 @@ namespace tivitApi.Controllers
 			return Ok(eventosDTO);
 		}
 
+        [HttpGet("getNextWeekEvents")]
+        public async Task<IActionResult> GetNextWeekEvents()
+        {
+            var qntdEventos = await _eventoService.getNextWeekEvents();
 
-	}
+
+            return Ok(qntdEventos);
+        }
+
+
+    }
 }

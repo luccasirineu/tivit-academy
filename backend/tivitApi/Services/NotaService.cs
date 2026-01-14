@@ -12,7 +12,8 @@ namespace tivitApi.Services
         Task<NotaDTOResponse> AdicionarNotaAsync(NotaDTORequest notaDTO);
         Task<List<NotaDTOResponse>> GetAllNotasByAlunoId(int alunoId);
         Task<DesempenhoDTO> GetDesempenhoByAlunoId(int alunoId);
-
+        Task<List<NotaDTOResponse>> GetAllNotasByMatriculaId(int matriculaId);
+        Task<List<NotaDTOResponse>> GetAllNotasByNomeAluno(string nome);
     }
 
     public class NotaService : INotaService
@@ -163,7 +164,56 @@ namespace tivitApi.Services
             };
         }
 
+        public async Task<List<NotaDTOResponse>> GetAllNotasByMatriculaId(int matriculaId)
+        {
+            // Valida se o aluno existe
+            var alunoId = await _context.Alunos
+                .Where(a => a.MatriculaId == matriculaId)
+                .Select(a => a.Id)
+                .FirstOrDefaultAsync();
+            
+            if (alunoId == 0)
+                throw new Exception("Aluno não encontrado.");
 
+            var notas = await _context.Notas
+                .Where(n => n.AlunoId == alunoId)
+                .Select(n => new NotaDTOResponse
+                {
+                    AlunoId = n.AlunoId,
+                    MateriaId = n.MateriaId,
+                    Nota1 = n.Nota1,
+                    Nota2 = n.Nota2,
+                    Media = n.Media,
+                    QtdFaltas = n.QtdFaltas,
+                    Status = n.Status
+                })
+                .ToListAsync();
+
+            return notas;
+        }
+
+        public async Task<List<NotaDTOResponse>> GetAllNotasByNomeAluno(string nome)
+        {
+            var notas = await _context.Notas
+                .Include(n => n.Aluno)
+                .Where(n => n.Aluno.Nome.Contains(nome))
+                .Select(n => new NotaDTOResponse
+                {
+                    AlunoId = n.AlunoId,
+                    MateriaId = n.MateriaId,
+                    Nota1 = n.Nota1,
+                    Nota2 = n.Nota2,
+                    Media = n.Media,
+                    QtdFaltas = n.QtdFaltas,
+                    Status = n.Status
+                })
+                .ToListAsync();
+
+            if (!notas.Any())
+                throw new Exception("Nenhuma nota encontrada para este aluno.");
+
+            return notas;
+        }
 
     }
 }

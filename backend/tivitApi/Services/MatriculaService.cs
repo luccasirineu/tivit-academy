@@ -287,6 +287,25 @@ namespace tivitApi.Services
             }
         }
 
+        public async Task<int> GetTotalAlunosAtivosPorProfessor(int professorId)
+        {
+            var cursosIds = await _context.Cursos
+                .Where(c => c.ProfResponsavel == professorId)
+                .Select(c => c.Id)
+                .ToListAsync();
+
+            if (!cursosIds.Any())
+                return 0;
+
+            var totalAlunosAtivos = await _context.Matriculas
+                .Where(m =>
+                    cursosIds.Contains(m.CursoId) &&
+                    m.Status == "APROVADO"
+                )
+                .CountAsync();
+
+            return totalAlunosAtivos;
+        }
     }
 }
 

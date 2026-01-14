@@ -15,8 +15,7 @@ namespace tivitApi.Services
         Task<object> criarEvento(EventoDTO eventoDTO);
         Task<EventoDTO> obterProximoEvento();
         Task<List<EventoDTO>> getAllEvents();
-
-
+        Task<int> getNextWeekEvents();
     }
 
     public class EventoService : IEventoService
@@ -121,5 +120,25 @@ namespace tivitApi.Services
             return resultado;
         }
 
+        public async Task<int> getNextWeekEvents()
+        {
+            try
+            {
+                var agora = DateTime.Now;
+                var limite = agora.AddDays(7);
+
+                var quantidade = await _context.Eventos
+                    .CountAsync(e => e.Horario >= agora && e.Horario <= limite);
+
+                return quantidade;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao contar eventos dos próximos 7 dias");
+                throw new Exception("Erro interno ao buscar quantidade de eventos.");
+            }
+        }
+
+        
     }
 }

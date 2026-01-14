@@ -62,21 +62,23 @@
           <div class="resumo-card">
             <i class='bx bx-group'></i>
             <div>
-              <h3>120</h3>
+              <h3 id="qtdAlunosAtivos">0</h3>
               <p>Alunos Ativos</p>
             </div>
           </div>
+
           <div class="resumo-card">
             <i class='bx bx-book'></i>
             <div>
-              <h3>6</h3>
+              <h3 id="qtdTurmas">0</h3>
               <p>Turmas</p>
             </div>
           </div>
+
           <div class="resumo-card">
             <i class='bx bx-time'></i>
             <div>
-              <h3>3</h3>
+              <h3 id="qtdEventosSemana">0</h3>
               <p>Eventos nos próximos 7 dias</p>
             </div>
           </div>
@@ -85,18 +87,21 @@
         <!-- Último Evento -->
         <div class="ultimo-evento">
           <h2><i class='bx bx-calendar'></i> Próximo Evento</h2>
+
           <div class="evento-card">
             <div class="evento-info">
+              
               <div class="evento-data">
-                <span class="dia">20</span>
-                <span class="mes">OUT</span>
+                <span class="dia" id="evento-dia">--</span>
+                <span class="mes" id="evento-mes">---</span>
               </div>
+
               <div class="evento-detalhes">
-                <h3>Apresentação de Projetos</h3>
-                <p><strong>Horário:</strong> 09h00</p>
-                <p><strong>Local:</strong> Auditório Principal</p>
-                <p class="descricao">Os alunos apresentaram seus projetos finais do semestre para banca avaliadora.</p>
+                <h3 id="evento-titulo">Carregando...</h3>
+                <p><strong>Horário:</strong> <span id="evento-horario">--:--</span></p>
+                <p class="descricao" id="evento-descricao"></p>
               </div>
+
             </div>
           </div>
         </div>
@@ -114,6 +119,7 @@
             <button id="nextMonth">&gt;</button>
             <button id="nextYear">&raquo;</button>
           </div>
+
           <div class="calendar-days">
             <div class="day-name">Dom</div>
             <div class="day-name">Seg</div>
@@ -126,28 +132,16 @@
           <div id="calendarDays" class="calendar-grid"></div>
         </div>
 
-        <!-- Modal para adicionar evento -->
-        <div id="eventModal" class="modal">
+        <!-- Modal para visualizar evento -->
+        <div id="viewEventModal" class="modal">
           <div class="modal-content">
-            <h3>Adicionar Evento</h3>
-
-            <label for="eventTitle">Título:</label>
-            <input type="text" id="eventTitle" placeholder="Título do evento" />
-
-            <label for="eventTime">Horário:</label>
-            <input type="time" id="eventTime" />
-
-            <label for="eventDescription">Descrição:</label>
-            <textarea id="eventDescription" placeholder="Descreva o evento..." rows="3"></textarea>
-
+            <h3>Evento</h3>
+            <p id="viewDescription"></p>
             <div class="modal-actions">
-              <button id="saveEvent">Salvar</button>
-              <button id="closeModal">Cancelar</button>
+              <button id="closeViewModal">Fechar</button>
             </div>
           </div>
         </div>
-
-
       </section>
 
 

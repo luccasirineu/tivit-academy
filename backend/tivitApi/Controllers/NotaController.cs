@@ -71,5 +71,40 @@ namespace tivitApi.Controllers
                 });
             }
         }
+
+        [HttpGet("aluno/{matriculaId}/getAllNotasByMatriculaId")]
+        public async Task<IActionResult> GetAllNotasByMatriculaId(int matriculaId)
+        {
+            try
+            {
+                var notas = await _notaService.GetAllNotasByMatriculaId(matriculaId);
+                return Ok(notas);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    erro = ex.Message
+                });
+            }
+        }
+
+        [HttpGet("aluno/getAllNotasByNome")]
+        public async Task<IActionResult> GetAllNotasByNome([FromQuery] string nome)
+        {
+            if (string.IsNullOrWhiteSpace(nome))
+                return BadRequest("Nome do aluno é obrigatório.");
+
+            try
+            {
+                var notas = await _notaService.GetAllNotasByNomeAluno(nome);
+                return Ok(notas);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
     }
 }

@@ -1,0 +1,386 @@
+{
+   "proposta_id":8800001000000898,
+   "agregador":"553150720001101759414753991",
+   "tipo":"EMPRESA_MATRIZ",
+   "uuid":"a80fa326-d988-4766-97f1-3b50b15d9b61",
+   "cartao_proposta":{
+      "razao_social":"MARINA TARQUINI LTDA",
+      "cnpj":"55315072000110",
+      "endereco_empresa":{
+         "cep":"04125010",
+         "rua":"R MARIA BUCALEM HADDAD",
+         "numero":"123",
+         "complemento":"APT 104 BLOCO IBIZA",
+         "bairro":"VILA FIRMIANO PINTO",
+         "cidade":"SAO PAULO",
+         "estado":"SP"
+      },
+      "natureza_juridica":"2062 Sociedade Empresária Limitada",
+      "data_abertura":"28/05/2024",
+      "compulsoriedade":"6",
+      "contributariedade":"0",
+      "tipo_contratacao":"1",
+      "nome_responsavel":"MARINA TARQUINI",
+      "cpf_responsavel":"29500165880",
+      "e_mail_responsavel":"david.rissardo+1@segurosunimed.com.br",
+      "nome_mae":"ANGELA PEREIRA TARQUINI",
+      "data_nascimento":"05/06/1981",
+      "quantidade_vidas":1,
+      "CNAE":"7111100",
+      "beneficiarios_vinculados":[
+         {
+            "titular":"true",
+            "nome":"MARINA TARQUINI",
+            "cpf":"29500165880",
+            "tipo_vinculo":"1",
+            "grau_parentesco":""
+         }
+      ],
+      "representantes":[
+         {
+            "nome_representante":"MARINA TARQUINI",
+            "cpf_representante":"29500165880",
+            "e_mail_representante":"david.rissardo+1@segurosunimed.com.br",
+            "nome_mae_representante":"ANGELA PEREIRA TARQUINI",
+            "data_nascimento_representante":"05/06/1981"
+         }
+      ],
+      "nomes_assinatura":[
+         "MARINA TARQUINI"
+      ],
+      "empresas_vinculadas":[
+         {
+            "razao_social":"WITTUR LTDA",
+            "cnpj":"01692454000567",
+            "CNAE":"2822401"
+         }
+      ]
+   },
+   "arquivos":[
+      {
+         "id":"8",
+         "label":"Cartão CNPJ",
+         "imageref":"deneuve/segurosunimed/images/a13bfa9b-260f-4c95-92d5-d78adec1159c.pdf",
+         "date":"2026-01-06T13:26:39.620Z",
+         "filename":"CNPJ Atualizado.pdf",
+         "identifier_uuid":"59b91008-d049-4d00-887a-fa6db27c2a94",
+         "multiDocId":"8.906",
+         "documentoID":"a13bfa9b-260f-4c95-92d5-d78adec1159c",
+         "image":"https://segurosunimed.test.planium.io/svc/common/s3redirect.api?image=deneuve/segurosunimed/images/a13bfa9b-260f-4c95-92d5-d78adec1159c.pdf",
+         "download":true
+      },
+      {
+         "id":"10",
+         "label":"RG ou CNH (Resp. Legal, Sócio ou Procurador)",
+         "imageref":"deneuve/segurosunimed/images/c304d4f5-1ed6-49d3-a922-61cecdd9e9ea.pdf",
+         "date":"2026-01-06T13:26:54.667Z",
+         "filename":"DOC7 - RG e CPF do Responsável Legal - MARINA TARQUINI LTDA.pdf",
+         "identifier_uuid":"0e07bd77-b8e2-4f36-b91e-f0f541de52fa",
+         "multiDocId":"10.734",
+         "documentoID":"c304d4f5-1ed6-49d3-a922-61cecdd9e9ea",
+         "image":"https://segurosunimed.test.planium.io/svc/common/s3redirect.api?image=deneuve/segurosunimed/images/c304d4f5-1ed6-49d3-a922-61cecdd9e9ea.pdf",
+         "download":true
+      },
+      {
+         "id":"12",
+         "label":"Certificado microempresa",
+         "imageref":"deneuve/segurosunimed/images/acf9ce4b-4aab-4c2a-8364-ce26db670e24.pdf",
+         "date":"2026-01-12T21:19:18.529Z",
+         "filename":"Certificado MEI MARINA TARQUINI.pdf",
+         "identifier_uuid":"202aa563-e35e-499d-b888-187602a4851a",
+         "multiDocId":"12.309",
+         "documentoID":"acf9ce4b-4aab-4c2a-8364-ce26db670e24",
+         "image":"https://segurosunimed.test.planium.io/svc/common/s3redirect.api?image=deneuve/segurosunimed/images/acf9ce4b-4aab-4c2a-8364-ce26db670e24.pdf",
+         "download":true
+      }
+   ]
+}
+
+{
+   "proposta_id":8800001000000898,
+   "agregador":"553150720001101759414753991",
+   "tipo":"EMPRESA_FILIAL",
+   "uuid":"1ad0610f-ff39-42c2-9e05-a7b375dee35e",
+   "cartao_proposta":{
+      "razao_social_matriz":"MARINA TARQUINI LTDA",
+      "cnpj_matriz":"55315072000110",
+      "razao_social":"WITTUR LTDA",
+      "cnpj":"01692454000567",
+      "endereco_empresa":{
+         "cep":"86086550",
+         "rua":"R EUGENIA SAFRA DO ROSARIO",
+         "numero":"3000",
+         "complemento":"",
+         "bairro":"JARDIM FLORES DO CAMPO",
+         "cidade":"LONDRINA",
+         "estado":"PR"
+      },
+      "endereco_empresa_matriz":{
+         "cep":"04125010",
+         "rua":"R MARIA BUCALEM HADDAD",
+         "numero":"123",
+         "complemento":"APT 104 BLOCO IBIZA",
+         "bairro":"VILA FIRMIANO PINTO",
+         "cidade":"SAO PAULO",
+         "estado":"SP"
+      },
+      "natureza_juridica":"2062 Sociedade Empresária Limitada",
+      "data_abertura":"28/08/2015",
+      "compulsoriedade":"7",
+      "prestador_servico":"1",
+      "nome_responsavel":"MARINA TARQUINI",
+      "cpf_responsavel":"29500165880",
+      "e_mail_responsavel":"david.rissardo+3@segurosunimed.com.br",
+      "nome_mae":"ANGELA PEREIRA TARQUINI",
+      "data_nascimento":"05/06/1981",
+      "quantidade_vidas":1,
+      "CNAE":"2822401",
+      "beneficiarios_vinculados":[
+         {
+            "titular":"true",
+            "nome":"ANA PAULA DE SA WON",
+            "cpf":"14782663846",
+            "tipo_vinculo":"1",
+            "grau_parentesco":""
+         }
+      ],
+      "representantes":[
+         {
+            "nome_representante":"MARINA TARQUINI",
+            "cpf_representante":"29500165880",
+            "e_mail_representante":"david.rissardo+3@segurosunimed.com.br",
+            "nome_mae_representante":"ANGELA PEREIRA TARQUINI",
+            "data_nascimento_representante":"05/06/1981"
+         },
+         {
+            "nome_representante":"ELIAS LEAL LIMA",
+            "cpf_representante":"03790935379",
+            "e_mail_representante":"david.rissardo+11@segurosunimed.com.br",
+            "nome_mae_representante":"LUCIA DE FATIMA MATIAS LEAL LIMA",
+            "data_nascimento_representante":"24/06/1990"
+         }
+      ],
+      "nomes_assinatura":[
+         "MARINA TARQUINI",
+         "ELIAS LEAL LIMA"
+      ]
+   },
+   "arquivos":[
+      {
+         "id":"9",
+         "label":"FGTS (Relação Funcionários)",
+         "imageref":"deneuve/segurosunimed/images/193b706c-2524-467c-8b43-c1e2196111bd.pdf",
+         "date":"2026-01-06T13:19:01.349Z",
+         "filename":"FGTS - RE_WITTUR.pdf",
+         "identifier_uuid":"e2eeaf3f-f9d0-4c76-9b58-8f338db2b24f",
+         "multiDocId":"9.879",
+         "documentoID":"193b706c-2524-467c-8b43-c1e2196111bd",
+         "image":"https://segurosunimed.test.planium.io/svc/common/s3redirect.api?image=deneuve/segurosunimed/images/193b706c-2524-467c-8b43-c1e2196111bd.pdf",
+         "download":true
+      },
+      {
+         "id":"16",
+         "label":"FGTS (GFD)",
+         "imageref":"deneuve/segurosunimed/images/13abb485-7f0b-4697-b45e-522866775087.pdf",
+         "date":"2026-01-06T13:19:21.600Z",
+         "filename":"CNH.pdf",
+         "identifier_uuid":"0db9a425-07dc-4688-89c2-86bd661c3718",
+         "multiDocId":"16.64",
+         "documentoID":"13abb485-7f0b-4697-b45e-522866775087",
+         "image":"https://segurosunimed.test.planium.io/svc/common/s3redirect.api?image=deneuve/segurosunimed/images/13abb485-7f0b-4697-b45e-522866775087.pdf",
+         "download":true
+      },
+      {
+         "id":"21",
+         "label":"FGTS (Comprovante Pagamento)",
+         "imageref":"deneuve/segurosunimed/images/4f1bdbf5-31b9-45ba-a588-13225da7e95d.pdf",
+         "date":"2026-01-06T13:19:33.610Z",
+         "filename":"termo-coligada.pdf",
+         "identifier_uuid":"025f526a-40ec-45be-accf-6c1900e4deff",
+         "multiDocId":"21.48",
+         "documentoID":"4f1bdbf5-31b9-45ba-a588-13225da7e95d",
+         "image":"https://segurosunimed.test.planium.io/svc/common/s3redirect.api?image=deneuve/segurosunimed/images/4f1bdbf5-31b9-45ba-a588-13225da7e95d.pdf",
+         "download":true
+      },
+      {
+         "id":"8",
+         "label":"Cartão CNPJ",
+         "imageref":"deneuve/segurosunimed/images/fc7760f8-1252-47b5-8bf1-f38f2f2a629f.pdf",
+         "date":"2026-01-06T13:27:48.632Z",
+         "filename":"Cartão CNPJ.pdf",
+         "identifier_uuid":"d9fb3b7f-be26-4e98-85dd-6bd7de6518f1",
+         "multiDocId":"8.868",
+         "documentoID":"fc7760f8-1252-47b5-8bf1-f38f2f2a629f",
+         "image":"https://segurosunimed.test.planium.io/svc/common/s3redirect.api?image=deneuve/segurosunimed/images/fc7760f8-1252-47b5-8bf1-f38f2f2a629f.pdf",
+         "download":true
+      },
+      {
+         "id":"10",
+         "label":"RG ou CNH (Resp. Legal, Sócio ou Procurador)",
+         "imageref":"deneuve/segurosunimed/images/6991e335-055a-4a4d-8692-9703add1c6e4.pdf",
+         "date":"2026-01-06T13:28:40.578Z",
+         "filename":"DOC7 - RG e CPF do Responsável Legal - MARINA TARQUINI LTDA.pdf",
+         "identifier_uuid":"4b4f0d7c-1608-41b6-88e1-6eb772fc8a0d",
+         "multiDocId":"10.865",
+         "documentoID":"6991e335-055a-4a4d-8692-9703add1c6e4",
+         "image":"https://segurosunimed.test.planium.io/svc/common/s3redirect.api?image=deneuve/segurosunimed/images/6991e335-055a-4a4d-8692-9703add1c6e4.pdf",
+         "download":true
+      },
+      {
+         "id":"5",
+         "label":"Ata da eleição",
+         "imageref":"deneuve/segurosunimed/images/d40d123b-e45b-4e09-a697-dd73c3fbda0d.pdf",
+         "date":"2026-01-12T21:26:28.623Z",
+         "filename":"ata de eleicao_wittur.pdf",
+         "identifier_uuid":"d16cbc72-b524-4df0-a857-ac46860f7cb7",
+         "multiDocId":"5.213",
+         "documentoID":"d40d123b-e45b-4e09-a697-dd73c3fbda0d",
+         "image":"https://segurosunimed.test.planium.io/svc/common/s3redirect.api?image=deneuve/segurosunimed/images/d40d123b-e45b-4e09-a697-dd73c3fbda0d.pdf",
+         "download":true
+      },
+      {
+         "id":"7",
+         "label":"Estatuto social",
+         "imageref":"deneuve/segurosunimed/images/89902020-d930-4938-8e2f-0c29ed5780eb.pdf",
+         "date":"2026-01-12T21:26:44.883Z",
+         "filename":"estatuto social_wittur.pdf",
+         "identifier_uuid":"d33417b6-cd16-4a5d-9d0c-185b268556b2",
+         "multiDocId":"7.364",
+         "documentoID":"89902020-d930-4938-8e2f-0c29ed5780eb",
+         "image":"https://segurosunimed.test.planium.io/svc/common/s3redirect.api?image=deneuve/segurosunimed/images/89902020-d930-4938-8e2f-0c29ed5780eb.pdf",
+         "download":true
+      }
+   ]
+}
+
+{
+   "proposta_id":8800001000000898,
+   "agregador":"553150720001101759414753991",
+   "tipo":"BENEFICIARIO",
+   "uuid":"1ec98221-5360-4519-b543-cad22899735b",
+   "cartao_proposta":{
+      "titular":"true",
+      "nome":"MARINA TARQUINI",
+      "cpf":"29500165880",
+      "nome_mae":"ANGELA PEREIRA TARQUINI",
+      "data_nascimento":"05/06/1981",
+      "rg":"",
+      "data_admissao":"01/03/2025",
+      "estado_civil":4,
+      "tipo_vinculo":"1",
+      "oriundo_unimed":"0",
+      "carencia":"N/A",
+      "plano_destino":"PMECPENF",
+      "segmentacao":"AHCO",
+      "acomodacao":"C",
+      "abrangencia":"N",
+      "template_termo_reducao_carencia":"/termo_carencia_PME_CORPORATIVO",
+      "nome_titular":"MARINA TARQUINI",
+      "cpf_titular":"295.001.658-80",
+      "nome_mae_titular":"ANGELA PEREIRA TARQUINI",
+      "data_nascimento_titular":"05/06/1981",
+      "endereco_pessoal":{
+         "cep":"06.708-331",
+         "rua":"RUA BOA VISTA",
+         "numero":"84",
+         "complemento":"",
+         "bairro":"VILA SANTO ANTONIO",
+         "cidade":"COTIA",
+         "estado":"SP"
+      },
+      "razao_social":"MARINA TARQUINI LTDA",
+      "cnpj":"55315072000110",
+      "endereco_empresa":{
+         "cep":"04125010",
+         "rua":"R MARIA BUCALEM HADDAD",
+         "numero":"123",
+         "complemento":"APT 104 BLOCO IBIZA",
+         "bairro":"VILA FIRMIANO PINTO",
+         "cidade":"SAO PAULO",
+         "estado":"SP"
+      },
+      "dependentes":[
+         
+      ]
+   },
+   "arquivos":[
+      {
+         "id":"1",
+         "label":"RG ou CNH",
+         "imageref":"deneuve/segurosunimed/images/c59cdb81-89f9-4274-963c-6612bf790e9c.pdf",
+         "date":"2026-01-06T13:29:09.298Z",
+         "filename":"DOC7 - RG e CPF do Responsável Legal - MARINA TARQUINI LTDA.pdf",
+         "identifier_uuid":"5981d8bf-e439-40c5-a6a2-193540eb5efc",
+         "multiDocId":"1.196",
+         "documentoID":"c59cdb81-89f9-4274-963c-6612bf790e9c",
+         "image":"https://segurosunimed.test.planium.io/svc/common/s3redirect.api?image=deneuve/segurosunimed/images/c59cdb81-89f9-4274-963c-6612bf790e9c.pdf",
+         "download":true
+      }
+   ]
+}
+
+{
+   "proposta_id":8800001000000898,
+   "agregador":"553150720001101759414753991",
+   "tipo":"BENEFICIARIO",
+   "uuid":"4116653c-271e-4754-a55f-6793176c5ddc",
+   "cartao_proposta":{
+      "titular":"true",
+      "nome":"ANA PAULA DE SA WON",
+      "cpf":"14782663846",
+      "nome_mae":"ANGELA RUSSO BALDACCONI",
+      "data_nascimento":"15/08/1965",
+      "rg":"",
+      "data_admissao":"01/03/2025",
+      "estado_civil":4,
+      "tipo_vinculo":"1",
+      "oriundo_unimed":"0",
+      "carencia":"N/A",
+      "plano_destino":"PMECPENF",
+      "segmentacao":"AHCO",
+      "acomodacao":"C",
+      "abrangencia":"N",
+      "template_termo_reducao_carencia":"/termo_carencia_PME_CORPORATIVO",
+      "nome_titular":"ANA PAULA DE SA WON",
+      "cpf_titular":"147.826.638-46",
+      "nome_mae_titular":"ANGELA RUSSO BALDACCONI",
+      "data_nascimento_titular":"15/08/1965",
+      "endereco_pessoal":{
+         "cep":"06.714-220",
+         "rua":"RUA FRANCISCO MORACCI",
+         "numero":"84",
+         "complemento":"",
+         "bairro":"PARQUE ALEXANDRE",
+         "cidade":"COTIA",
+         "estado":"SP"
+      },
+      "razao_social":"WITTUR LTDA",
+      "cnpj":"01692454000567",
+      "endereco_empresa":{
+         "cep":"86086550",
+         "rua":"R EUGENIA SAFRA DO ROSARIO",
+         "numero":"3000",
+         "complemento":"",
+         "bairro":"JARDIM FLORES DO CAMPO",
+         "cidade":"LONDRINA",
+         "estado":"PR"
+      },
+      "dependentes":[
+         
+      ]
+   },
+   "arquivos":[
+      {
+         "id":"1",
+         "label":"RG ou CNH",
+         "imageref":"deneuve/segurosunimed/images/fdc491d0-3bdf-46b3-97e6-619d5ee4234a.pdf",
+         "date":"2026-01-06T13:29:52.247Z",
+         "filename":"CNH adminstrador.pdf",
+         "identifier_uuid":"7b8e9665-fb72-40b2-a1fd-72c10d019dd0",
+         "multiDocId":"1.178",
+         "documentoID":"fdc491d0-3bdf-46b3-97e6-619d5ee4234a",
+         "image":"https://segurosunimed.test.planium.io/svc/common/s3redirect.api?image=deneuve/segurosunimed/images/fdc491d0-3bdf-46b3-97e6-619d5ee4234a.pdf",
+         "download":true
+      }
+   ]
+}

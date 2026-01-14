@@ -28,7 +28,7 @@ namespace tivitApi.Services
         {
             var cursos = await _context.Cursos.ToListAsync();
 
-            // converter lista de Matricula → lista de MatriculaDTO
+            // converter lista de Matricula -> lista de MatriculaDTO
             var resultado = cursos
             .Select(curso => ConvertCursoToCursoDTO(curso))
             .ToList();
@@ -44,6 +44,20 @@ namespace tivitApi.Services
 
             CursoDTO cursoDTO =  ConvertCursoToCursoDTO(curso);
             return cursoDTO;
+        }
+
+        public async Task<int> GetQntdCursosProf(int professorId)
+        {
+            try
+            {
+                var quantidade = await _context.Cursos.Where(m => m.ProfResponsavel == professorId).CountAsync();
+
+                return quantidade;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro interno ao buscar quantidade de cursos relacionados ao professor.");
+            }
         }
 
 

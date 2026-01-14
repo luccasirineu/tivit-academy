@@ -19,6 +19,8 @@ builder.Services.AddScoped<IEventoService, EventoService>();
 builder.Services.AddScoped<IMateriaService, MateriaService>();
 builder.Services.AddScoped<IConteudoService,ConteudoService>();
 builder.Services.AddScoped<INotaService, NotaService>();
+builder.Services.AddScoped<IAlunoService, AlunoService>();
+
 
 
 builder.Services.AddSingleton<SQSProducer>();

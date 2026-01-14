@@ -11,6 +11,6 @@ namespace tivitApi.Services
         Task<List<MatriculaDTO>> GetAllMatriculasPendentes();
         Task AprovarMatricula(string matriculaId);
         Task RecusarMatricula(string matriculaId);
-
+        Task<int> GetTotalAlunosAtivosPorProfessor(int professorId);
     }
 }

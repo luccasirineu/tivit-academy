@@ -234,7 +234,7 @@ async function criarOuAtualizarGraficoEvolucao(notas) {
 
   for (const nota of notas) {
     const nomeMateria = await buscarNomeMateria(nota.materiaId);
-    labels.push(nomeMateria);      // ✅ string
+    labels.push(nomeMateria);      
     medias.push(nota.media);
   }
 
@@ -435,7 +435,7 @@ async function buscarNomeMateria(materiaId) {
 
     const data = await response.json();
 
-    // ✅ RETORNA APENAS A STRING
+    
     return data.materiaNome;
 
   } catch (error) {

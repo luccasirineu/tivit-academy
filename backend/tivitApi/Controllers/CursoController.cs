@@ -34,7 +34,14 @@ namespace tivitApi.Controllers
             return Ok(cursoDTO);
         }
 
+        [HttpGet("getQntdCursosProf/{professorId}")]
+        public async Task<IActionResult> GetNextWeekEvents(int professorId)
+        {
+            var qntdEventos = await _cursoService.GetQntdCursosProf(professorId);
 
+
+            return Ok(qntdEventos);
+        }
 
     }
 }
