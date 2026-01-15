@@ -10,7 +10,7 @@ namespace tivitApi.Services
         Task<List<CursoDTO>> GetAllCursosAsync();
         Task<CursoDTO> GetCursoById(int cursoId);
         Task<int> GetQntdCursosProf(int professorId);
-
+        Task<List<CursoDTO>> GetAllCursosProfAsync(int professorId);
 
 
     }

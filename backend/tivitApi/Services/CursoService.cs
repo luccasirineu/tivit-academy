@@ -60,6 +60,16 @@ namespace tivitApi.Services
             }
         }
 
+        public async Task<List<CursoDTO>> GetAllCursosProfAsync(int professorId)
+        {
+            var cursos = await _context.Cursos.Where(m => m.ProfResponsavel == professorId).ToListAsync();
+
+            var resultado = cursos
+            .Select(curso => ConvertCursoToCursoDTO(curso))
+            .ToList();
+
+            return resultado;
+        }
 
     }
 }

@@ -8,8 +8,8 @@ namespace tivitApi.Services
 {
     public interface IAlunoService
     {
-        Task<AlunoDTO> getInfoAluno(int alunoId);
-
+        Task<AlunoDTO> GetInfoAluno(int alunoId);
+        Task<List<AlunoDTO>> GetAllAlunosByCurso(int cursoId);
     }
 
     public class AlunoService : IAlunoService
@@ -21,8 +21,17 @@ namespace tivitApi.Services
             _context = context;
         }
 
+        private AlunoDTO ConvertAtributosToAlunoDTO(string Nome, string Email, string Cpf, int Id)
+        {
+            return new AlunoDTO(
+                Nome,
+                Email,
+                Cpf,
+                Id
+                );
+        }
 
-        public async Task<AlunoDTO> getInfoAluno(int alunoId)
+        public async Task<AlunoDTO> GetInfoAluno(int alunoId)
         {
             var aluno = await _context.Alunos
                 .Where(a => a.Id == alunoId)
@@ -65,5 +74,28 @@ namespace tivitApi.Services
             };
         }
 
+        public async Task<List<AlunoDTO>> GetAllAlunosByCurso(int cursoId)
+        {
+            var alunosByCurso = await _context.Matriculas
+                .Where(a => a.CursoId == cursoId && a.Status == "APROVADO")
+                .Select(a => new
+                {
+                    a.Nome,
+                    a.Email,
+                    a.Cpf,
+                    a.Id
+                })
+                .ToListAsync();
+
+            if (alunosByCurso == null)
+                throw new Exception("Matriculas não encontradas.");
+
+            var listaAlunos = alunosByCurso
+            .Select(matricula => ConvertAtributosToAlunoDTO(matricula.Nome, matricula.Email, matricula.Cpf, matricula.Id))
+            .ToList();
+
+            return listaAlunos;
+        }
+
     }
-  }
+}

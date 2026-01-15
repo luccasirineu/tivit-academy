@@ -21,6 +21,14 @@ namespace tivitApi.DTOs
             MatriculaId = matriculaId;
         }
 
+        public AlunoDTO(string nome, string email, string cpf, int matriculaId)
+        {
+            Nome = nome;
+            Email = email;
+            Cpf = cpf;
+            MatriculaId = matriculaId;
+        }
+
         public AlunoDTO() { }
 
     }

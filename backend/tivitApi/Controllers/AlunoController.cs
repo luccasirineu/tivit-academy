@@ -22,8 +22,23 @@ namespace tivitApi.Controllers
            
             try
             {
-                var infoAluno = await _alunoService.getInfoAluno(alunoId);
+                var infoAluno = await _alunoService.GetInfoAluno(alunoId);
                 return Ok(infoAluno);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+        [HttpGet("getAllAlunosByCurso/{cursoId}")]
+        public async Task<IActionResult> GetAllAlunosByCurso(int cursoId)
+        {
+
+            try
+            {
+                var alunosByCurso = await _alunoService.GetAllAlunosByCurso(cursoId);
+                return Ok(alunosByCurso);
             }
             catch (Exception ex)
             {
