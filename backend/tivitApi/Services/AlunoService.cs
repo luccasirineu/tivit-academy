@@ -21,13 +21,14 @@ namespace tivitApi.Services
             _context = context;
         }
 
-        private AlunoDTO ConvertAtributosToAlunoDTO(string Nome, string Email, string Cpf, int Id)
+        private AlunoDTO ConvertAtributosToAlunoDTO(string Nome, string Email, string Cpf, int Id, int alunoId)
         {
             return new AlunoDTO(
                 Nome,
                 Email,
                 Cpf,
-                Id
+                Id,
+                alunoId
                 );
         }
 
@@ -76,25 +77,32 @@ namespace tivitApi.Services
 
         public async Task<List<AlunoDTO>> GetAllAlunosByCurso(int cursoId)
         {
-            var alunosByCurso = await _context.Matriculas
-                .Where(a => a.CursoId == cursoId && a.Status == "APROVADO")
-                .Select(a => new
+            var alunosByCurso = await (
+                from m in _context.Matriculas
+                join a in _context.Alunos on m.Id equals a.MatriculaId
+                where m.CursoId == cursoId && m.Status == "APROVADO"
+                select new
                 {
-                    a.Nome,
-                    a.Email,
-                    a.Cpf,
-                    a.Id
-                })
-                .ToListAsync();
+                    MatriculaId = m.Id,
+                    AlunoId = a.Id,
+                    m.Nome,
+                    m.Email,
+                    m.Cpf
+                }
+            ).ToListAsync();
 
-            if (alunosByCurso == null)
-                throw new Exception("Matriculas não encontradas.");
+            if (!alunosByCurso.Any())
+                throw new Exception("Matrículas não encontradas.");
 
-            var listaAlunos = alunosByCurso
-            .Select(matricula => ConvertAtributosToAlunoDTO(matricula.Nome, matricula.Email, matricula.Cpf, matricula.Id))
-            .ToList();
-
-            return listaAlunos;
+            return alunosByCurso
+                .Select(x => ConvertAtributosToAlunoDTO(
+                    x.Nome,
+                    x.Email,
+                    x.Cpf,
+                    x.MatriculaId,
+                    x.AlunoId
+                ))
+                .ToList();
         }
 
     }

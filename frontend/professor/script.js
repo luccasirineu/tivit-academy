@@ -18,35 +18,7 @@ themeSwitch.addEventListener("change", () => {
 });
 
 
-// ===== CÁLCULO DE MÉDIAS E FREQUÊNCIA =====
-document.getElementById("calcularBtn").addEventListener("click", () => {
-  const nota1 = parseFloat(document.getElementById("nota1").value) || 0;
-  const nota2 = parseFloat(document.getElementById("nota2").value) || 0;
-  const faltas = parseInt(document.getElementById("faltas").value) || 0;
-  const totalAulas = parseInt(document.getElementById("totalAulas").value) || 1;
 
-  const media = ((nota1 + nota2) / 2).toFixed(1);
-  const frequencia = (((totalAulas - faltas) / totalAulas) * 100).toFixed(1);
-
-  document.getElementById("mediaFinal").textContent = media;
-  document.getElementById("frequenciaTexto").textContent = `${frequencia}%`;
-
-  // Atualiza barra de frequência
-  const barra = document.getElementById("barraFreq");
-  barra.style.width = `${frequencia}%`;
-
-  const statusEl = document.getElementById("statusAluno");
-  const statusCard = statusEl.parentElement;
-  statusCard.classList.remove("aprovado", "reprovado");
-
-  if (media >= 6 && frequencia >= 75) {
-    statusEl.textContent = "✅ Aprovado";
-    statusCard.classList.add("aprovado");
-  } else {
-    statusEl.textContent = "❌ Reprovado";
-    statusCard.classList.add("reprovado");
-  }
-});
 
 //toggle ocult sidebar
 const toggleBtn = document.getElementById("toggleSidebar");
@@ -437,3 +409,149 @@ async function buscarInfoAluno(alunoId) {
 
   return await response.json(); 
 }
+const selectCurso = document.getElementById("selectCurso");
+const alunosContainer = document.getElementById("alunosContainer");
+const formNota = document.getElementById("formNota");
+const materiaSelect = document.getElementById("materiaSelect");
+
+let alunoSelecionadoId = null;
+let cursoSelecionadoId = null;
+
+/* =============================
+   CARREGAR CURSOS DO PROFESSOR
+============================= */
+async function carregarCursos() {
+  const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
+
+  if (!usuarioLogado?.id) {
+    console.warn("Professor não identificado");
+    return;
+  }
+
+  const response = await fetch(
+    `http://localhost:5027/api/Curso/getAllCursosProf/${usuarioLogado.id}`
+  );
+
+  const cursos = await response.json();
+
+  cursos.forEach(curso => {
+    const option = document.createElement("option");
+    option.value = curso.id;
+    option.textContent = curso.nome;
+    selectCurso.appendChild(option);
+  });
+}
+
+carregarCursos();
+
+/* =============================
+   AO SELECIONAR CURSO
+============================= */
+selectCurso.addEventListener("change", async () => {
+  cursoSelecionadoId = selectCurso.value;
+  alunosContainer.innerHTML = "";
+  formNota.classList.add("hidden");
+
+  if (!cursoSelecionadoId) return;
+
+  const response = await fetch(
+    `http://localhost:5027/api/Aluno/getAllAlunosByCurso/${cursoSelecionadoId}`
+  );
+
+  const alunos = await response.json();
+  alunosContainer.classList.remove("hidden");
+
+  alunos.forEach(aluno => {
+    const card = document.createElement("div");
+    card.classList.add("aluno-card");
+
+    card.innerHTML = `
+      <div>
+        <h4>${aluno.nome}</h4>
+        <p>Email: ${aluno.email}</p>
+        <p>CPF: ${aluno.cpf}</p>
+        <p>Matrícula: ${aluno.matriculaId}</p>
+      </div>
+      <button class="btn-lancar">Lançar Nota</button>
+    `;
+
+    card.querySelector("button").addEventListener("click", () => {
+      // Remove seleção dos outros alunos
+      document
+        .querySelectorAll(".aluno-card")
+        .forEach(c => c.classList.remove("selecionado"));
+
+      // Marca este como selecionado
+      card.classList.add("selecionado");
+
+      abrirFormularioNota(aluno.matriculaId);
+    });
+
+    alunosContainer.appendChild(card);
+  });
+});
+
+/* =============================
+   ABRIR FORMULÁRIO DE NOTA
+============================= */
+async function abrirFormularioNota(alunoId) {
+  alunoSelecionadoId = alunoId;
+  formNota.classList.remove("hidden");
+  await carregarMateriasPorCurso(cursoSelecionadoId);
+}
+
+/* =============================
+   CARREGAR MATÉRIAS DO CURSO
+============================= */
+async function carregarMateriasPorCurso(cursoId) {
+  const response = await fetch(
+    `http://localhost:5027/api/Materia/getMateriasByCursoId/${cursoId}`
+  );
+
+  const materias = await response.json();
+  materiaSelect.innerHTML = `<option value="">Selecione a matéria</option>`;
+
+  materias.forEach(materia => {
+    const option = document.createElement("option");
+    option.value = materia.id;
+    option.textContent = materia.nome;
+    materiaSelect.appendChild(option);
+  });
+}
+
+/* =============================
+   SALVAR NOTA
+============================= */
+document.getElementById("btnSalvarNota").addEventListener("click", async () => {
+  const payload = {
+    alunoId: alunoSelecionadoId,
+    materiaId: Number(materiaSelect.value),
+    nota1: Number(document.getElementById("nota1").value),
+    nota2: Number(document.getElementById("nota2").value),
+    qtdFaltas: Number(document.getElementById("qtdFaltas").value)
+  };
+
+  if (!payload.materiaId) {
+    alert("Selecione uma matéria");
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      "http://localhost:5027/api/Nota/adicionarNota",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      }
+    );
+
+    if (!response.ok) throw new Error();
+
+    alert("Nota lançada com sucesso!");
+    formNota.classList.add("hidden");
+  } catch {
+    alert("Erro ao lançar nota");
+  }
+});
+

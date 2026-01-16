@@ -655,154 +655,261 @@ body.light .stat-card {
   background: #ff3377;
 }
 
+/* ================================
+   CÁLCULO DE MÉDIA E FREQUÊNCIA
+================================ */
 
+#calculo {
+  padding: 32px;
+  height: 100%;
+  overflow-y: auto;
+}
 
-/* calculo e frequencia */
-.calculo-section {
-  padding: 25px 30px;
+/* TÍTULO */
+#calculo h1 {
   display: flex;
-  flex-direction: column;
-  gap: 20px;
-  min-height: calc(100vh - 100px);
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 32px;
+  font-size: 26px;
 }
 
-.calculo-section h1 {
-  font-size: 1.6rem;
-  color: var(--rosa-principal);
-  text-align: center;
-  margin-bottom: 10px;
-}
+/* ================================
+   CONTAINERS PRINCIPAIS
+================================ */
 
 .calculo-container {
-  display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
-  gap: 25px;
-  align-items: start;
-}
-
-.input-area, .resultado-area {
-  background-color: var(--card-bg);
-  padding: 18px;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-}
-
-.input-area h2, .resultado-area h2 {
-  color: var(--texto);
-  margin-bottom: 10px;
-  border-bottom: 2px solid var(--rosa-principal);
-  padding-bottom: 14px;
-  font-size: 1.1rem;
-}
-
-.form-group {
   display: flex;
   flex-direction: column;
-  margin-bottom: 10px;
+  gap: 28px;
 }
 
-.form-group label {
+/* ================================
+   SELECT DE CURSO
+================================ */
+
+.select-curso {
+  max-width: 420px;
+}
+
+.select-curso label {
+  display: block;
+  margin-bottom: 8px;
   font-weight: 600;
-  font-size: 0.9rem;
-  margin-bottom: 4px;
 }
 
-.form-group input {
-  padding: 8px;
-  border-radius: 6px;
-  border: 1px solid var(--borda);
-  background-color: var(--input-bg);
-  color: var(--texto);
-  font-size: 0.9rem;
-}
-
-.form-row {
-  display: flex;
-  gap: 30px;
-}
-
-.input-area input{
-  background-color: rgba(155, 155, 155, 0.285)
-}
-
-
-.btn-calc {
-  background-color: #ff0054;
-  color: white;
-  padding: 10px;
-  border: none;
-  border-radius: 8px;
+.select-curso select {
   width: 100%;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.3s ease;
-  margin-top: 8px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: var(--bg-secondary);
+  color: var(--text);
+  border: 1px solid transparent;
+  outline: none;
+  font-size: 14px;
+  transition: 0.3s;
 }
 
-.btn-calc:hover {
+.select-curso select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--shadow);
+}
+
+/* ================================
+   LISTA DE ALUNOS
+================================ */
+
+.alunos-lista {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+/* CARD DO ALUNO */
+.aluno-card {
+  background: var(--bg-secondary);
+  padding: 18px;
+  border-radius: 16px;
+  box-shadow: 0 6px 18px var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.aluno-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px var(--shadow);
+}
+
+.aluno-card h3 {
+  margin: 0;
+  font-size: 16px;
+  color: var(--accent);
+}
+
+.aluno-card p {
+  margin: 0;
+  font-size: 13px;
   opacity: 0.9;
 }
 
-/* === AJUSTE DE TAMANHO DA ÁREA DE RESULTADO FINAL === */
-
-.resultado-area {
-  gap: 8px;
-  padding: 10px 15px;
+/* BOTÃO DE LANÇAR NOTA */
+.aluno-card button {
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.25s;
 }
 
-.resultado-card {
-  margin-top: 20px;
-  margin-bottom: 4%;
-  border-radius: 8px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-  background-color: rgba(73, 73, 73, 0.628);
+.aluno-card button:hover {
+  filter: brightness(1.1);
 }
 
-/* 🎨 Ajuste específico para o modo escuro */
-body.light .resultado-card {
-  background-color: rgb(234, 234, 234); /* levemente mais claro que o fundo */
+/* ================================
+   FORMULÁRIO DE NOTAS
+================================ */
+
+.form-nota {
+  background: var(--bg-secondary);
+  padding: 24px;
+  border-radius: 18px;
+  box-shadow: 0 8px 22px var(--shadow);
+  max-width: 520px;
 }
 
-.resultado-card h3 {
-  font-size: 0.9rem;
-  margin-bottom: 10px;
+.form-nota h2 {
+  margin-bottom: 20px;
+  font-size: 20px;
 }
 
-.resultado-card p {
-  font-size: 1rem;
+/* GRID */
+.form-nota .grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+/* CAMPOS */
+.form-nota label {
+  font-size: 13px;
   font-weight: 600;
 }
 
-.status p {
-  font-size: 0.9rem;
-  font-weight: 600;
+.form-nota input,
+.form-nota select {
+  width: 100%;
+  margin-top: 6px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  outline: none;
+  font-size: 14px;
+  transition: 0.25s;
 }
 
-.status.aprovado p,
-.status.reprovado p {
+body.light .form-nota input,
+body.light .form-nota select {
+  border-color: rgba(0, 0, 0, 0.15);
+}
+
+.form-nota input:focus,
+.form-nota select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--shadow);
+}
+
+/* BOTÃO SALVAR */
+.form-nota .btn-salvar {
+  margin-top: 18px;
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  background: var(--accent);
+  border: none;
+  color: #fff;
+  font-size: 15px;
   font-weight: 700;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
-@media (max-height: 800px) {
-  .resultado-card {
-    padding: 8px 10px;
+.form-nota .btn-salvar:hover {
+  filter: brightness(1.15);
+}
+
+
+.hidden {
+  display: none;
+}
+
+/* ================================
+   RESPONSIVO
+================================ */
+
+@media (max-width: 768px) {
+  .form-nota .grid {
+    grid-template-columns: 1fr;
   }
-  .resultado-card p {
-    font-size: 0.9rem;
-  }
-  .status p {
-    font-size: 0.85rem;
+
+  #calculo {
+    padding: 20px;
   }
 }
 
-
-.return-btn{
-  color: white;
+.aluno-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg-secondary);
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 14px;
+  box-shadow: 0 4px 12px var(--shadow);
+  transition: all 0.25s ease;
+  border: 2px solid transparent;
 }
-body.light .return-btn {
-  color: black; 
+
+.aluno-card:hover {
+  transform: translateY(-3px);
 }
 
+/* 🔥 ALUNO SELECIONADO */
+.aluno-card.selecionado {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(255, 0, 84, 0.25);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 0, 84, 0.15),
+    var(--bg-secondary)
+  );
+}
+
+.aluno-card.selecionado h4::after {
+  color: var(--accent);
+  font-size: 0.9rem;
+}
+
+.btn-lancar {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 16px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-lancar:hover {
+  opacity: 0.9;
+}
 
 
 /* ---- LAYOUT PAI ---- */
@@ -926,4 +1033,3 @@ body.sidebar-collapsed .sidebar-toggle-floating {
   opacity: 1;
   pointer-events: auto;
 }
-
