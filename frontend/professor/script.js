@@ -555,3 +555,151 @@ document.getElementById("btnSalvarNota").addEventListener("click", async () => {
   }
 });
 
+
+const selectCursoChamada = document.getElementById("selectCursoChamada");
+const selectMateriaChamada = document.getElementById("selectMateriaChamada");
+const materiaChamadaContainer = document.getElementById("materiaChamadaContainer");
+const alunosChamadaContainer = document.getElementById("alunosChamadaContainer");
+const tabelaChamada = document.getElementById("tabelaChamada");
+
+async function carregarCursosChamada() {
+  const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
+  if (!usuarioLogado?.id) return;
+
+  const response = await fetch(
+    `http://localhost:5027/api/Curso/getAllCursosProf/${usuarioLogado.id}`
+  );
+  const cursos = await response.json();
+
+  cursos.forEach(curso => {
+    const option = document.createElement("option");
+    option.value = curso.id;
+    option.textContent = curso.nome;
+    selectCursoChamada.appendChild(option);
+  });
+}
+
+carregarCursosChamada();
+
+selectCursoChamada.addEventListener("change", async () => {
+  const cursoId = selectCursoChamada.value;
+
+  selectMateriaChamada.innerHTML =
+    `<option value="">-- Selecione a matéria --</option>`;
+  tabelaChamada.innerHTML = "";
+
+  alunosChamadaContainer.classList.add("hidden");
+  materiaChamadaContainer.classList.add("hidden");
+
+  if (!cursoId) return;
+
+  const response = await fetch(
+    `http://localhost:5027/api/Materia/getMateriasByCursoId/${cursoId}`
+  );
+
+  const materias = await response.json();
+
+  materias.forEach(materia => {
+    const option = document.createElement("option");
+    option.value = materia.id;
+    option.textContent = materia.nome;
+    selectMateriaChamada.appendChild(option);
+  });
+
+  materiaChamadaContainer.classList.remove("hidden");
+});
+
+selectMateriaChamada.addEventListener("change", async () => {
+  const cursoId = selectCursoChamada.value;
+  const materiaId = selectMateriaChamada.value;
+
+  tabelaChamada.innerHTML = "";
+  alunosChamadaContainer.classList.add("hidden");
+
+  if (!materiaId) return;
+
+  const response = await fetch(
+    `http://localhost:5027/api/Aluno/getAllAlunosByCurso/${cursoId}`
+  );
+
+  const alunos = await response.json();
+
+  alunos.forEach(aluno => {
+    const tr = document.createElement("tr");
+
+    tr.innerHTML = `
+      <td>${aluno.nome}</td>
+      <td>${aluno.matriculaId}</td>
+      <td style="text-align:center">
+        <input 
+          type="checkbox"
+          class="checkbox-falta"
+          data-aluno-id="${aluno.matriculaId}"
+        />
+      </td>
+    `;
+
+    tabelaChamada.appendChild(tr);
+  });
+
+  alunosChamadaContainer.classList.remove("hidden");
+});
+document.getElementById("btnSalvarChamada").addEventListener("click", async () => {
+  const materiaId = Number(selectMateriaChamada.value);
+  if (!materiaId) return;
+
+  const chamadaPayload = [];
+
+  document.querySelectorAll(".checkbox-falta").forEach(cb => {
+    chamadaPayload.push({
+      matriculaId: Number(cb.dataset.alunoId),
+      materiaId,
+      faltou: cb.checked
+    });
+  });
+
+  if (!chamadaPayload.length) return;
+
+  try {
+    const response = await fetch(
+      "http://localhost:5027/api/Chamada/realizarChamada",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(chamadaPayload)
+      }
+    );
+
+    // ✅ SUCESSO (204)
+    if (response.status === 204) {
+      mostrarSucessoChamada();
+    } else {
+      throw new Error("Erro ao salvar chamada");
+    }
+  } catch (error) {
+    console.error(error);
+    alert("Erro ao salvar chamada");
+  }
+});
+
+function mostrarSucessoChamada() {
+  document.getElementById("chamadaSucesso").classList.remove("hidden");
+
+  // bloqueia edição
+  document.querySelectorAll(".checkbox-falta").forEach(cb => {
+    cb.disabled = true;
+  });
+
+  document.getElementById("btnSalvarChamada").disabled = true;
+}
+
+
+document.getElementById("btnNovaChamada").addEventListener("click", () => {
+  document.getElementById("chamadaSucesso").classList.add("hidden");
+
+  selectMateriaChamada.value = "";
+  tabelaChamada.innerHTML = "";
+  alunosChamadaContainer.classList.add("hidden");
+
+  document.getElementById("btnSalvarChamada").disabled = false;
+});

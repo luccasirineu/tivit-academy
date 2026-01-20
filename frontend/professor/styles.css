@@ -1033,3 +1033,86 @@ body.sidebar-collapsed .sidebar-toggle-floating {
   opacity: 1;
   pointer-events: auto;
 }
+
+#chamada {
+  padding: 30px;
+}
+
+.select-box {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.select-box select {
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  background: var(--bg-secondary);
+  color: var(--text);
+}
+
+.checkbox-falta {
+  transform: scale(1.4);
+  cursor: pointer;
+}
+
+.btn-primary {
+  margin-top: 20px;
+  padding: 12px 20px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  opacity: 0.9;
+}
+
+.hidden {
+  display: none;
+}
+
+
+.chamada-sucesso {
+  margin-top: 20px;
+  padding: 16px;
+  background: var(--bg-secondary);
+  border-left: 4px solid var(--accent);
+  border-radius: 8px;
+  box-shadow: 0 4px 10px var(--shadow);
+}
+
+.chamada-sucesso p {
+  margin: 0 0 12px;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.acoes-chamada {
+  display: flex;
+  gap: 12px;
+}
+
+.acoes-chamada button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+#btnEditarChamada {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+}
+
+#btnNovaChamada {
+  background: var(--accent);
+  color: #fff;
+}

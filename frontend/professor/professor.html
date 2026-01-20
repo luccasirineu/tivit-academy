@@ -30,8 +30,8 @@
           <li class="active" data-section="dashboard" > <i class='bx  bx-home'  ></i> Dashboard</li> 
           <li data-section="calendario"><i class='bx bx-calendar'></i> Calendário</li>
           <li data-section="boletins"><i class='bx bx-file'></i> Boletins</li>
-          <li data-section="calculo"><i class='bx bx-calculator'></i> Médias & Frequência</li>
-          <li data-section="chamada"><i class='bx  bx-phone'></i>  Chamada</li>
+          <li data-section="notas"><i class='bx bx-calculator'></i> Notas</li>
+          <li data-section="chamada"><i class="bx bx-check-square"></i>  Chamada</li>
           <li data-section="conteudo"><i class='bx  bx-book-content'></i> Conteúdo</li>
           <br>
           <a href="../index.html" class="return-btn" title="Voltar para o início">
@@ -184,8 +184,8 @@
 
 
       <!-- MÉDIAS E FREQUÊNCIA -->
-      <section id="calculo">
-      <h1><i class='bx bx-calculator'></i> Cálculo de Média e Frequência</h1>
+      <section id="notas">
+      <h1><i class='bx bx-calculator'></i> Notas</h1>
 
       <div class="calculo-container">
 
@@ -234,7 +234,58 @@
         </div>
 
       </div>
-    </section>
+      </section>
+      
+      <!-- CHAMADA -->
+      <section id="chamada">
+        <h1><i class="bx bx-check-square"></i> Chamada</h1>
+
+        <!-- Seleção de Curso -->
+        <div class="select-box">
+          <label><strong>Selecione o curso</strong></label>
+          <select id="selectCursoChamada">
+            <option value="">-- Selecione um curso --</option>
+          </select>
+        </div>
+
+        <!-- Seleção de Matéria -->
+        <div class="select-box hidden" id="materiaChamadaContainer">
+          <label><strong>Selecione a matéria</strong></label>
+          <select id="selectMateriaChamada">
+            <option value="">-- Selecione a matéria --</option>
+          </select>
+        </div>
+
+        <!-- Lista de alunos -->
+        <div id="alunosChamadaContainer" class="hidden">
+          <h3>Lista de Alunos</h3>
+
+          <table class="tabela-notas">
+            <thead>
+              <tr>
+                <th>Aluno</th>
+                <th>Matrícula</th>
+                <th>Faltou?</th>
+              </tr>
+            </thead>
+            <tbody id="tabelaChamada"></tbody>
+          </table>
+
+          <button id="btnSalvarChamada" class="btn-primary">
+            <i class="bx bx-save"></i> Salvar Chamada
+          </button>
+        </div>
+
+        <div id="chamadaSucesso" class="hidden chamada-sucesso">
+          <p><i class='bx  bx-check'></i> Chamada realizada com sucesso!</p>
+
+          <div class="acoes-chamada">
+            <button id="btnNovaChamada">Nova chamada</button>
+          </div>
+        </div>
+      </section>
+
+
 
 
 

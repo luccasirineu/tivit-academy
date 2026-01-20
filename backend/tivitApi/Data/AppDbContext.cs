@@ -18,6 +18,8 @@ namespace tivitApi.Data
         public DbSet<Conteudo> Conteudos { get; set; }
         public DbSet<Materia> Materias { get; set; }
         public DbSet<Nota> Notas { get; set; }
+        public DbSet<Chamada> Chamadas { get; set; }
+
 
 
 
