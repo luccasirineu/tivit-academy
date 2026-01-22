@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using tivitApi.Data;
 
@@ -11,9 +12,11 @@ using tivitApi.Data;
 namespace tivitApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260121201709_atualizandoTipoDeAluno")]
+    partial class atualizandoTipoDeAluno
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -109,16 +112,11 @@ namespace tivitApi.Migrations
                     b.Property<int>("MatriculaId")
                         .HasColumnType("int");
 
-                    b.Property<int>("TurmaId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("MateriaId");
 
                     b.HasIndex("MatriculaId");
-
-                    b.HasIndex("TurmaId");
 
                     b.ToTable("Chamadas");
                 });
@@ -442,17 +440,9 @@ namespace tivitApi.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("tivitApi.Models.Turma", "Turma")
-                        .WithMany()
-                        .HasForeignKey("TurmaId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
                     b.Navigation("Materia");
 
                     b.Navigation("Matricula");
-
-                    b.Navigation("Turma");
                 });
 
             modelBuilder.Entity("tivitApi.Models.ComprovantePagamento", b =>

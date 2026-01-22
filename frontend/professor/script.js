@@ -557,10 +557,15 @@ document.getElementById("btnSalvarNota").addEventListener("click", async () => {
 
 
 const selectCursoChamada = document.getElementById("selectCursoChamada");
+const selectTurmaChamada = document.getElementById("selectTurmaChamada");
 const selectMateriaChamada = document.getElementById("selectMateriaChamada");
+
+const turmaChamadaContainer = document.getElementById("turmaChamadaContainer");
 const materiaChamadaContainer = document.getElementById("materiaChamadaContainer");
 const alunosChamadaContainer = document.getElementById("alunosChamadaContainer");
+
 const tabelaChamada = document.getElementById("tabelaChamada");
+
 
 async function carregarCursosChamada() {
   const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
@@ -584,12 +589,42 @@ carregarCursosChamada();
 selectCursoChamada.addEventListener("change", async () => {
   const cursoId = selectCursoChamada.value;
 
+  selectTurmaChamada.innerHTML =
+    `<option value="">-- Selecione a turma --</option>`;
+  selectMateriaChamada.innerHTML =
+    `<option value="">-- Selecione a matéria --</option>`;
+
+  tabelaChamada.innerHTML = "";
+
+  turmaChamadaContainer.classList.add("hidden");
+  materiaChamadaContainer.classList.add("hidden");
+  alunosChamadaContainer.classList.add("hidden");
+
+  if (!cursoId) return;
+
+  const response = await fetch(
+    `http://localhost:5027/api/Turma/getTurmasByCursoId/${cursoId}`
+  );
+
+  const turmas = await response.json();
+
+  turmas.forEach(turma => {
+    const option = document.createElement("option");
+    option.value = turma.id;
+    option.textContent = turma.nome;
+    selectTurmaChamada.appendChild(option);
+  });
+
+  turmaChamadaContainer.classList.remove("hidden");
+});
+
+selectTurmaChamada.addEventListener("change", async () => {
+  const cursoId = selectCursoChamada.value;
+
   selectMateriaChamada.innerHTML =
     `<option value="">-- Selecione a matéria --</option>`;
   tabelaChamada.innerHTML = "";
-
   alunosChamadaContainer.classList.add("hidden");
-  materiaChamadaContainer.classList.add("hidden");
 
   if (!cursoId) return;
 
@@ -610,16 +645,16 @@ selectCursoChamada.addEventListener("change", async () => {
 });
 
 selectMateriaChamada.addEventListener("change", async () => {
-  const cursoId = selectCursoChamada.value;
+  const turmaId = selectTurmaChamada.value;
   const materiaId = selectMateriaChamada.value;
 
   tabelaChamada.innerHTML = "";
   alunosChamadaContainer.classList.add("hidden");
 
-  if (!materiaId) return;
+  if (!turmaId || !materiaId) return;
 
   const response = await fetch(
-    `http://localhost:5027/api/Aluno/getAllAlunosByCurso/${cursoId}`
+    `http://localhost:5027/api/Aluno/getAllAlunosByTurmaId/${turmaId}`
   );
 
   const alunos = await response.json();
@@ -634,7 +669,7 @@ selectMateriaChamada.addEventListener("change", async () => {
         <input 
           type="checkbox"
           class="checkbox-falta"
-          data-aluno-id="${aluno.matriculaId}"
+          data-matricula-id="${aluno.matriculaId}"
         />
       </td>
     `;
@@ -644,43 +679,58 @@ selectMateriaChamada.addEventListener("change", async () => {
 
   alunosChamadaContainer.classList.remove("hidden");
 });
+
 document.getElementById("btnSalvarChamada").addEventListener("click", async () => {
   const materiaId = Number(selectMateriaChamada.value);
+  const turmaId = Number(selectTurmaChamada.value);
+
   if (!materiaId) return;
 
   const chamadaPayload = [];
 
   document.querySelectorAll(".checkbox-falta").forEach(cb => {
     chamadaPayload.push({
-      matriculaId: Number(cb.dataset.alunoId),
+      matriculaId: Number(cb.dataset.matriculaId),
       materiaId,
-      faltou: cb.checked
+      faltou: cb.checked,
+      turmaId
     });
   });
 
   if (!chamadaPayload.length) return;
 
   try {
-    const response = await fetch(
-      "http://localhost:5027/api/Chamada/realizarChamada",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(chamadaPayload)
-      }
-    );
+  console.log(chamadaPayload);
 
-    // ✅ SUCESSO (204)
-    if (response.status === 204) {
-      mostrarSucessoChamada();
-    } else {
-      throw new Error("Erro ao salvar chamada");
+  const response = await fetch(
+    "http://localhost:5027/api/Chamada/realizarChamada",
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(chamadaPayload)
     }
-  } catch (error) {
-    console.error(error);
-    alert("Erro ao salvar chamada");
+  );
+
+  if (response.status === 204) {
+    mostrarSucessoChamada();
+    return;
+  } 
+  else if (response.status === 409) {
+    const erro = await response.json();
+
+    if (erro.tipo === "CHAMADA_JA_REALIZADA") {
+      mostrarPopupChamadaJaRealizada(erro.mensagem);
+      return;
+    }
+  } 
+  else {
+    throw new Error("Erro ao salvar chamada");
   }
-});
+
+} catch (error) {
+  console.error(error);
+  alert("Erro ao salvar chamada");
+}});
 
 function mostrarSucessoChamada() {
   document.getElementById("chamadaSucesso").classList.remove("hidden");
@@ -703,3 +753,63 @@ document.getElementById("btnNovaChamada").addEventListener("click", () => {
 
   document.getElementById("btnSalvarChamada").disabled = false;
 });
+
+function mostrarPopupChamadaJaRealizada(mensagem) {
+  const banner = document.getElementById("chamadaBanner");
+  const mensagemEl = document.getElementById("chamadaBannerMensagem");
+  const btnCancelar = document.getElementById("btnCancelarSubstituicao");
+  const btnConfirmar = document.getElementById("btnConfirmarSubstituicao");
+
+  mensagemEl.textContent = mensagem;
+
+  banner.classList.remove("hidden");
+
+  btnCancelar.onclick = () => {
+    banner.classList.add("hidden");
+  };
+
+  btnConfirmar.onclick = async () => {
+    banner.classList.add("hidden");
+    await substituirChamada();
+  };
+}
+
+
+async function substituirChamada() {
+  try {
+    const materiaId = Number(selectMateriaChamada.value);
+    const turmaId = Number(selectTurmaChamada.value);
+
+    const payload = [];
+
+    document.querySelectorAll(".checkbox-falta").forEach(cb => {
+      payload.push({
+        matriculaId: Number(cb.dataset.matriculaId),
+        turmaId,
+        materiaId,
+        faltou: cb.checked,
+        horarioChamada: new Date().toISOString()
+      });
+    });
+
+    const response = await fetch(
+      "http://localhost:5027/api/Chamada/substituirChamada",
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Erro ao substituir chamada");
+    }
+
+    mostrarSucessoChamada();
+
+  } catch (error) {
+    console.error(error);
+    alert("Erro ao substituir a chamada");
+  }
+}
+

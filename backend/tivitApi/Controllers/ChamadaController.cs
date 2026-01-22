@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using tivitApi.DTOs;
 using tivitApi.Services;
+using tivitApi.Exceptions;
+
 
 namespace tivitApi.Controllers
 {
@@ -26,11 +28,12 @@ namespace tivitApi.Controllers
                 return NoContent();
 
             }
-            catch (Exception ex)
+            catch (BusinessException ex)
             {
-                return BadRequest(new
+                return Conflict(new
                 {
-                    erro = ex.Message
+                    tipo = "CHAMADA_JA_REALIZADA",
+                    mensagem = ex.Message
                 });
             }
         }

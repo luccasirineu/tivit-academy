@@ -5,8 +5,8 @@ namespace tivitApi.DTOs
         public int MatriculaId { get; set; }
         public int MateriaId { get; set; }
         public bool Faltou { get; set; }
+        public int TurmaId { get; set; }
 
-  
 
         public ChamadaDTO()
         {

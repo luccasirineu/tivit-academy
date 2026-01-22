@@ -21,6 +21,8 @@ builder.Services.AddScoped<IConteudoService,ConteudoService>();
 builder.Services.AddScoped<INotaService, NotaService>();
 builder.Services.AddScoped<IAlunoService, AlunoService>();
 builder.Services.AddScoped<IChamadaService, ChamadaService>();
+builder.Services.AddScoped<ITurmaService, TurmaService>();
+
 
 
 

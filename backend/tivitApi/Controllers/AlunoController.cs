@@ -46,5 +46,20 @@ namespace tivitApi.Controllers
             }
         }
 
+        [HttpGet("getAllAlunosByTurmaId/{turmaId}")]
+        public async Task<IActionResult> GetAllAlunosByTurmaId(int turmaId)
+        {
+
+            try
+            {
+                var alunosByTurma = await _alunoService.GetAllAlunosByTurmaId(turmaId);
+                return Ok(alunosByTurma);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
     }
 }

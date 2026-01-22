@@ -20,17 +20,21 @@ namespace tivitApi.Models
         [Required]
         public DateTime HorarioDaAula{ get; set; }
 
+        [Required]
+        public int TurmaId { get; set; }
 
+        public Turma Turma { get; set; }
         public Matricula Matricula { get; set; }
         public Materia Materia { get; set; }
 
 
-        public Chamada(int matriculaId, int materiaId, bool faltou, DateTime horarioDaAula)
+        public Chamada(int matriculaId, int materiaId, bool faltou, DateTime horarioDaAula, int turmaId)
         {
             MatriculaId = matriculaId;
             MateriaId = materiaId;
             Faltou = faltou;
             HorarioDaAula = horarioDaAula;
+            TurmaId = turmaId;
         }
     }
 

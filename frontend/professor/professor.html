@@ -248,6 +248,17 @@
           </select>
         </div>
 
+        <!-- Seleção de Turma -->
+        <div id="turmaChamadaContainer" class="select-box hidden">
+          <label for="selectTurmaChamada">
+            <strong>Selecione a turma</strong>
+          </label>
+
+          <select id="selectTurmaChamada">
+            <option value="">-- Selecione a turma --</option>
+          </select>
+        </div>
+
         <!-- Seleção de Matéria -->
         <div class="select-box hidden" id="materiaChamadaContainer">
           <label><strong>Selecione a matéria</strong></label>
@@ -283,6 +294,22 @@
             <button id="btnNovaChamada">Nova chamada</button>
           </div>
         </div>
+
+        <div id="chamadaBanner" class="chamada-container hidden">
+          <div class="chamada-container-content">
+            <p id="chamadaBannerMensagem"></p>
+
+            <div class="chamada-container-actions">
+              <button id="btnCancelarSubstituicao" class="btn-secondary">
+                Cancelar
+              </button>
+              <button id="btnConfirmarSubstituicao" class="btn-danger">
+                Substituir chamada
+              </button>
+            </div>
+          </div>
+        </div>
+
       </section>
 
 

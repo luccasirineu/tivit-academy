@@ -26,6 +26,7 @@ namespace tivitApi.Models
         public int MatriculaId { get; set; }
         public Matricula Matricula { get; set; }
 
+        public int TurmaId { get; set; }
 
         public Aluno(string nome, string email, string cpf, string senha, int matriculaId)
         {

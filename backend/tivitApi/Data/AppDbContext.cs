@@ -19,6 +19,7 @@ namespace tivitApi.Data
         public DbSet<Materia> Materias { get; set; }
         public DbSet<Nota> Notas { get; set; }
         public DbSet<Chamada> Chamadas { get; set; }
+        public DbSet<Turma> Turmas { get; set; }
 
 
 
@@ -49,6 +50,13 @@ namespace tivitApi.Data
             modelBuilder.Entity<Nota>()
                 .HasIndex(n => new { n.AlunoId, n.MateriaId })
                 .IsUnique();
+
+            modelBuilder.Entity<Chamada>()
+                .HasOne(c => c.Turma)
+                .WithMany()
+                .HasForeignKey(c => c.TurmaId)
+                .OnDelete(DeleteBehavior.NoAction);
+
 
         }
 

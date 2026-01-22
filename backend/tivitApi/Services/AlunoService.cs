@@ -10,6 +10,8 @@ namespace tivitApi.Services
     {
         Task<AlunoDTO> GetInfoAluno(int alunoId);
         Task<List<AlunoDTO>> GetAllAlunosByCurso(int cursoId);
+        Task<List<AlunoDTO>> GetAllAlunosByTurmaId(int turmaId);
+
     }
 
     public class AlunoService : IAlunoService
@@ -21,15 +23,81 @@ namespace tivitApi.Services
             _context = context;
         }
 
-        private AlunoDTO ConvertAtributosToAlunoDTO(string Nome, string Email, string Cpf, int Id, int alunoId)
+        private AlunoDTO ConvertAlunoToAlunoDto(Aluno aluno)
+        {
+            return new AlunoDTO(
+                aluno.Nome,
+                aluno.Email,
+                aluno.Cpf,
+                aluno.MatriculaId,
+                aluno.Id,
+                aluno.TurmaId
+                );
+        }
+
+
+        private AlunoDTO ConvertAtributosToAlunoDTO(string Nome, string Email, string Cpf, int Id, int alunoId, int turmaId)
         {
             return new AlunoDTO(
                 Nome,
                 Email,
                 Cpf,
                 Id,
-                alunoId
+                alunoId,
+                turmaId
                 );
+        }
+
+
+
+        public async Task<List<AlunoDTO>> GetAllAlunosByCurso(int cursoId)
+        {
+            var alunosByCurso = await (
+                from m in _context.Matriculas
+                join a in _context.Alunos on m.Id equals a.MatriculaId
+                where m.CursoId == cursoId && m.Status == "APROVADO"
+                select new
+                {
+                    MatriculaId = m.Id,
+                    AlunoId = a.Id,
+                    TurmaId = a.TurmaId,
+                    m.Nome,
+                    m.Email,
+                    m.Cpf
+                }
+            ).ToListAsync();
+
+            if (!alunosByCurso.Any())
+                throw new Exception("Matrículas não encontradas.");
+
+            return alunosByCurso
+                .Select(x => ConvertAtributosToAlunoDTO(
+                    x.Nome,
+                    x.Email,
+                    x.Cpf,
+                    x.MatriculaId,
+                    x.AlunoId,
+                    x.TurmaId
+                ))
+                .ToList();
+        }
+
+        public async Task<List<AlunoDTO>> GetAllAlunosByTurmaId(int turmaId)
+        {
+            var turmaExiste = await _context.Turmas.AnyAsync(t => t.Id == turmaId);
+            if (!turmaExiste)
+                throw new Exception("Turma não encontrada");
+
+            var alunos = await _context.Alunos
+                .Where(a => a.TurmaId == turmaId)
+                .OrderBy(m => m.Nome)
+                .ToListAsync();
+
+            var resultado = alunos
+            .Select(aluno => ConvertAlunoToAlunoDto(aluno))
+            .ToList();
+
+            return resultado;
         }
 
         public async Task<AlunoDTO> GetInfoAluno(int alunoId)
@@ -73,36 +141,6 @@ namespace tivitApi.Services
                 MatriculaId = aluno.MatriculaId,
                 CursoNome = cursoNome
             };
-        }
-
-        public async Task<List<AlunoDTO>> GetAllAlunosByCurso(int cursoId)
-        {
-            var alunosByCurso = await (
-                from m in _context.Matriculas
-                join a in _context.Alunos on m.Id equals a.MatriculaId
-                where m.CursoId == cursoId && m.Status == "APROVADO"
-                select new
-                {
-                    MatriculaId = m.Id,
-                    AlunoId = a.Id,
-                    m.Nome,
-                    m.Email,
-                    m.Cpf
-                }
-            ).ToListAsync();
-
-            if (!alunosByCurso.Any())
-                throw new Exception("Matrículas não encontradas.");
-
-            return alunosByCurso
-                .Select(x => ConvertAtributosToAlunoDTO(
-                    x.Nome,
-                    x.Email,
-                    x.Cpf,
-                    x.MatriculaId,
-                    x.AlunoId
-                ))
-                .ToList();
         }
 
     }

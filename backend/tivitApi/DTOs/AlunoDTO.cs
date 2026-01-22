@@ -9,6 +9,7 @@ namespace tivitApi.DTOs
         public string Cpf { get; set; }
         public string Senha { get; set; }
         public int MatriculaId { get; set; }
+        public int TurmaId { get; set; }
 
         public string? CursoNome { get; set; }
 
@@ -21,13 +22,14 @@ namespace tivitApi.DTOs
             MatriculaId = matriculaId;
         }
 
-        public AlunoDTO(string nome, string email, string cpf, int matriculaId, int alunoId)
+        public AlunoDTO(string nome, string email, string cpf, int matriculaId, int alunoId, int turmaId)
         {
             Nome = nome;
             Email = email;
             Cpf = cpf;
             MatriculaId = matriculaId;
             AlunoId = alunoId;
+            TurmaId = turmaId;
         }
 
         public AlunoDTO() { }
