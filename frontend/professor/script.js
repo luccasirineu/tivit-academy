@@ -793,7 +793,7 @@ async function substituirChamada() {
     });
 
     const response = await fetch(
-      "http://localhost:5027/api/Chamada/substituirChamada",
+      "http://localhost:5027/api/Chamada/atualizarChamada",
       {
         method: "PUT",
         headers: { "Content-Type": "application/json" },

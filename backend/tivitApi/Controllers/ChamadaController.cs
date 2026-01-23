@@ -38,5 +38,24 @@ namespace tivitApi.Controllers
             }
         }
 
+        [HttpPut("atualizarChamada")]
+        public async Task<IActionResult> AtualizarChamada([FromBody] List<ChamadaDTO> dtos)
+        {
+
+            try
+            {
+                await _chamadaService.AtualizarChamada(dtos);
+
+                return NoContent();
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    erro = ex.Message
+                });
+            }
+        }
     }
 }
