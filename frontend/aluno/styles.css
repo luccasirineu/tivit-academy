@@ -641,6 +641,18 @@ body:not(.light) select option {
   margin-top: 8px;
 }
 
+.nivel-card.ouro {
+    border: 2px solid gold;
+}
+
+.nivel-card.prata {
+    border: 2px solid silver;
+}
+
+.nivel-card.bronze {
+    border: 2px solid #cd7f32;
+}
+
 /* GRÁFICOS */
 .graficos-container {
   display: flex;

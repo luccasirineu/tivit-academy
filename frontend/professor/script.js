@@ -813,3 +813,171 @@ async function substituirChamada() {
   }
 }
 
+
+const selectCursoConteudo = document.getElementById("selectCursoConteudo");
+const selectTurmaConteudo = document.getElementById("selectTurmaConteudo");
+const selectMateriaConteudo = document.getElementById("selectMateriaConteudo");
+const tipoConteudo = document.getElementById("tipoConteudo");
+
+const turmaConteudoContainer = document.getElementById("turmaConteudoContainer");
+const materiaConteudoContainer = document.getElementById("materiaConteudoContainer");
+const tipoConteudoContainer = document.getElementById("tipoConteudoContainer");
+const formConteudo = document.getElementById("formConteudo");
+
+const campoLink = document.getElementById("campoLink");
+const campoPdf = document.getElementById("campoPdf");
+
+async function carregarCursosConteudo() {
+  const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
+  if (!usuarioLogado?.id) return;
+
+  const response = await fetch(
+    `http://localhost:5027/api/Curso/getAllCursosProf/${usuarioLogado.id}`
+  );
+
+  const cursos = await response.json();
+
+  cursos.forEach(curso => {
+    const option = document.createElement("option");
+    option.value = curso.id;
+    option.textContent = curso.nome;
+    selectCursoConteudo.appendChild(option);
+  });
+}
+
+carregarCursosConteudo();
+
+selectCursoConteudo.addEventListener("change", async () => {
+  const cursoId = selectCursoConteudo.value;
+
+  selectTurmaConteudo.innerHTML = `<option value="">-- Selecione a turma --</option>`;
+  turmaConteudoContainer.classList.add("hidden");
+  materiaConteudoContainer.classList.add("hidden");
+  tipoConteudoContainer.classList.add("hidden");
+  formConteudo.classList.add("hidden");
+
+  if (!cursoId) return;
+
+  const response = await fetch(
+    `http://localhost:5027/api/Turma/getTurmasByCursoId/${cursoId}`
+  );
+
+  const turmas = await response.json();
+
+  turmas.forEach(turma => {
+    const option = document.createElement("option");
+    option.value = turma.id;
+    option.textContent = turma.nome;
+    selectTurmaConteudo.appendChild(option);
+  });
+
+  turmaConteudoContainer.classList.remove("hidden");
+});
+
+
+selectTurmaConteudo.addEventListener("change", async () => {
+  const cursoId = selectCursoConteudo.value;
+  const turmaId = selectTurmaConteudo.value;
+
+  selectMateriaConteudo.innerHTML = `<option value="">-- Selecione a matéria --</option>`;
+  materiaConteudoContainer.classList.add("hidden");
+  tipoConteudoContainer.classList.add("hidden");
+  formConteudo.classList.add("hidden");
+
+  if (!turmaId) return;
+
+  const response = await fetch(
+    `http://localhost:5027/api/Materia/getMateriasByCursoId/${cursoId}`
+  );
+
+  const materias = await response.json();
+
+  materias.forEach(materia => {
+    const option = document.createElement("option");
+    option.value = materia.id;
+    option.textContent = materia.nome;
+    selectMateriaConteudo.appendChild(option);
+  });
+
+  materiaConteudoContainer.classList.remove("hidden");
+});
+
+
+selectMateriaConteudo.addEventListener("change", () => {
+  if (!selectMateriaConteudo.value) return;
+  tipoConteudoContainer.classList.remove("hidden");
+});
+
+tipoConteudo.addEventListener("change", () => {
+  campoLink.classList.add("hidden");
+  campoPdf.classList.add("hidden");
+  formConteudo.classList.add("hidden");
+
+  if (tipoConteudo.value === "link") {
+    campoLink.classList.remove("hidden");
+  }
+
+  if (tipoConteudo.value === "pdf") {
+    campoPdf.classList.remove("hidden");
+  }
+
+  formConteudo.classList.remove("hidden");
+});
+
+document.getElementById("btnPublicarConteudo").addEventListener("click", async () => {
+  const titulo = document.getElementById("tituloConteudo").value;
+  const materiaId = Number(selectMateriaConteudo.value);
+  const turmaId = Number(selectTurmaConteudo.value);
+
+  if (!titulo || !materiaId || !turmaId) {
+    alert("Preencha todos os campos obrigatórios");
+    return;
+  }
+
+  try {
+    // 🔗 LINK
+    if (tipoConteudo.value === "link") {
+      const url = document.getElementById("urlConteudo").value;
+
+      const payload = {
+        titulo,
+        materiaId,
+        url,
+        turmaId
+      };
+
+      await fetch("http://localhost:5027/api/Conteudo/upload/link", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+    }
+
+    // 📄 PDF
+    if (tipoConteudo.value === "pdf") {
+      const arquivo = document.getElementById("arquivoPdf").files[0];
+      if (!arquivo) {
+        alert("Selecione um PDF");
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("Titulo", titulo);
+      formData.append("MateriaId", materiaId);
+      formData.append("TurmaId", turmaId);
+      formData.append("Arquivo", arquivo);
+
+      await fetch("http://localhost:5027/api/Conteudo/upload/pdf", {
+        method: "POST",
+        body: formData
+      });
+    }
+
+    alert("Conteúdo publicado com sucesso!");
+    formConteudo.classList.add("hidden");
+
+  } catch (error) {
+    console.error(error);
+    alert("Erro ao publicar conteúdo");
+  }
+});

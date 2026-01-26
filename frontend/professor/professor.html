@@ -312,6 +312,67 @@
 
       </section>
 
+      <!-- CONTEÚDOS -->
+      <section id="conteudo">
+        <h1><i class='bx bx-upload'></i> Publicar Conteúdo</h1>
+
+        <!-- Seleção de Curso -->
+        <div class="select-box">
+          <label><strong>Curso</strong></label>
+          <select id="selectCursoConteudo">
+            <option value="">-- Selecione o curso --</option>
+          </select>
+        </div>
+
+        <!-- Seleção de Turma -->
+        <div class="select-box hidden" id="turmaConteudoContainer">
+          <label><strong>Turma</strong></label>
+          <select id="selectTurmaConteudo">
+            <option value="">-- Selecione a turma --</option>
+          </select>
+        </div>
+
+        <!-- Seleção de Matéria -->
+        <div class="select-box hidden" id="materiaConteudoContainer">
+          <label><strong>Matéria</strong></label>
+          <select id="selectMateriaConteudo">
+            <option value="">-- Selecione a matéria --</option>
+          </select>
+        </div>
+
+        <!-- Tipo de Conteúdo -->
+        <div class="select-box hidden" id="tipoConteudoContainer">
+          <label><strong>Tipo de conteúdo</strong></label>
+          <select id="tipoConteudo">
+            <option value="">-- Selecione --</option>
+            <option value="link">Link (vídeo / site)</option>
+            <option value="pdf">PDF</option>
+          </select>
+        </div>
+
+        <!-- Formulário -->
+        <div id="formConteudo" class="hidden">
+          <label>Título</label>
+          <input type="text" id="tituloConteudo" placeholder="Título do conteúdo">
+
+          <!-- Link -->
+          <div id="campoLink" class="hidden">
+            <label>URL do conteúdo</label>
+            <input type="text" id="urlConteudo" placeholder="https://...">
+          </div>
+
+          <!-- PDF -->
+          <div id="campoPdf" class="hidden">
+            <label>Arquivo PDF</label>
+            <input type="file" id="arquivoPdf" accept="application/pdf">
+          </div>
+
+          <button class="btn-primary" id="btnPublicarConteudo">
+            Publicar Conteúdo
+          </button>
+        </div>
+      </section>
+
 
 
 

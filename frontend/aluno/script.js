@@ -206,6 +206,52 @@ async function carregarGraficosAluno() {
   }
 }
 
+async function carregarDesempenho() {
+
+    const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
+    console.log(usuarioLogado)
+    if (!usuarioLogado?.id) return;
+
+    try {
+        const response = await fetch(
+            `http://localhost:5027/api/Nota/Aluno/${usuarioLogado.id}/getDesempenho`
+        );
+
+        if (!response.ok) {
+            throw new Error("Erro ao buscar desempenho do aluno");
+        }
+
+        const data = await response.json();
+
+        // Preenchendo os cards
+        document.getElementById("mediaGeral").innerText = data.media.toFixed(2);
+        document.getElementById("melhorCurso").innerText = data.nomeMateria;
+        
+        // Exemplo de cálculo de frequência
+        // ajuste conforme sua regra real
+        const totalAulas = 100;
+        const frequencia = totalAulas - data.qtdFaltas;
+        document.getElementById("frequencia").innerText = `${frequencia}%`;
+
+        // Nível
+        const nivelLabel = document.getElementById("nivelLabel");
+        nivelLabel.innerText = data.nivel;
+
+        // Classe visual opcional por nível
+        const nivelCard = document.getElementById("nivelCard");
+        nivelCard.classList.remove("ouro", "prata", "bronze");
+
+        if (data.nivel === "OURO") nivelCard.classList.add("ouro");
+        if (data.nivel === "PRATA") nivelCard.classList.add("prata");
+        if (data.nivel === "BRONZE") nivelCard.classList.add("bronze");
+
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+carregarDesempenho();
+
 async function resolverNomeDasMaterias(notas) {
   const cache = {};
 
@@ -357,14 +403,38 @@ async function carregarMateriasDoAluno() {
   }
 }
 
+async function getTurmaByAlunoId() {
+
+    const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
+    if (!usuarioLogado?.id) return;
+    try {
+        const response = await fetch(
+            `http://localhost:5027/api/Turma/getTurmaByAlunoId/${usuarioLogado.id}`
+        );
+
+        if (!response.ok) {
+            throw new Error("Erro ao buscar turma do aluno");
+        }
+
+        const turma = await response.json();
+        return turma;
+
+    } catch (error) {
+        console.error("Erro na requisição:", error);
+        return null;
+    }
+}
 
 async function abrirMateria(materia) {
   try {
+
+    const turma = await getTurmaByAlunoId();
+    console.log(turma)
     tituloMateria.textContent = materia.nome;
     listaArquivos.innerHTML = "<li>Carregando conteúdos...</li>";
 
     const response = await fetch(
-      `${API_BASE}/Conteudo/getAllConteudos/${materia.id}`
+      `${API_BASE}/Conteudo/getAllConteudos/${materia.id}/${turma.id}`
     );
 
     if (!response.ok) {

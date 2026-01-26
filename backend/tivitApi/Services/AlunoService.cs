@@ -110,7 +110,8 @@ namespace tivitApi.Services
                     a.Nome,
                     a.Email,
                     a.Cpf,
-                    a.MatriculaId
+                    a.MatriculaId,
+                    a.TurmaId
                 })
                 .FirstOrDefaultAsync();
 
@@ -139,7 +140,8 @@ namespace tivitApi.Services
                 Email = aluno.Email,
                 Cpf = aluno.Cpf,
                 MatriculaId = aluno.MatriculaId,
-                CursoNome = cursoNome
+                CursoNome = cursoNome,
+                TurmaId = aluno.TurmaId
             };
         }
 

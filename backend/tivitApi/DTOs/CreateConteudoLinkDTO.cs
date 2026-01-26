@@ -5,6 +5,8 @@ namespace tivitApi.DTOs
         public string Titulo { get; set; }
         public int MateriaId { get; set; }
         public string Url { get; set; }
+        public int TurmaId { get; set; }
+
     }
 
 }

@@ -10,7 +10,7 @@ namespace tivitApi.Services
     {
         Task<Conteudo> CriarConteudoPdfAsync(CreateConteudoPdfDTO dto, int professorId);
         Task<Conteudo> CriarConteudoLinkAsync(CreateConteudoLinkDTO dto, int professorId);
-        Task<List<ConteudoDTO>> GetConteudosByMateriaIdAsync(int materiaId);
+        Task<List<ConteudoDTO>> GetConteudosByMateriaIdAsync(int materiaId, int turmaId);
 
     }
 
@@ -34,7 +34,8 @@ namespace tivitApi.Services
                 conteudo.CaminhoOuUrl,
                 conteudo.DataPublicacao,
                 conteudo.MateriaId,
-                conteudo.ProfessorId
+                conteudo.ProfessorId,
+                conteudo.TurmaId
                 );
         }
 
@@ -60,7 +61,8 @@ namespace tivitApi.Services
                 CaminhoOuUrl = $"/uploads/materia_{dto.MateriaId}/{nomeArquivo}",
                 MateriaId = dto.MateriaId,
                 ProfessorId = professorId,
-                DataPublicacao = DateTime.UtcNow
+                DataPublicacao = DateTime.UtcNow,
+                TurmaId = dto.TurmaId
             };
 
             _context.Conteudos.Add(conteudo);
@@ -81,7 +83,8 @@ namespace tivitApi.Services
                 CaminhoOuUrl = dto.Url,
                 MateriaId = dto.MateriaId,
                 ProfessorId = professorId,
-                DataPublicacao = DateTime.UtcNow
+                DataPublicacao = DateTime.UtcNow,
+                TurmaId = dto.TurmaId
             };
 
             _context.Conteudos.Add(conteudo);
@@ -90,13 +93,13 @@ namespace tivitApi.Services
             return conteudo;
         }
 
-        public async Task<List<ConteudoDTO>> GetConteudosByMateriaIdAsync(int materiaId)
+        public async Task<List<ConteudoDTO>> GetConteudosByMateriaIdAsync(int materiaId, int turmaId)
         {
             var materiaExiste = await _context.Materias.AnyAsync(c => c.Id == materiaId);
             if (!materiaExiste)
                 throw new Exception("Matéria não encontrada");
 
-            var conteudos = await _context.Conteudos.Where(m => m.MateriaId == materiaId).ToListAsync();
+            var conteudos = await _context.Conteudos.Where(m => m.MateriaId == materiaId && m.TurmaId == turmaId).ToListAsync();
 
             List<ConteudoDTO> conteudosDTO = new List<ConteudoDTO>();
 

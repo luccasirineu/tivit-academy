@@ -34,11 +34,11 @@ namespace tivitApi.Controllers
             return StatusCode(201, conteudo);
         }
 
-        [HttpGet("getAllConteudos/{materiaId}")]
-        public async Task<IActionResult> GetConteudo(int materiaId)
+        [HttpGet("getAllConteudos/{materiaId}/{turmaId}")]
+        public async Task<IActionResult> GetConteudo(int materiaId, int turmaId)
         {
 
-            var conteudos = await _conteudoService.GetConteudosByMateriaIdAsync(materiaId);
+            var conteudos = await _conteudoService.GetConteudosByMateriaIdAsync(materiaId, turmaId);
 
             return Ok(new { conteudos });
 

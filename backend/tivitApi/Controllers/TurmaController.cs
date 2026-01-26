@@ -43,5 +43,13 @@ namespace tivitApi.Controllers
             return Ok(turmas);
         }
 
+        [HttpGet("getTurmaByAlunoId/{alunoId}")]
+        public async Task<IActionResult> GetTurmaByAlunoId(int alunoId)
+        {
+            var turmaId = await _turmaService.GetTurmaByAlunoId(alunoId);
+
+            return Ok(turmaId);
+        }
+
     }
 }

@@ -28,6 +28,10 @@ namespace tivitApi.Models
         [ForeignKey("Professor")]
         public int ProfessorId { get; set; }
         public Professor Professor { get; set; }
+
+        [Required]
+        public int TurmaId { get; set; }
+
     }
 }
 

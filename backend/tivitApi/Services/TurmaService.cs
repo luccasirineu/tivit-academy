@@ -10,7 +10,7 @@ namespace tivitApi.Services
     {
         Task CriarTurma(TurmaDTORequest turmaDto);
         Task<List<TurmaDTOResponse>> GetTurmasByCursoId(int cursoId);
-
+        Task<TurmaDTOResponse> GetTurmaByAlunoId(int alunoId);
     }
 
 
@@ -68,6 +68,24 @@ namespace tivitApi.Services
             return resultado;
         }
 
+        public async Task<TurmaDTOResponse> GetTurmaByAlunoId(int alunoId)
+        {
+            var aluno = await _context.Alunos
+                .FirstOrDefaultAsync(a => a.Id == alunoId);
+
+            if (aluno == null)
+                throw new Exception("Aluno não encontrado");
+
+            var turma = await _context.Turmas
+                .FirstOrDefaultAsync(t => t.Id == aluno.TurmaId);
+
+            if (turma == null)
+                throw new Exception("Turma não encontrada");
+
+            var resultado = ConvertTurmaToTurmaDto(turma);
+
+            return resultado;
+        }
 
     }
 }
