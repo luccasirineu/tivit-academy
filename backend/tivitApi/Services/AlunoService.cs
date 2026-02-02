@@ -11,6 +11,7 @@ namespace tivitApi.Services
         Task<AlunoDTO> GetInfoAluno(int alunoId);
         Task<List<AlunoDTO>> GetAllAlunosByCurso(int cursoId);
         Task<List<AlunoDTO>> GetAllAlunosByTurmaId(int turmaId);
+        Task<AlunoDTO> GetAlunoByMatriculaId(int matriculaId);
 
     }
 
@@ -144,6 +145,38 @@ namespace tivitApi.Services
                 TurmaId = aluno.TurmaId
             };
         }
+
+        public async Task<AlunoDTO> GetAlunoByMatriculaId(int matriculaId)
+        {
+            var aluno = await _context.Alunos
+                .Where(a => a.MatriculaId == matriculaId)
+                .Select(a => new
+                {
+                    a.Id,
+                    a.Nome,
+                    a.Email,
+                    a.Cpf,
+                    a.MatriculaId,
+                    a.TurmaId
+                })
+                .FirstOrDefaultAsync();
+
+            if (aluno == null)
+                throw new Exception("Aluno não encontrado.");
+
+            
+
+            return new AlunoDTO
+            {
+                Nome = aluno.Nome,
+                Email = aluno.Email,
+                Cpf = aluno.Cpf,
+                MatriculaId = aluno.MatriculaId,
+                AlunoId = aluno.Id,
+                TurmaId = aluno.TurmaId
+            };
+        }
+
 
     }
 }

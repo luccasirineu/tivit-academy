@@ -666,7 +666,7 @@ body:not(.light) select option {
   padding: 20px;
   border-radius: 16px;
   width: 45%;
-  height: 350px; 
+  height: 45%; 
 }
 
 .grafico canvas {

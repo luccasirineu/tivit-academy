@@ -519,24 +519,42 @@ async function carregarMateriasPorCurso(cursoId) {
   });
 }
 
-/* =============================
-   SALVAR NOTA
-============================= */
-document.getElementById("btnSalvarNota").addEventListener("click", async () => {
-  const payload = {
-    alunoId: alunoSelecionadoId,
-    materiaId: Number(materiaSelect.value),
-    nota1: Number(document.getElementById("nota1").value),
-    nota2: Number(document.getElementById("nota2").value),
-    qtdFaltas: Number(document.getElementById("qtdFaltas").value)
-  };
+async function obterAlunoIdPorMatricula(matriculaId) {
+  const response = await fetch(
+    `http://localhost:5027/api/Aluno/getAlunoByMatriculaId/${matriculaId}`
+  );
 
-  if (!payload.materiaId) {
-    alert("Selecione uma matéria");
-    return;
+  if (!response.ok) {
+    throw new Error("Erro ao buscar aluno pela matrícula");
   }
 
+  const aluno = await response.json();
+  return aluno.alunoId;
+}
+
+/* =============================
+   SALVAR NOTA 
+============================= */
+document.getElementById("btnSalvarNota").addEventListener("click", async () => {
   try {
+    if (!materiaSelect.value) {
+      abrirModal(
+        "Atenção",
+        "Selecione uma matéria antes de lançar a nota."
+      );
+      return;
+    }
+
+    const alunoId = await obterAlunoIdPorMatricula(alunoSelecionadoId);
+
+    const payload = {
+      alunoId: alunoId,
+      materiaId: Number(materiaSelect.value),
+      nota1: Number(document.getElementById("nota1").value),
+      nota2: Number(document.getElementById("nota2").value),
+    };
+
+
     const response = await fetch(
       "http://localhost:5027/api/Nota/adicionarNota",
       {
@@ -546,12 +564,23 @@ document.getElementById("btnSalvarNota").addEventListener("click", async () => {
       }
     );
 
-    if (!response.ok) throw new Error();
+    if (!response.ok) {
+      throw new Error("Erro ao salvar nota");
+    }
 
-    alert("Nota lançada com sucesso!");
+    abrirModal(
+      "Sucesso",
+      "Nota lançada com sucesso!"
+    );
+
     formNota.classList.add("hidden");
-  } catch {
-    alert("Erro ao lançar nota");
+
+  } catch (error) {
+    console.error(error);
+    abrirModal(
+      "Erro",
+      "Não foi possível lançar a nota. Tente novamente."
+    );
   }
 });
 
@@ -700,7 +729,6 @@ document.getElementById("btnSalvarChamada").addEventListener("click", async () =
   if (!chamadaPayload.length) return;
 
   try {
-  console.log(chamadaPayload);
 
   const response = await fetch(
     "http://localhost:5027/api/Chamada/realizarChamada",
@@ -729,7 +757,7 @@ document.getElementById("btnSalvarChamada").addEventListener("click", async () =
 
 } catch (error) {
   console.error(error);
-  alert("Erro ao salvar chamada");
+  abrirModal("Atenção","Erro ao salvar chamada");
 }});
 
 function mostrarSucessoChamada() {
@@ -809,7 +837,7 @@ async function substituirChamada() {
 
   } catch (error) {
     console.error(error);
-    alert("Erro ao substituir a chamada");
+    abrirModal("Erro","Erro ao substituir a chamada");
   }
 }
 
@@ -924,27 +952,26 @@ tipoConteudo.addEventListener("change", () => {
   formConteudo.classList.remove("hidden");
 });
 
-document.getElementById("btnPublicarConteudo").addEventListener("click", async () => {
+document
+  .getElementById("btnPublicarConteudo")
+  .addEventListener("click", async (event) => {
+
+  event.preventDefault(); // ⛔ IMPEDE O SUBMIT DO FORM
+
   const titulo = document.getElementById("tituloConteudo").value;
   const materiaId = Number(selectMateriaConteudo.value);
   const turmaId = Number(selectTurmaConteudo.value);
 
   if (!titulo || !materiaId || !turmaId) {
-    alert("Preencha todos os campos obrigatórios");
+    abrirModal("Atenção", "Preencha todos os campos obrigatórios");
     return;
   }
 
   try {
-    // 🔗 LINK
     if (tipoConteudo.value === "link") {
       const url = document.getElementById("urlConteudo").value;
 
-      const payload = {
-        titulo,
-        materiaId,
-        url,
-        turmaId
-      };
+      const payload = { titulo, materiaId, url, turmaId };
 
       await fetch("http://localhost:5027/api/Conteudo/upload/link", {
         method: "POST",
@@ -953,11 +980,11 @@ document.getElementById("btnPublicarConteudo").addEventListener("click", async (
       });
     }
 
-    // 📄 PDF
     if (tipoConteudo.value === "pdf") {
       const arquivo = document.getElementById("arquivoPdf").files[0];
+
       if (!arquivo) {
-        alert("Selecione um PDF");
+        abrirModal("Atenção", "Selecione um PDF");
         return;
       }
 
@@ -973,11 +1000,27 @@ document.getElementById("btnPublicarConteudo").addEventListener("click", async (
       });
     }
 
-    alert("Conteúdo publicado com sucesso!");
+    abrirModal("Publicado", "Conteúdo publicado com sucesso!");
     formConteudo.classList.add("hidden");
 
   } catch (error) {
     console.error(error);
-    alert("Erro ao publicar conteúdo");
+    abrirModal("Erro", "Erro ao publicar conteúdo");
   }
+});
+
+
+const modal = document.getElementById("modalFeedback");
+const modalTitulo = document.getElementById("modalTitulo");
+const modalMensagem = document.getElementById("modalMensagem");
+const modalBtnOk = document.getElementById("modalBtnOk");
+
+function abrirModal(titulo, mensagem) {
+  modalTitulo.textContent = titulo;
+  modalMensagem.textContent = mensagem;
+  modal.classList.remove("hidden");
+}
+
+modalBtnOk.addEventListener("click", () => {
+  modal.classList.add("hidden");
 });

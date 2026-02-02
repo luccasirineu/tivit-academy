@@ -146,7 +146,6 @@
         </div>
       </section>
 
-
       <!-- BOLETIM -->
       <section id="boletins" >
         <h2><i class='bx bx-file'></i> Boletins</h2>
@@ -182,7 +181,6 @@
         </div>
       </section>
 
-
       <!-- MÉDIAS E FREQUÊNCIA -->
       <section id="notas">
       <h1><i class='bx bx-calculator'></i> Notas</h1>
@@ -212,11 +210,6 @@
             <div>
               <label>Matéria</label>
               <select id="materiaSelect"></select>
-            </div>
-
-            <div>
-              <label>Qtd. Faltas</label>
-              <input type="number" id="qtdFaltas">
             </div>
 
             <div>
@@ -367,13 +360,20 @@
             <input type="file" id="arquivoPdf" accept="application/pdf">
           </div>
 
-          <button class="btn-primary" id="btnPublicarConteudo">
+          <button class="btn-primary" type="button" id="btnPublicarConteudo">
             Publicar Conteúdo
           </button>
         </div>
       </section>
 
-
+      <!-- MODAL FEEDBACK -->
+      <div id="modalFeedback" class="modal hidden">
+        <div class="modal-content">
+          <h3 id="modalTitulo"></h3>
+          <p id="modalMensagem"></p>
+          <button id="modalBtnOk" class="btn-primary">OK</button>
+        </div>
+      </div>
 
 
 

@@ -61,5 +61,19 @@ namespace tivitApi.Controllers
             }
         }
 
+        [HttpGet("getAlunoByMatriculaId/{matriculaId}")]
+        public async Task<IActionResult> GetAlunoByMatriculaId(int matriculaId)
+        {
+
+            try
+            {
+                var aluno = await _alunoService.GetAlunoByMatriculaId(matriculaId);
+                return Ok(aluno);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
     }
 }

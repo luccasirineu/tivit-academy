@@ -19,13 +19,16 @@ namespace tivitApi.Services
     public class NotaService : INotaService
     {
         private readonly AppDbContext _context;
+        private readonly ILogger<MatriculaService> _logger;
 
-        public NotaService(AppDbContext context)
+        public NotaService(AppDbContext context, ILogger<MatriculaService> logger)
         {
             _context = context;
+            _logger = logger;
+
         }
 
-        private Nota ConvertNotaDtoToNota(NotaDTORequest notaDTO, decimal media, string status)
+        private Nota ConvertNotaDtoToNota(NotaDTORequest notaDTO, decimal media, string status, int qntdFaltas)
         {
             return new Nota(
                 notaDTO.AlunoId,
@@ -33,7 +36,7 @@ namespace tivitApi.Services
                 notaDTO.Nota1,
                 notaDTO.Nota2,
                 media,
-                notaDTO.QtdFaltas,
+                qntdFaltas,
                 status
                 );
         }
@@ -49,59 +52,130 @@ namespace tivitApi.Services
 
         private string CalcularStatusNota(decimal media, int qntdFaltas)
         {
-            if (qntdFaltas > 20) return "REPROVADO";
+            if (qntdFaltas > 10) return "REPROVADO";
 
             if (media >= 6) return "APROVADO";
             return "REPROVADO";
         }
 
+        private async Task<int> ObterFaltas(int alunoId, int materiaId)
+        {
+            var matriculaId = await _context.Alunos
+                .Where(a => a.Id == alunoId)
+                .Select(a => a.MatriculaId)
+                .FirstOrDefaultAsync();
+
+            if (matriculaId == 0)
+                return 0;
+
+            var totalFaltas = await _context.Chamadas
+                .CountAsync(c => c.MatriculaId == matriculaId && c.Faltou && c.MateriaId == materiaId);
+
+            return totalFaltas;
+        }
+
         public async Task<NotaDTOResponse> AdicionarNotaAsync(NotaDTORequest dto)
         {
-            var alunoExiste = await _context.Alunos
-                .AnyAsync(a => a.Id == dto.AlunoId);
-
-            if (!alunoExiste)
-                throw new Exception("Aluno não encontrado.");
-
-            var materiaExiste = await _context.Materias
-                .AnyAsync(m => m.Id == dto.MateriaId);
-
-            if (!materiaExiste)
-                throw new Exception("Matéria não encontrada.");
-
-            
-            if (dto.Nota1 < 0 || dto.Nota1 > 10 ||
-                dto.Nota2 < 0 || dto.Nota2 > 10)
-                throw new Exception("Notas devem estar entre 0 e 10.");
-
-            if (dto.QtdFaltas < 0)
-                throw new Exception("Quantidade de faltas inválida.");
-
-            decimal media = CalcularMedia(dto.Nota1, dto.Nota2);
-            string status = CalcularStatusNota(media, dto.QtdFaltas);
-            var nota = ConvertNotaDtoToNota(dto,media,status);
-
-            _context.Notas.Add(nota);
-
             try
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception)
-            {
-                throw new Exception("Erro ao salvar a nota. Verifique se já existe cadastro para este aluno e matéria.");
-            }
+                _logger.LogInformation(
+                    "Iniciando cadastro de nota. AlunoId: {AlunoId}, MateriaId: {MateriaId}",
+                    dto.AlunoId,
+                    dto.MateriaId
+                );
 
-            return new NotaDTOResponse
+                var alunoExiste = await _context.Alunos
+                    .AnyAsync(a => a.Id == dto.AlunoId);
+
+                if (!alunoExiste)
+                {
+                    _logger.LogWarning(
+                        "Aluno não encontrado. AlunoId: {AlunoId}",
+                        dto.AlunoId
+                    );
+                    throw new Exception("Aluno não encontrado.");
+                }
+
+                var materiaExiste = await _context.Materias
+                    .AnyAsync(m => m.Id == dto.MateriaId);
+
+                if (!materiaExiste)
+                {
+                    _logger.LogWarning(
+                        "Matéria não encontrada. MateriaId: {MateriaId}",
+                        dto.MateriaId
+                    );
+                    throw new Exception("Matéria não encontrada.");
+                }
+
+                if (dto.Nota1 < 0 || dto.Nota1 > 10 ||
+                    dto.Nota2 < 0 || dto.Nota2 > 10)
+                {
+                    _logger.LogWarning(
+                        "Notas inválidas informadas. Nota1: {Nota1}, Nota2: {Nota2}, AlunoId: {AlunoId}",
+                        dto.Nota1,
+                        dto.Nota2,
+                        dto.AlunoId
+                    );
+                    throw new Exception("Notas devem estar entre 0 e 10.");
+                }
+
+                var qntdFaltas = await ObterFaltas(dto.AlunoId, dto.MateriaId);
+
+                decimal media = CalcularMedia(dto.Nota1, dto.Nota2);
+                string status = CalcularStatusNota(media, qntdFaltas);
+
+                var nota = ConvertNotaDtoToNota(dto, media, status, qntdFaltas);
+
+                _context.Notas.Add(nota);
+
+                try
+                {
+                    await _context.SaveChangesAsync();
+
+                    _logger.LogInformation(
+                        "Nota salva com sucesso. AlunoId: {AlunoId}, MateriaId: {MateriaId}, Media: {Media}, Faltas: {Faltas}",
+                        nota.AlunoId,
+                        nota.MateriaId,
+                        media,
+                        qntdFaltas
+                    );
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(
+                        ex,
+                        "Erro ao salvar nota no banco. AlunoId: {AlunoId}, MateriaId: {MateriaId}",
+                        dto.AlunoId,
+                        dto.MateriaId
+                    );
+
+                    throw new Exception(
+                        "Erro ao salvar a nota. Verifique se já existe cadastro para este aluno e matéria."
+                    );
+                }
+
+                return new NotaDTOResponse
+                {
+                    AlunoId = nota.AlunoId,
+                    MateriaId = nota.MateriaId,
+                    Nota1 = nota.Nota1,
+                    Nota2 = nota.Nota2,
+                    Media = media,
+                    QtdFaltas = qntdFaltas,
+                    Status = status
+                };
+            }
+            catch (Exception ex)
             {
-                AlunoId = nota.AlunoId,
-                MateriaId = nota.MateriaId,
-                Nota1 = nota.Nota1,
-                Nota2 = nota.Nota2,
-                Media = media,
-                QtdFaltas = nota.QtdFaltas,
-                Status = status
-            };
+                _logger.LogError(
+                    ex,
+                    "Erro inesperado ao adicionar nota. Payload: {@NotaDTO}",
+                    dto
+                );
+
+                throw;
+            }
         }
 
         public async Task<List<NotaDTOResponse>> GetAllNotasByAlunoId(int alunoId)

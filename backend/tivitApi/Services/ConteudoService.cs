@@ -45,7 +45,7 @@ namespace tivitApi.Services
             if (dto.Arquivo == null || dto.Arquivo.Length == 0)
                 throw new Exception("Arquivo inválido");
 
-            var pasta = Path.Combine("wwwroot", "uploads", $"materia_{dto.MateriaId}");
+            var pasta = Path.Combine("wwwroot", "uploads", $"turma_{dto.TurmaId}", $"materia_{dto.MateriaId}");
             Directory.CreateDirectory(pasta);
 
             var nomeArquivo = $"{Guid.NewGuid()}{Path.GetExtension(dto.Arquivo.FileName)}";
@@ -58,7 +58,7 @@ namespace tivitApi.Services
             {
                 Titulo = dto.Titulo,
                 Tipo = "pdf",
-                CaminhoOuUrl = $"/uploads/materia_{dto.MateriaId}/{nomeArquivo}",
+                CaminhoOuUrl = $"/uploads/turma_{dto.TurmaId}/materia_{dto.MateriaId}/{nomeArquivo}",
                 MateriaId = dto.MateriaId,
                 ProfessorId = professorId,
                 DataPublicacao = DateTime.UtcNow,
