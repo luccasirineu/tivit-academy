@@ -53,54 +53,41 @@
       <!-- ===== CONTEÚDO PRINCIPAL ===== -->
       <main class="content">
 
-        <section id="dashboard" class="active">
-          <div class="dashboard-header">
-            <h1>Bem-vindo, Administrador!</h1>
-            <p>Gerencie alunos e professores da TIVIT Academy.</p>
-          </div>
+       <section id="dashboard" class="active">
+        <div class="dashboard-header">
+          <h1>Bem-vindo, Administrador!</h1>
+          <p>Gerencie as informações e usuários da <strong>TIVIT Academy</strong>.</p>
+        </div>
 
-          <!-- === CARDS DE ESTATÍSTICAS === -->
-          <div class="stats-container">
-            <div class="stat-card">
-              <i class='bx bx-group'></i>
-              <div class="stat-info">
-                <h3 id="totalUsuarios">12</h3>
-                <p>Total de Usuários</p>
-              </div>
-            </div>
-
-            <div class="stat-card">
-              <i class='bx bx-chalkboard'></i>
-              <div class="stat-info">
-                <h3 id="totalProfessores">4</h3>
-                <p>Professores</p>
-              </div>
-            </div>
-
-            <div class="stat-card">
-              <i class='bx  bx-book'  ></i> 
-              <div class="stat-info">
-                <h3 id="totalAlunos">8</h3>
-                <p>Alunos</p>
-              </div>
-            </div>
-
-            <div class="stat-card">
-              <i class='bx  bx-book'  ></i> 
-              <div class="stat-info">
-                <h3 id="totalCursos">20</h3>
-                <p>Cursos</p>
-              </div>
-            </div>
-
-            <div class="stat-card">
-              <i class='bx  bx-book'  ></i> 
-              <div class="stat-info">
-                <h3 id="totalTurmas">17</h3>
-                <p>Turmas</p>
-              </div>
+        <!-- Cards de Resumo -->
+        <div class="resumo-grid">
+          <div class="resumo-card">
+            <i class='bx bx-user'></i>
+            <div>
+              <h3 id="qtdAlunosAtivos">0</h3>
+              <p>Alunos Ativos</p>
             </div>
           </div>
+
+          <div class="resumo-card">
+            <i class="bx bx-book"></i>
+            <div>
+              <h3 id="qtdProfessoresAtivos">0</h3>
+              <p>Professores ativos</p>
+            </div>
+          </div>
+
+          <div class="resumo-card">
+            <i class='bx bx-group'></i>
+            <div>
+              <h3 id="qtdTurmas">0</h3>
+              <p>Turmas</p>
+            </div>
+          </div>
+
+      
+
+        </div>
 
           
         </section>
@@ -119,25 +106,25 @@
 
 
 
-        <section id="listagem">
-          <h2>Listagem</h2>
+       <!-- Usuários -->
+      <section id="listagem" >
+        <h2><i class='bx bx-file'></i> Usuários</h2>
 
-          <input type="text" id="filtro" placeholder="Filtrar por nome..." />
+        <div class="boletim-container">
+          <!-- Campo de busca -->
+          <div class="search-box">
+            <input type="text" id="searchAluno" placeholder=" Pesquise o usuário pelo nome ou cpf">
+            <button id="btnBuscarAluno"><i class='bx bx-search'></i> Buscar</button>
+          </div>
 
-          <table>
-            <thead>
-              <tr>
-                <th>Tipo</th>
-                <th>Nome</th>
-                <th>E-mail</th>
-                <th>Curso/Matéria</th>
-              </tr>
-            </thead>
-            <tbody id="tabelaBody">
-              <!-- Linhas geradas dinamicamente -->
-            </tbody>
-          </table>
-        </section>
+          <!-- Resultados -->
+          <div id="resultadoAluno" class="resultado-box hidden">
+            <h3>Resultados da busca</h3>
+
+            <div id="listaUsuarios"></div>
+          </div>
+        </div>
+      </section>
 
         <section id="cursos" >
           <div class="cursos-header">

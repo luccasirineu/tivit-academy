@@ -11,6 +11,7 @@ namespace tivitApi.Services
         Task CriarTurma(TurmaDTORequest turmaDto);
         Task<List<TurmaDTOResponse>> GetTurmasByCursoId(int cursoId);
         Task<TurmaDTOResponse> GetTurmaByAlunoId(int alunoId);
+        Task<int> GetQntdTurmasAtivas();
     }
 
 
@@ -87,6 +88,11 @@ namespace tivitApi.Services
             return resultado;
         }
 
+        public async Task<int> GetQntdTurmasAtivas()
+        {
+            return await _context.Turmas.CountAsync();
+
+        }
     }
 }
 

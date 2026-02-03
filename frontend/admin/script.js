@@ -248,3 +248,149 @@ function toggleSidebar() {
 
 if (toggleBtn) toggleBtn.addEventListener("click", toggleSidebar);
 if (floatingBtn) floatingBtn.addEventListener("click", toggleSidebar);
+
+
+const API_BASE = "http://localhost:5027/api";
+
+async function carregarResumoAdmin() {
+  try {
+    const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
+
+    if (!usuarioLogado || !usuarioLogado.id) {
+      console.warn("Administrador não identificado");
+      return;
+    }
+
+
+    await Promise.all([
+      carregarAlunosAtivos(),
+      carregarProfessoresAtivos(),
+      carregarQtdTurmas()
+    ]);
+
+  } catch (error) {
+    console.error("Erro ao carregar resumo:", error);
+  }
+}
+
+
+async function carregarAlunosAtivos() {
+  const response = await fetch(
+    `${API_BASE}/Aluno/getQntdAlunosAtivos`
+  );
+
+  if (!response.ok) throw new Error("Erro ao buscar alunos ativos");
+
+  const qtdAlunos = await response.json();
+
+  document.getElementById("qtdAlunosAtivos").textContent = qtdAlunos;
+}
+
+async function carregarProfessoresAtivos() {
+  const response = await fetch(
+    `${API_BASE}/Professor/getQntdProfessoresAtivos`
+  );
+
+  if (!response.ok) throw new Error("Erro ao buscar turmas");
+
+  const qtdTurmas = await response.json();
+
+  document.getElementById("qtdProfessoresAtivos").textContent = qtdTurmas;
+}
+
+async function carregarQtdTurmas() {
+  const response = await fetch(
+    `${API_BASE}/Turma/getQntdTurmasAtivas`
+  );
+
+  if (!response.ok) throw new Error("Erro ao buscar eventos");
+
+  const eventos = await response.json();
+
+  document.getElementById("qtdTurmas").textContent = eventos;
+}
+
+document.addEventListener("DOMContentLoaded", carregarResumoAdmin);
+
+
+/* ============================
+   Busca usuario
+============================ */
+
+document.getElementById("btnBuscarAluno").addEventListener("click", buscarBoletimAluno);
+
+async function buscarBoletimAluno() {
+  const valorBusca = document.getElementById("searchAluno").value.trim();
+
+  if (!valorBusca) {
+    return;
+  }
+
+  let url = "";
+
+  // Verifica se é matrícula (somente números)
+  if (/^\d+$/.test(valorBusca)) {
+    url = `${API_BASE}/User/getUserByCpf/?cpf=${valorBusca}`;
+  } else {
+    url = `${API_BASE}/User/getUsersByNome/?nome=${encodeURIComponent(valorBusca)}`;
+  }
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error("Aluno não encontrado");
+
+    const dados = await response.json();
+
+    if (!dados || dados.length === 0) {
+      return;
+    }
+
+    renderizarDados(dados);
+
+  } catch (error) {
+    console.error(error);
+  }
+}
+function renderizarDados(dadosApi) {
+  const resultadoBox = document.getElementById("resultadoAluno");
+  const listaUsuarios = document.getElementById("listaUsuarios");
+
+  const usuarios = normalizarParaLista(dadosApi);
+
+  resultadoBox.classList.remove("hidden");
+  listaUsuarios.innerHTML = "";
+
+  if (usuarios.length === 0) {
+    listaUsuarios.innerHTML = "<p>Nenhum usuário encontrado.</p>";
+    return;
+  }
+
+  usuarios.forEach(usuario => {
+    const div = document.createElement("div");
+    div.classList.add("usuario-card");
+
+    div.innerHTML = `
+      <p><strong>Nome:</strong> ${usuario.nome}</p>
+      <p><strong>Email:</strong> ${usuario.email}</p>
+      <p><strong>CPF:</strong> ${usuario.cpf || "Não informado"}</p>
+      <hr />
+    `;
+
+    listaUsuarios.appendChild(div);
+  });
+}
+
+
+function normalizarParaLista(dados) {
+  if (!dados) return [];
+
+  // Se já for lista
+  if (Array.isArray(dados)) {
+    return dados;
+  }
+
+  // Se for objeto único
+  return [dados];
+}
+
+

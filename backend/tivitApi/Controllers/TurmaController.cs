@@ -51,5 +51,20 @@ namespace tivitApi.Controllers
             return Ok(turmaId);
         }
 
+        [HttpGet("getQntdTurmasAtivas")]
+        public async Task<IActionResult> GetQntdTurmasAtivas()
+        {
+
+            try
+            {
+                var qntdTurmasAtivas = await _turmaService.GetQntdTurmasAtivas();
+                return Ok(qntdTurmasAtivas);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
     }
 }

@@ -12,6 +12,7 @@ namespace tivitApi.Services
         Task<List<AlunoDTO>> GetAllAlunosByCurso(int cursoId);
         Task<List<AlunoDTO>> GetAllAlunosByTurmaId(int turmaId);
         Task<AlunoDTO> GetAlunoByMatriculaId(int matriculaId);
+        Task<int> GetQntdAlunosAtivos();
 
     }
 
@@ -177,6 +178,11 @@ namespace tivitApi.Services
             };
         }
 
+        public async Task<int> GetQntdAlunosAtivos()
+        {
+            return await _context.Alunos.CountAsync();
+
+        }
 
     }
 }

@@ -75,5 +75,21 @@ namespace tivitApi.Controllers
                 return NotFound(ex.Message);
             }
         }
+
+        [HttpGet("getQntdAlunosAtivos")]
+        public async Task<IActionResult> GetQntdAlunosAtivos()
+        {
+
+            try
+            {
+                var qntdAlunosAtivos = await _alunoService.GetQntdAlunosAtivos();
+                return Ok(qntdAlunosAtivos);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
     }
 }
