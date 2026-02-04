@@ -33,6 +33,7 @@
             <li data-section="listagem"> <i class='bx  bx-list-ul'  ></i>  Usuários</li>
             <li data-section="cursos"> <i class='bx  bx-list-plus'  ></i>  Cursos</li>
             <li data-section="turmas-cursos"> <i class='bx  bx-group'  ></i>   Turmas</li>
+            <li data-section="notificacao"> <i class='bx  bx-bell'  ></i>   Notificações</li>
             <br>
             <a href="../index.html" class="return-btn" title="Voltar para o início">
               <i class='bx bx-undo'></i>
@@ -103,28 +104,42 @@
           </div>
         </section>
 
+        <!-- Usuários -->
+        <section id="listagem">
+          <h2><i class='bx bx-file'></i> Usuários</h2>
 
+          <div class="boletim-container">
+            <!-- Campo de busca -->
+            <div class="search-box">
+              <input
+                type="text"
+                id="searchAluno"
+                placeholder="Pesquise o usuário pelo nome ou cpf"
+              />
+              <button id="btnBuscarAluno">
+                <i class='bx bx-search'></i> Buscar
+              </button>
+            </div>
 
-
-       <!-- Usuários -->
-      <section id="listagem" >
-        <h2><i class='bx bx-file'></i> Usuários</h2>
-
-        <div class="boletim-container">
-          <!-- Campo de busca -->
-          <div class="search-box">
-            <input type="text" id="searchAluno" placeholder=" Pesquise o usuário pelo nome ou cpf">
-            <button id="btnBuscarAluno"><i class='bx bx-search'></i> Buscar</button>
+            <!-- Resultados -->
+            <div id="resultadoAluno" class="resultado-box hidden">
+              <h3>Resultados da busca</h3>
+              <div id="listaUsuarios"></div>
+            </div>
           </div>
 
-          <!-- Resultados -->
-          <div id="resultadoAluno" class="resultado-box hidden">
-            <h3>Resultados da busca</h3>
+          <div id="modalConfirmacao" class="modal hidden">
+            <div class="modal-content">
+              <h3 id="modalTitulo"></h3>
+              <p id="modalMensagem"></p>
 
-            <div id="listaUsuarios"></div>
+              <div class="modal-actions">
+                <button id="btnCancelar">Cancelar</button>
+                <button id="btnConfirmar">Confirmar</button>
+              </div>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
         <section id="cursos" >
           <div class="cursos-header">

@@ -25,6 +25,9 @@ namespace tivitApi.Models
         [Required]
         public string Cpf { get; set; }
 
+        [Required]
+        public string Status { get; set; }
+
         public Professor(string nome, string email, string cpf, string senha, string rm)
         {
             Nome = nome;

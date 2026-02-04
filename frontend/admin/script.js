@@ -93,7 +93,6 @@ async function carregarMatriculasPendentes() {
 
     for (const m of dados) {
 
-      console.log("dados:", m.id);
       const cursoNome = await getCursoNome(m.cursoId);
 
       const card = document.createElement("div");
@@ -366,19 +365,144 @@ function renderizarDados(dadosApi) {
   }
 
   usuarios.forEach(usuario => {
-    const div = document.createElement("div");
-    div.classList.add("usuario-card");
+  const div = document.createElement("div");
+  div.classList.add("usuario-card");
 
-    div.innerHTML = `
+  const isAtivo = usuario.status === "ATIVO";
+
+  const icone = isAtivo ? "bx-user-x" : "bx-user-check";
+  const titulo = isAtivo ? "Desativar usuário" : "Ativar usuário";
+  const acao = isAtivo ? "desativar" : "ativar";
+
+  div.innerHTML = `
+    <div class="usuario-header">
       <p><strong>Nome:</strong> ${usuario.nome}</p>
-      <p><strong>Email:</strong> ${usuario.email}</p>
-      <p><strong>CPF:</strong> ${usuario.cpf || "Não informado"}</p>
-      <hr />
-    `;
 
-    listaUsuarios.appendChild(div);
+    </div>
+
+    <p><strong>Email:</strong> ${usuario.email}</p>
+    <p><strong>CPF:</strong> ${usuario.cpf || "Não informado"}</p>
+    <p><strong>Tipo:</strong> ${usuario.tipo || "Não informado"}</p>
+    <p><strong>Status:</strong> ${usuario.status || "Não informado"}</p>
+    <i class='bx ${icone} btn-acao-usuario'
+            title="${titulo}"
+            data-cpf="${usuario.cpf}"
+            data-tipo="${usuario.tipo}"
+            data-acao="${acao}">
+          </i>
+    <hr />
+  `;
+
+  listaUsuarios.appendChild(div);
+});
+
+  // Ativa eventos após renderizar
+  ativarEventosDesativar();
+}
+
+function ativarEventosDesativar() {
+  document.querySelectorAll(".btn-acao-usuario").forEach(btn => {
+    btn.addEventListener("click", async (event) => {
+      const botao = event.currentTarget;
+      const { cpf, tipo, acao } = botao.dataset;
+
+      if (!cpf || !tipo || !acao) {
+        abrirModal({
+          titulo: "Erro",
+          mensagem: "Dados do usuário inválidos.",
+          confirmarTexto: "OK",
+          somenteOk: true
+        });
+        return;
+      }
+
+      const mensagem =
+        acao === "desativar"
+          ? "Tem certeza que deseja desativar este usuário?"
+          : "Tem certeza que deseja ativar este usuário?";
+
+      abrirModal({
+        titulo: "Confirmação",
+        mensagem,
+        confirmarTexto: acao === "desativar" ? "Desativar" : "Ativar",
+        onConfirm: async () => {
+          if (acao === "desativar") {
+            await desativarUsuario(cpf, tipo, botao);
+          } else {
+            await ativarUsuario(cpf, tipo, botao);
+          }
+        }
+      });
+    });
   });
 }
+
+
+
+
+async function desativarUsuario(cpf, tipo, botao) {
+  try {
+    const response = await fetch(
+      `${API_BASE}/User/desativar?cpf=${cpf}&tipo=${tipo}`,
+      { method: "PUT" }
+    );
+
+    if (!response.ok)
+      throw new Error();
+
+    atualizarIconeUsuario(botao, "DESATIVADO");
+
+    abrirModal({
+      titulo: "Sucesso",
+      mensagem: "Usuário desativado com sucesso!",
+      confirmarTexto: "OK",
+      somenteOk: true
+    });
+
+  } catch (error) {
+    console.error(error);
+    abrirModal({
+      titulo: "Erro",
+      mensagem: "Não foi possível desativar o usuário.",
+      confirmarTexto: "OK",
+      somenteOk: true
+    });
+  }
+}
+
+
+
+async function ativarUsuario(cpf, tipo, botao) {
+  try {
+    const response = await fetch(
+      `${API_BASE}/User/ativar?cpf=${cpf}&tipo=${tipo}`,
+      { method: "PUT" }
+    );
+
+    if (!response.ok)
+      throw new Error();
+
+    atualizarIconeUsuario(botao, "ATIVO");
+
+    abrirModal({
+      titulo: "Sucesso",
+      mensagem: "Usuário ativado com sucesso!",
+      confirmarTexto: "OK",
+      somenteOk: true
+    });
+
+  } catch (error) {
+    console.error(error);
+    abrirModal({
+      titulo: "Erro",
+      mensagem: "Não foi possível ativar o usuário.",
+      confirmarTexto: "OK",
+      somenteOk: true
+    });
+  }
+}
+
+
 
 
 function normalizarParaLista(dados) {
@@ -394,3 +518,63 @@ function normalizarParaLista(dados) {
 }
 
 
+function atualizarIconeUsuario(botao, novoStatus) {
+  const card = botao.closest(".usuario-card");
+
+  if (novoStatus === "DESATIVADO") {
+    botao.classList.remove("bx-user-x");
+    botao.classList.add("bx-user-check");
+
+    botao.dataset.acao = "ativar";
+    botao.title = "Ativar usuário";
+  } else {
+    botao.classList.remove("bx-user-check");
+    botao.classList.add("bx-user-x");
+
+    botao.dataset.acao = "desativar";
+    botao.title = "Desativar usuário";
+  }
+
+  // Atualiza o texto de status
+  const statusParagrafo = [...card.querySelectorAll("p")]
+    .find(p => p.textContent.includes("Status:"));
+
+  if (statusParagrafo) {
+    statusParagrafo.innerHTML = `<strong>Status:</strong> ${novoStatus}`;
+  }
+}
+
+function abrirModal({
+  titulo,
+  mensagem,
+  confirmarTexto = "Confirmar",
+  onConfirm = null,
+  somenteOk = false
+}) {
+  const modal = document.getElementById("modalConfirmacao");
+  const tituloEl = document.getElementById("modalTitulo");
+  const msgEl = document.getElementById("modalMensagem");
+  const btnConfirmar = document.getElementById("btnConfirmar");
+  const btnCancelar = document.getElementById("btnCancelar");
+
+  tituloEl.textContent = titulo;
+  msgEl.textContent = mensagem;
+  btnConfirmar.textContent = confirmarTexto;
+
+  modal.classList.remove("hidden");
+
+  btnCancelar.style.display = somenteOk ? "none" : "inline-block";
+
+  const fechar = () => {
+    modal.classList.add("hidden");
+    btnConfirmar.onclick = null;
+    btnCancelar.onclick = null;
+  };
+
+  btnCancelar.onclick = fechar;
+
+  btnConfirmar.onclick = async () => {
+    if (onConfirm) await onConfirm();
+    fechar();
+  };
+}

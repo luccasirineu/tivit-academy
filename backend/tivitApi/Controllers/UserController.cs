@@ -53,7 +53,36 @@ namespace tivitApi.Controllers
             }
         }
 
+        [HttpPut("desativar")]
+        public async Task<IActionResult> DesativarUser([FromQuery] string cpf, [FromQuery] string tipo)
+        {
 
+            try
+            {
+                await _userService.DesativarUser(cpf, tipo);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
 
+        }
+
+        [HttpPut("ativar")]
+        public async Task<IActionResult> AtivarUser([FromQuery] string cpf, [FromQuery] string tipo)
+        {
+
+            try
+            {
+                await _userService.AtivarUser(cpf, tipo);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+
+        }
     }
 }

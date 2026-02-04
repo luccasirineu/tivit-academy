@@ -100,6 +100,7 @@ namespace tivitApi.Services
                 Cpf = matricula.Cpf,
                 Senha = senha,
                 MatriculaId = matricula.Id,
+                Status = "ATIVO"
             };
 
             _context.Alunos.Add(aluno);

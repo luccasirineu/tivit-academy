@@ -1023,3 +1023,125 @@ body.light .return-btn {
 .btn-pdf:hover {
   background: #ff3377;
 }
+
+
+.btn-acao-usuario {
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.btn-acao-usuario.bx-user-x {
+  color: #e74c3c;
+}
+
+.btn-acao-usuario.bx-user-check {
+  color: #27ae60;
+}
+
+/* ============================
+   MODAL DE CONFIRMAÇÃO
+============================ */
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+/* ============================
+   CONTEÚDO DO MODAL
+============================ */
+
+.modal-content {
+  background: var(--bg);
+  color: var(--text);
+  padding: 24px;
+  width: 100%;
+  max-width: 360px;
+  border-radius: 14px;
+  box-shadow: 0 0 25px var(--shadow);
+  animation: modalFadeIn 0.25s ease-out;
+}
+
+/* ============================
+   TEXTO
+============================ */
+
+.modal-content h3 {
+  margin: 0 0 12px;
+  font-size: 1.2rem;
+  color: var(--accent);
+}
+
+.modal-content p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+/* ============================
+   AÇÕES
+============================ */
+
+.modal-actions {
+  margin-top: 24px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.modal-actions button {
+  padding: 8px 18px;
+  font-size: 0.9rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Botão cancelar */
+#btnCancelar {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--text);
+}
+
+#btnCancelar:hover {
+  background: var(--text);
+  color: var(--bg);
+}
+
+/* Botão confirmar */
+#btnConfirmar {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 0 12px var(--shadow);
+}
+
+#btnConfirmar:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0 18px var(--shadow);
+}
+
+/* ============================
+   ANIMAÇÃO
+============================ */
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

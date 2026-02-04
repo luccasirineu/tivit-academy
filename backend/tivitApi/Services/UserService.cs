@@ -12,6 +12,8 @@ namespace tivitApi.Services
 
         Task<UserDTOResponse> GetUserByCpf(string cpf);
         Task<List<UserDTOResponse>> GetUsersByNome(string nome);
+        Task DesativarUser(string cpf, string tipo);
+        Task AtivarUser(string cpf, string tipo);
 
     }
     public class UserService : IUserService
@@ -32,7 +34,9 @@ namespace tivitApi.Services
                 {
                     Nome = a.Nome,
                     Email = a.Email,
-                    Cpf = a.Cpf
+                    Cpf = a.Cpf,
+                    Tipo = "Aluno",
+                    Status = a.Status
                 })
                 .FirstOrDefaultAsync();
         }
@@ -45,7 +49,9 @@ namespace tivitApi.Services
                 {
                     Nome = p.Nome,
                     Email = p.Email,
-                    Cpf = p.Cpf
+                    Cpf = p.Cpf,
+                    Tipo = "Professor",
+                    Status = p.Status
                 })
                 .FirstOrDefaultAsync();
         }
@@ -58,7 +64,9 @@ namespace tivitApi.Services
                 {
                     Nome = a.Nome,
                     Email = a.Email,
-                    Cpf = a.Cpf
+                    Cpf = a.Cpf,
+                    Tipo = "Aluno",
+                    Status = a.Status
                 })
                 .ToListAsync();
         }
@@ -71,7 +79,9 @@ namespace tivitApi.Services
                 {
                     Nome = p.Nome,
                     Email = p.Email,
-                    Cpf = p.Cpf
+                    Cpf = p.Cpf,
+                    Tipo = "Professor",
+                    Status = p.Status
                 })
                 .ToListAsync();
         }
@@ -105,6 +115,83 @@ namespace tivitApi.Services
 
             return usuarios;
         }
+
+        public async Task DesativarUser(string cpf, string tipo)
+        {
+            if (string.IsNullOrWhiteSpace(cpf))
+                throw new ArgumentException("CPF inválido.");
+
+            if (string.IsNullOrWhiteSpace(tipo))
+                throw new ArgumentException("Tipo de usuário inválido.");
+
+            tipo = tipo.Trim().ToLower();
+
+            if (tipo == "aluno")
+            {
+                var aluno = await _context.Alunos
+                    .FirstOrDefaultAsync(a => a.Cpf == cpf);
+
+                if (aluno == null)
+                    throw new Exception("Aluno não encontrado.");
+
+                aluno.Status = "DESATIVADO";
+            }
+            else if (tipo == "professor")
+            {
+                var professor = await _context.Professores
+                    .FirstOrDefaultAsync(p => p.Cpf == cpf);
+
+                if (professor == null)
+                    throw new Exception("Professor não encontrado.");
+
+                professor.Status = "DESATIVADO";
+            }
+            else
+            {
+                throw new Exception("Tipo de usuário inválido.");
+            }
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task AtivarUser(string cpf, string tipo)
+        {
+            if (string.IsNullOrWhiteSpace(cpf))
+                throw new ArgumentException("CPF inválido.");
+
+            if (string.IsNullOrWhiteSpace(tipo))
+                throw new ArgumentException("Tipo de usuário inválido.");
+
+            tipo = tipo.Trim().ToLower();
+
+            if (tipo == "aluno")
+            {
+                var aluno = await _context.Alunos
+                    .FirstOrDefaultAsync(a => a.Cpf == cpf);
+
+                if (aluno == null)
+                    throw new Exception("Aluno não encontrado.");
+
+                aluno.Status = "ATIVO";
+            }
+            else if (tipo == "professor")
+            {
+                var professor = await _context.Professores
+                    .FirstOrDefaultAsync(p => p.Cpf == cpf);
+
+                if (professor == null)
+                    throw new Exception("Professor não encontrado.");
+
+                professor.Status = "ATIVO";
+            }
+            else
+            {
+                throw new Exception("Tipo de usuário inválido.");
+            }
+
+            await _context.SaveChangesAsync();
+        }
+
     }
-    
+
 }
