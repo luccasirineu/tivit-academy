@@ -8,7 +8,7 @@ themeSwitch.addEventListener("change", () => {
 });
 
 // ==========================================================
-// === CONFIG API ===
+//  CONFIG API 
 const API_URL = "http://localhost:5027/api"; 
 // ==========================================================
 
