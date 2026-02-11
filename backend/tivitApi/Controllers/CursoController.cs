@@ -52,5 +52,81 @@ namespace tivitApi.Controllers
             return Ok(cursosProfessor);
         }
 
+        [HttpGet("getQntdAlunosByCursoId/{cursoId}")]
+        public async Task<IActionResult> GetQntdAlunosByCursoId(int cursoId)
+        {
+            var qntdAlunos = await _cursoService.GetQntdAlunosByCursoId(cursoId);
+
+
+            return Ok(qntdAlunos);
+        }
+
+        [HttpPost("criarCurso")]
+        public async Task<IActionResult> CriarCurso([FromBody] CursoDTORequest dto)
+        {
+            await _cursoService.CriarCurso(dto);
+            return NoContent();
+
+        }
+
+        [HttpPut("atualizarCurso")]
+        public async Task<IActionResult> AtualizarCurso([FromBody] CursoDTO dto)
+        {
+
+            try
+            {
+                await _cursoService.AtualizarCurso(dto);
+
+                return NoContent();
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    erro = ex.Message
+                });
+            }
+        }
+
+        [HttpPut("desativarCurso/{cursoId}")]
+        public async Task<IActionResult> DesativarCurso(int cursoId)
+        {
+
+            try
+            {
+                await _cursoService.DesativarCurso(cursoId);
+
+                return NoContent();
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    erro = ex.Message
+                });
+            }
+        }
+
+        [HttpPut("ativarCurso/{cursoId}")]
+        public async Task<IActionResult> AtivarCurso(int cursoId)
+        {
+
+            try
+            {
+                await _cursoService.AtivarCurso(cursoId);
+
+                return NoContent();
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    erro = ex.Message
+                });
+            }
+        }
     }
 }

@@ -31,5 +31,34 @@ namespace tivitApi.Controllers
             }
         }
 
+
+        [HttpGet("getProfessorById/{professorId}")]
+        public async Task<IActionResult> GetProfessorById(int professorId)
+        {
+
+            try
+            {
+                var professor = await _professorService.GetProfessorById(professorId);
+                return Ok(professor);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+        [HttpGet("getAllProfessores")]
+        public async Task<IActionResult> GetAllProfessores()
+        {
+            try
+            {
+                var professores = await _professorService.GetAllProfessores();
+                return Ok(professores);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
     }
 }

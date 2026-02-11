@@ -20,9 +20,14 @@ namespace tivitApi.Models
         public int ProfResponsavel { get; set; }
         public Professor Professor { get; set; }
 
-        public Curso(string nome)
+        public string Status { get; set; }
+
+        public Curso(string nome, string descricao, int profResponsavel, string status)
         {
             Nome = nome;
+            Descricao = descricao;
+            ProfResponsavel = profResponsavel;
+            Status = status;
         }
 
     }

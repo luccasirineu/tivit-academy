@@ -16,9 +16,6 @@ namespace tivitApi.Controllers
         }
 
 
-
-
-
         [HttpGet("getUserByCpf")]
         public async Task<IActionResult> GetUserByCpf([FromQuery] string cpf)
         {

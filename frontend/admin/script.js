@@ -157,50 +157,6 @@ async function reprovar(id) {
   }
 }
 
-/* ============================
-   POPUPS DE CURSO E TURMA 
-   (sem alterações)
-============================ */
-const btnNovoCurso = document.getElementById("btnNovoCurso");
-const popupNovaCursos = document.getElementById("popupNovaCursos");
-const btnFecharCurso = document.getElementById("btnFecharPopup");
-const formNovaCursos = document.getElementById("formNovaCursos");
-
-btnNovoCurso.addEventListener("click", () => {
-  popupNovaCursos.classList.remove("hidden");
-});
-
-btnFecharCurso.addEventListener("click", () => {
-  popupNovaCursos.classList.add("hidden");
-});
-
-formNovaCursos.addEventListener("submit", (e) => {
-  e.preventDefault();
-  alert("Novo curso cadastrado com sucesso! (mock)");
-  formNovaCursos.reset();
-  popupNovaCursos.classList.add("hidden");
-});
-
-const btnNovaTurma = document.getElementById("btnNovaTurma");
-const popupNovaTurma = document.getElementById("popupNovaTurma");
-const fecharPopupTurma = document.getElementById("fecharPopup");
-const formTurma = document.getElementById("formTurma");
-const listaTurmas = document.getElementById("listaTurmas");
-
-btnNovaTurma.addEventListener("click", () => {
-  popupNovaTurma.classList.remove("hidden");
-});
-
-fecharPopupTurma.addEventListener("click", () => {
-  popupNovaTurma.classList.add("hidden");
-});
-
-popupNovaTurma.addEventListener("click", (e) => {
-  if (e.target === popupNovaTurma) {
-    popupNovaTurma.classList.add("hidden");
-  }
-});
-
 formTurma.addEventListener("submit", (e) => {
   e.preventDefault();
 
@@ -578,3 +534,351 @@ function abrirModal({
     fechar();
   };
 }
+
+const cursosGrid = document.getElementById("cursosGrid");
+const btnNovoCurso = document.getElementById("btnNovoCurso");
+const popupNovoCurso = document.getElementById("popupNovoCurso");
+const selectProfessorCurso = document.getElementById("selectProfessorCurso");
+const btnSalvarCurso = document.getElementById("btnSalvarCurso");
+const btnCancelarCurso = document.getElementById("btnCancelarCurso");
+const inputNomeCurso = document.getElementById("nomeNovoCurso");
+const inputDescricaoCurso = document.getElementById("descricaoNovoCurso");
+let cursoParaExcluirId = null;
+
+// ========== EVENTOS ==========
+btnNovoCurso.addEventListener("click", () => {
+  popupNovoCurso.classList.remove("hidden");
+  carregarProfessores();
+});
+
+btnSalvarCurso.addEventListener("click", salvarNovoCurso);
+btnCancelarCurso.addEventListener("click", fecharPopupCurso);
+
+// ========== FUNÇÕES ==========
+async function carregarCursos() {
+  try {
+    cursosGrid.innerHTML = "";
+    const response = await fetch("http://localhost:5027/api/Curso");
+    if (!response.ok) throw new Error("Erro ao buscar cursos");
+
+    const cursos = await response.json();
+
+    for (const curso of cursos) {
+      const professorNome = await buscarProfessorNome(curso.profResponsavel);
+      const qtdAlunos = await buscarQtdAlunosPorCurso(curso.id);
+      criarCardCurso(
+        curso.id,
+        curso.nome,
+        professorNome,
+        qtdAlunos,
+        curso.descricao,
+        curso.status
+      );
+    }
+  } catch (error) {
+    console.error(error);
+    cursosGrid.innerHTML = "<p>Erro ao carregar cursos</p>";
+  }
+}
+
+async function buscarProfessorNome(professorId) {
+  try {
+    const response = await fetch(
+      `http://localhost:5027/api/Professor/getProfessorById/${professorId}`
+    );
+    if (!response.ok) throw new Error();
+    const professor = await response.json();
+    return professor.nome;
+  } catch {
+    return "Professor não encontrado";
+  }
+}
+
+async function buscarQtdAlunosPorCurso(cursoId) {
+  try {
+    const response = await fetch(
+      `http://localhost:5027/api/Curso/getQntdAlunosByCursoId/${cursoId}`
+    );
+    if (!response.ok) throw new Error();
+    const quantidade = await response.json();
+    return quantidade;
+  } catch {
+    return 0;
+  }
+}
+
+function criarCardCurso(cursoId, nomeCurso, nomeProfessor, qtdAlunos, descricao, status) {
+  const card = document.createElement("div");
+  card.classList.add("cursos-card");
+
+  const isAtivo = status === "ATIVO";
+
+  card.innerHTML = `
+    <h3>${nomeCurso}</h3>
+    <p><i class='bx bx-user'></i> Professor: ${nomeProfessor}</p>
+    <p><i class='bx bx-group'></i> Alunos: ${qtdAlunos}</p>
+    <p><i class='bx bx-radio-circle'></i> Status: ${status}</p>
+
+    <div class="card-actions">
+      <button class="btn-edit">
+        <i class='bx bx-edit'></i>
+      </button>
+
+      <button class="btn-toggle-status">
+        <i class='bx ${isAtivo ? "bx-x-circle" : "bx-check-circle"}'></i>
+      </button>
+    </div>
+  `;
+
+  cursosGrid.appendChild(card);
+  // Editar
+  card.querySelector(".btn-edit").addEventListener("click", () => {
+    abrirPopupEdicao({
+      id: cursoId,
+      nome: nomeCurso,
+      descricao,
+      nomeProfessor
+    });
+  });
+
+  // Ativar / Desativar
+  card.querySelector(".btn-toggle-status").addEventListener("click", () => {
+    cursoParaExcluirId = cursoId;
+
+    if (status === "ATIVO") {
+      abrirPopupConfirmacao(
+        "Desativar Curso",
+        "Tem certeza que deseja desativar este curso?",
+        () => desativarCurso(cursoId)
+      );
+    } else {
+      abrirPopupConfirmacao(
+        "Ativar Curso",
+        "Deseja ativar este curso novamente?",
+        () => ativarCurso(cursoId)
+      );
+    }
+  });
+}
+
+async function desativarCurso(cursoId) {
+  try {
+    const response = await fetch(
+      `http://localhost:5027/api/Curso/desativarCurso/${cursoId}`,
+      { method: "PUT" }
+    );
+
+    if (!response.ok) throw new Error();
+
+    fecharPopupConfirmacao();
+    abrirModal("Sucesso", "Curso desativado com sucesso!");
+    carregarCursos();
+
+  } catch (error) {
+    console.error(error);
+    abrirModal("Erro", "Erro ao desativar curso");
+  }
+}
+
+async function ativarCurso(cursoId) {
+  try {
+    const response = await fetch(
+      `http://localhost:5027/api/Curso/ativarCurso/${cursoId}`,
+      { method: "PUT" }
+    );
+
+    if (!response.ok) throw new Error();
+
+    fecharPopupConfirmacao();
+    abrirModal("Sucesso", "Curso ativado com sucesso!");
+    carregarCursos();
+
+  } catch (error) {
+    console.error(error);
+    abrirModal("Erro", "Erro ao ativar curso");
+  }
+}
+
+
+
+let acaoConfirmacao = null;
+
+function abrirPopupConfirmacao(titulo, mensagem, callback) {
+  document.getElementById("tituloConfirmacao").textContent = titulo;
+  document.getElementById("mensagemConfirmacao").textContent = mensagem;
+
+  acaoConfirmacao = callback;
+
+  document
+    .getElementById("popupExcluirCurso")
+    .classList.remove("hidden");
+}
+
+function fecharPopupConfirmacao() {
+  document
+    .getElementById("popupExcluirCurso")
+    .classList.add("hidden");
+
+  acaoConfirmacao = null;
+}
+
+document
+  .getElementById("btnConfirmarExclusao")
+  .addEventListener("click", () => {
+    if (acaoConfirmacao) acaoConfirmacao();
+  });
+
+document
+  .getElementById("btnCancelarExclusao")
+  .addEventListener("click", fecharPopupConfirmacao);
+
+
+let cursoEmEdicaoId = null;
+
+function abrirPopupEdicao(curso) {
+  cursoEmEdicaoId = curso.id;
+
+  document.getElementById("editNomeCurso").value = curso.nome;
+  document.getElementById("editDescricaoCurso").value = curso.descricao || "";
+
+  carregarProfessoresEdicao(curso.nomeProfessor);
+
+  document
+    .getElementById("popupEditarCurso")
+    .classList.remove("hidden");
+}
+
+
+async function carregarProfessoresEdicao(nomeProfessorAtual) {
+  const select = document.getElementById("editSelectProfessor");
+  select.innerHTML = "";
+
+  const response = await fetch(
+    "http://localhost:5027/api/Professor/getAllProfessores"
+  );
+  const professores = await response.json();
+
+  professores.forEach(prof => {
+    const option = document.createElement("option");
+    option.value = prof.id;
+    option.textContent = prof.nome;
+
+    if (prof.nome === nomeProfessorAtual) {
+      option.selected = true;
+    }
+
+    select.appendChild(option);
+  });
+}
+
+
+async function salvarNovoCurso() {
+  const nomeCurso = inputNomeCurso.value.trim();
+  const professorId = Number(selectProfessorCurso.value);
+  const descricaoCurso = inputDescricaoCurso.value;
+  if (!nomeCurso || !professorId || !inputDescricaoCurso) {
+    alert("Preencha todos os campos corretamente.");
+    
+    return;
+  }
+
+  const payload = {
+    nome: nomeCurso,
+    descricao : descricaoCurso,
+    profResponsavel: professorId
+  };
+
+  console.log(payload)
+  btnSalvarCurso.disabled = true;
+  btnSalvarCurso.textContent = "Salvando...";
+
+  try {
+    const response = await fetch("http://localhost:5027/api/Curso/criarCurso", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    if (!response.ok) {
+      const erro = await response.text();
+      throw new Error(erro || "Erro ao criar curso");
+    }
+
+    alert("Curso criado com sucesso!");
+    fecharPopupCurso();
+    carregarCursos();
+
+  } catch (error) {
+    console.error(error);
+    alert("Não foi possível criar o curso.");
+  } finally {
+    btnSalvarCurso.disabled = false;
+    btnSalvarCurso.textContent = "Salvar";
+  }
+}
+
+function fecharPopupCurso() {
+  popupNovoCurso.classList.add("hidden");
+  inputNomeCurso.value = "";
+  selectProfessorCurso.value = "";
+}
+
+document
+  .getElementById("btnSalvarEdicao")
+  .addEventListener("click", async () => {
+
+    const nome = document.getElementById("editNomeCurso").value.trim();
+    const descricao = document.getElementById("editDescricaoCurso").value.trim();
+    const professorId = Number(
+      document.getElementById("editSelectProfessor").value
+    );
+
+    if (!nome || !professorId) {
+      abrirModal("Atenção", "Preencha todos os campos");
+      return;
+    }
+
+    const payload = {
+      id: cursoEmEdicaoId,
+      nome,
+      descricao,
+      profResponsavel: professorId
+    };
+
+    try {
+      const response = await fetch(
+        `http://localhost:5027/api/Curso/atualizarCurso`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        }
+      );
+
+      if (!response.ok) throw new Error();
+
+      abrirModal("Sucesso", "Curso atualizado com sucesso!");
+      document
+        .getElementById("popupEditarCurso")
+        .classList.add("hidden");
+
+      carregarCursos();
+
+    } catch (error) {
+      console.error(error);
+      abrirModal("Erro", "Erro ao atualizar curso");
+    }
+  });
+document
+  .getElementById("btnCancelarEdicao")
+  .addEventListener("click", () => {
+    document
+      .getElementById("popupEditarCurso")
+      .classList.add("hidden");
+
+    cursoEmEdicaoId = null;
+  });
+
+
+// Inicializar
+carregarCursos();

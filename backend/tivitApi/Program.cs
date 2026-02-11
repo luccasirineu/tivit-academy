@@ -5,6 +5,7 @@ using tivitApi.Exceptions;
 using tivitApi.Infra.SQS;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

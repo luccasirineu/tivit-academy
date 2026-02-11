@@ -153,55 +153,81 @@
           </div>
 
 
-          <div class="cursos-grid">
-            <!-- Mock de cards de cursos -->
-            <div class="cursos-card">
-              <h3>Desenvolvimento Web</h3>
-              <p><i class='bx bx-user'></i> Professor: João Silva</p>
-              <p><i class='bx bx-group'></i> Alunos: 24</p>
-              <p><i class='bx bx-calendar'></i> Período: 2025/1</p>
-              <div class="card-actions">
-                <button class="btn-edit"><i class='bx bx-edit'></i></button>
-                <button class="btn-delete"><i class='bx bx-trash'></i></button>
-              </div>
-            </div>
+          <div class="cursos-grid" id="cursosGrid">
 
-            <div class="cursos-card">
-              <h3>Banco de Dados</h3>
-              <p><i class='bx bx-user'></i> Professor: Maria Oliveira</p>
-              <p><i class='bx bx-group'></i> Alunos: 30</p>
-              <p><i class='bx bx-calendar'></i> Período: 2025/2</p>
-              <div class="card-actions">
-                <button class="btn-edit"><i class='bx bx-edit'></i></button>
-                <button class="btn-delete"><i class='bx bx-trash'></i></button>
-              </div>
-            </div>
           </div>
 
-          <!-- Popup de  Novo Curso -->
-          <div id="popupNovaCursos" class="popup hidden">
+          <!-- Popup Novo Curso -->
+          <div id="popupNovoCurso" class="popup hidden">
             <div class="popup-content">
               <h3><i class='bx bx-plus-circle'></i> Novo Curso</h3>
-              <form id="formNovaCursos">
-                <label for="cursoNome">Nome do Curso</label>
-                <input type="text" id="cursoNome" placeholder="Ex: Desenvolvimento Web" required>
 
-                <label for="professor">Professor Responsável</label>
-                <input type="text" id="professor" placeholder="Ex: João da Silva" required>
+              <label for="nomeNovoCurso">Nome do Curso</label>
+              <input
+                type="text"
+                id="nomeNovoCurso"
+                placeholder="Ex: Desenvolvimento Web"
+              />
 
-                <label for="periodo">Período</label>
-                <input type="text" id="periodo" placeholder="Ex: 2025/1" required>
+              <label for="descricaoNovoCurso">Descrição do Curso</label>
+              <input
+                type="text"
+                id="descricaoNovoCurso"
+              />
 
-                <label for="qtdAlunos">Quantidade de Alunos</label>
-                <input type="number" id="qtdAlunos" placeholder="Ex: 25" required>
+              <label for="selectProfessorCurso">Professor Responsável</label>
+              <select id="selectProfessorCurso">
+                <option value="">Selecione um professor</option>
+              </select>
 
-                <div class="popup-actions">
-                  <button type="submit" class="btn-accent">Salvar</button>
-                  <button type="button" id="btnFecharPopup" class="btn-cancelar">Cancelar</button>
-                </div>
-              </form>
+              <div class="popup-actions">
+                <button type="button" class="btn-accent" id="btnSalvarCurso"> Salvar </button>
+                <button class="btn-cancelar" id="btnCancelarCurso">Cancelar</button>
+              </div>
             </div>
           </div>
+
+          <div id="popupEditarCurso" class="popup hidden">
+            <div class="popup-content">
+              <h3><i class='bx bx-edit'></i> Editar Curso</h3>
+
+              <label>Nome do Curso</label>
+              <input type="text" id="editNomeCurso" />
+
+              <label>Professor Responsável</label>
+              <select id="editSelectProfessor"></select>
+
+              <label>Descrição</label>
+              <input type="text" id="editDescricaoCurso"/>
+
+              <div class="popup-actions">
+                <button class="btn-cancelar" id="btnCancelarEdicao">Cancelar</button>
+                <button class="btn-accent" id="btnSalvarEdicao">Salvar</button>
+              </div>
+            </div>
+          </div>
+
+          <div id="popupExcluirCurso" class="popup hidden">
+            <div class="popup-content">
+              <h3 id="tituloConfirmacao">
+                <i class='bx bx-trash'></i>
+                Confirmação
+              </h3>
+
+              <p id="mensagemConfirmacao"></p>
+
+              <div class="popup-actions">
+                <button class="btn-cancelar" id="btnCancelarExclusao">
+                  Cancelar
+                </button>
+                <button class="btn-accent" id="btnConfirmarExclusao">
+                  OK
+                </button>
+              </div>
+            </div>
+          </div>
+
+          
         </section>
 
         <section id="turmas-cursos" >

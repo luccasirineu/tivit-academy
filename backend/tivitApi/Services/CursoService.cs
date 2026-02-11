@@ -14,13 +14,24 @@ namespace tivitApi.Services
             _context = context;
         }
 
-        public CursoDTO ConvertCursoToCursoDTO(Curso curso)
+        private CursoDTO ConvertCursoToCursoDTO(Curso curso)
         {
             return new CursoDTO(
                 curso.Id,
                 curso.Nome,
                 curso.Descricao,
-                curso.ProfResponsavel
+                curso.ProfResponsavel,
+                curso.Status
+                );
+        }
+        
+        private Curso ConvertCursoDTOToCurso(CursoDTORequest dto)
+        {
+            return new Curso(
+                dto.Nome,
+                dto.Descricao,
+                dto.ProfResponsavel,
+                "ATIVO"
                 );
         }
 
@@ -70,6 +81,74 @@ namespace tivitApi.Services
 
             return resultado;
         }
+
+        public async Task<int> GetQntdAlunosByCursoId(int cursoId)
+        {
+            return await _context.Matriculas
+                .Where(m => m.CursoId == cursoId && m.Status == "APROVADO")
+                .CountAsync();
+        }
+    
+        public async Task CriarCurso(CursoDTORequest dto)
+        {
+            var curso = ConvertCursoDTOToCurso(dto);
+            _context.Cursos.AddRange(curso);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task AtualizarCurso(CursoDTO dto)
+        {
+            if (dto == null || dto.Id <= 0)
+                return;
+
+            var curso = await _context.Cursos
+                .FirstOrDefaultAsync(c => c.Id == dto.Id);
+
+            if (curso == null)
+                throw new Exception("Curso não encontrado.");
+
+            curso.Nome = dto.Nome;
+            curso.Descricao = dto.Descricao;
+            curso.ProfResponsavel = dto.ProfResponsavel;
+
+            _context.Cursos.Update(curso);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DesativarCurso(int cursoId)
+        {
+            if (cursoId == null || cursoId <= 0)
+                return;
+
+            var curso = await _context.Cursos
+                .FirstOrDefaultAsync(c => c.Id == cursoId);
+
+            if (curso == null)
+                throw new Exception("Curso não encontrado.");
+
+            curso.Status = "DESATIVADO";
+            
+            _context.Cursos.Update(curso);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task AtivarCurso(int cursoId)
+        {
+            if (cursoId == null || cursoId <= 0)
+                return;
+
+            var curso = await _context.Cursos
+                .FirstOrDefaultAsync(c => c.Id == cursoId);
+
+            if (curso == null)
+                throw new Exception("Curso não encontrado.");
+
+            curso.Status = "ATIVO";
+
+            _context.Cursos.Update(curso);
+            await _context.SaveChangesAsync();
+        }
+
 
     }
 }

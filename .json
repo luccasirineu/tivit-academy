@@ -1,0 +1,457 @@
+{
+    "proposta_id": 8800001000001119,
+    "agregador": "026130570001911769019135002",
+    "tipo": "EMPRESA_MATRIZ",
+    "uuid": "c1e5746e-9053-41a2-bd6e-d72f45d96e9a",
+    "cartao_proposta": {
+        "razao_social": "ESSENCIA COMERCIO DE PRODUTOS NATURAIS LTDA",
+        "cnpj": "02613057000191",
+        "endereco_empresa": {
+            "cep": "71710520",
+            "rua": "AV CENTRAL BLOCOS",
+            "numero": "595",
+            "complemento": "LOJA 01",
+            "bairro": "NUCLEO BANDEIRANTE",
+            "cidade": "BRASILIA",
+            "estado": "DF"
+        },
+        "natureza_juridica": "2062 Sociedade Empresária Limitada",
+        "data_abertura": "02/10/1986",
+        "compulsoriedade": "4",
+        "contributariedade": "0",
+        "tipo_contratacao": "5",
+        "nome_responsavel": "EDITE INACIO DE SOUZA DIAS",
+        "cpf_responsavel": "14386470182",
+        "e_mail_responsavel": "vinicius.planellis.viaflow@segurosunimed.com.br",
+        "nome_mae": "CLARIZA BALTAZAR DE SOUZA",
+        "data_nascimento": "25/08/1957",
+        "quantidade_vidas": 2,
+        "CNAE": "4772500",
+        "beneficiarios_vinculados": [
+            {
+                "titular": "true",
+                "nome": "EDITE INACIO DE SOUZA DIAS",
+                "cpf": "14386470182",
+                "tipo_vinculo": "1",
+                "grau_parentesco": ""
+            },
+            {
+                "titular": "true",
+                "nome": "JULIANE CORREIA SOARES",
+                "cpf": "00017584116",
+                "tipo_vinculo": "2",
+                "grau_parentesco": ""
+            }
+        ],
+        "representantes": [
+            {
+                "nome_representante": "EDITE INACIO DE SOUZA DIAS",
+                "cpf_representante": "14386470182",
+                "e_mail_representante": "vinicius.planellis.viaflow@segurosunimed.com.br",
+                "nome_mae_representante": "CLARIZA BALTAZAR DE SOUZA",
+                "data_nascimento_representante": "25/08/1957"
+            }
+        ],
+        "nomes_assinatura": [
+            "EDITE INACIO DE SOUZA DIAS"
+        ],
+        "empresas_vinculadas": [
+            {
+                "razao_social": "SOCIEDADE BRASILIENSE DE OTORRINOLARINGOLOGIA E ENDOSCOPIA PERORAL LTDA",
+                "cnpj": "01912781000153",
+                "CNAE": "8630502"
+            }
+        ]
+    },
+    "arquivos": [
+        {
+            "id": "8",
+            "label": "Cartão CNPJ",
+            "imageref": "deneuve/segurosunimed/images/f404691d-4de8-44f9-962a-d3aabdcfd475.pdf",
+            "date": "2026-01-21T18:02:18.606Z",
+            "filename": "CNPJ ATUALIZADO.pdf",
+            "identifier_uuid": "b06a3567-16f4-4c23-bc67-4e99cd6ffe6a",
+            "multiDocId": "8.80",
+            "documentoID": "f404691d-4de8-44f9-962a-d3aabdcfd475",
+            "image": "https://segurosunimed.test.planium.io/svc/common/s3redirect.api?image=deneuve/segurosunimed/images/f404691d-4de8-44f9-962a-d3aabdcfd475.pdf",
+            "download": true
+        },
+        {
+            "id": "10",
+            "label": "RG ou CNH (Resp. Legal, Sócio ou Procurador)",
+            "imageref": "deneuve/segurosunimed/images/fb542252-cef6-4ef2-9579-190f6287395b.pdf",
+            "date": "2026-01-21T18:10:36.447Z",
+            "filename": "RG e CPF do Responsável Legal.pdf",
+            "identifier_uuid": "1fec33e8-f6c0-4670-8acb-62a941139b86",
+            "multiDocId": "10.822",
+            "documentoID": "fb542252-cef6-4ef2-9579-190f6287395b",
+            "image": "https://segurosunimed.test.planium.io/svc/common/s3redirect.api?image=deneuve/segurosunimed/images/fb542252-cef6-4ef2-9579-190f6287395b.pdf",
+            "download": true
+        },
+        {
+            "id": "16",
+            "label": "FGTS (GFD)",
+            "imageref": "deneuve/segurosunimed/images/47a7b265-a66c-4b3f-80df-a7cb08cb7c10.pdf",
+            "date": "2026-01-21T18:11:05.529Z",
+            "filename": "GFIP (FGTS) 2.pdf",
+            "identifier_uuid": "c99d277b-14f8-4a03-a5c5-b15a12a4022f",
+            "multiDocId": "16.266",
+            "documentoID": "47a7b265-a66c-4b3f-80df-a7cb08cb7c10",
+            "image": "https://segurosunimed.test.planium.io/svc/common/s3redirect.api?image=deneuve/segurosunimed/images/47a7b265-a66c-4b3f-80df-a7cb08cb7c10.pdf",
+            "download": true
+        },
+        {
+            "id": "21",
+            "label": "FGTS (Comprovante Pagamento)",
+            "imageref": "deneuve/segurosunimed/images/ec6cb110-f8e8-4ac7-8719-0c530c855879.pdf",
+            "date": "2026-01-21T18:11:24.701Z",
+            "filename": "GFIP (FGTS).pdf",
+            "identifier_uuid": "281280c7-1a6b-44bf-ac6f-10ffbfe88c25",
+            "multiDocId": "21.345",
+            "documentoID": "ec6cb110-f8e8-4ac7-8719-0c530c855879",
+            "image": "https://segurosunimed.test.planium.io/svc/common/s3redirect.api?image=deneuve/segurosunimed/images/ec6cb110-f8e8-4ac7-8719-0c530c855879.pdf",
+            "download": true
+        },
+        {
+            "id": "9",
+            "label": "FGTS (Relação Funcionários)",
+            "imageref": "deneuve/segurosunimed/images/ca6e4324-6e71-4367-87d6-276b66ce8ddb.pdf",
+            "date": "2026-02-04T17:31:59.901Z",
+            "filename": "FGTS (Relação Funcionários) - incorreta.pdf",
+            "identifier_uuid": "7c8defbe-204a-401b-a44d-fe76f2736444",
+            "multiDocId": "9.623",
+            "documentoID": "ca6e4324-6e71-4367-87d6-276b66ce8ddb",
+            "image": "https://segurosunimed.test.planium.io/svc/common/s3redirect.api?image=deneuve/segurosunimed/images/ca6e4324-6e71-4367-87d6-276b66ce8ddb.pdf",
+            "download": true
+        }
+    ]
+}
+
+{
+    "proposta_id": 8800001000001119,
+    "agregador": "026130570001911769019135002",
+    "tipo": "EMPRESA_FILIAL",
+    "uuid": "d6cb380a-a104-4dc9-b339-79590d2fae1d",
+    "cartao_proposta": {
+        "razao_social_matriz": "ESSENCIA COMERCIO DE PRODUTOS NATURAIS LTDA",
+        "cnpj_matriz": "02613057000191",
+        "razao_social": "SOCIEDADE BRASILIENSE DE OTORRINOLARINGOLOGIA E ENDOSCOPIA PERORAL LTDA",
+        "cnpj": "01912781000153",
+        "endereco_empresa": {
+            "cep": "70200740",
+            "rua": "Q SGAS",
+            "numero": "614",
+            "complemento": "PAVMTO2 EDIF VITRIUM",
+            "bairro": "ASA SUL",
+            "cidade": "BRASILIA",
+            "estado": "DF"
+        },
+        "endereco_empresa_matriz": {
+            "cep": "71710520",
+            "rua": "AV CENTRAL BLOCOS",
+            "numero": "595",
+            "complemento": "LOJA 01",
+            "bairro": "NUCLEO BANDEIRANTE",
+            "cidade": "BRASILIA",
+            "estado": "DF"
+        },
+        "natureza_juridica": "2062 Sociedade Empresária Limitada",
+        "data_abertura": "29/05/1974",
+        "compulsoriedade": "4",
+        "prestador_servico": "0",
+        "nome_responsavel": "WADY MIGUEL SANTOS BUHATEN HILUY",
+        "cpf_responsavel": "61671088387",
+        "e_mail_responsavel": "vinicius.planellis.viaflow+5@segurosunimed.com.br",
+        "nome_mae": "CECILIA SANTOS BUHATEN HILUY",
+        "data_nascimento": "23/06/1977",
+        "quantidade_vidas": 1,
+        "CNAE": "8630502",
+        "beneficiarios_vinculados": [
+            {
+                "titular": "true",
+                "nome": "ANA BEATRIZ SILVA RIBEIRO",
+                "cpf": "08026293185",
+                "tipo_vinculo": "8",
+                "grau_parentesco": ""
+            }
+        ],
+        "representantes": [
+            {
+                "nome_representante": "WADY MIGUEL SANTOS BUHATEN HILUY",
+                "cpf_representante": "61671088387",
+                "e_mail_representante": "vinicius.planellis.viaflow+5@segurosunimed.com.br",
+                "nome_mae_representante": "CECILIA SANTOS BUHATEN HILUY",
+                "data_nascimento_representante": "23/06/1977"
+            }
+        ],
+        "nomes_assinatura": [
+            "WADY MIGUEL SANTOS BUHATEN HILUY"
+        ]
+    },
+    "arquivos": [
+        {
+            "id": "8",
+            "label": "Cartão CNPJ",
+            "imageref": "deneuve/segurosunimed/images/9bb65f6e-1b8b-46b0-83da-e8e4ffb5a7b8.pdf",
+            "date": "2026-01-21T18:55:42.344Z",
+            "filename": "CNPJ ATUAL.pdf",
+            "identifier_uuid": "b297cd78-ebb6-4b50-97f0-dbf6792bf5bf",
+            "multiDocId": "8.4",
+            "documentoID": "9bb65f6e-1b8b-46b0-83da-e8e4ffb5a7b8",
+            "image": "https://segurosunimed.test.planium.io/svc/common/s3redirect.api?image=deneuve/segurosunimed/images/9bb65f6e-1b8b-46b0-83da-e8e4ffb5a7b8.pdf",
+            "download": true
+        },
+        {
+            "id": "4",
+            "label": "Contrato social",
+            "imageref": "deneuve/segurosunimed/images/f622a528-629b-420e-926f-af25ff4578be.pdf",
+            "date": "2026-01-21T19:03:25.183Z",
+            "filename": "Documentação empresa Só contrato social.pdf",
+            "identifier_uuid": "cffbae70-7a9c-43e9-904c-a79e911cd8df",
+            "multiDocId": "4.889",
+            "documentoID": "f622a528-629b-420e-926f-af25ff4578be",
+            "image": "https://segurosunimed.test.planium.io/svc/common/s3redirect.api?image=deneuve/segurosunimed/images/f622a528-629b-420e-926f-af25ff4578be.pdf",
+            "download": true
+        },
+        {
+            "id": "10",
+            "label": "RG ou CNH (Resp. Legal, Sócio ou Procurador)",
+            "imageref": "deneuve/segurosunimed/images/5eeefd7a-1359-417a-8ca3-056dc7bdf029.pdf",
+            "date": "2026-01-21T19:03:56.438Z",
+            "filename": "RG e CPF do Responsável Legal.pdf",
+            "identifier_uuid": "c1f9a404-68f5-4f6e-8f74-684fcdabbdb9",
+            "multiDocId": "10.153",
+            "documentoID": "5eeefd7a-1359-417a-8ca3-056dc7bdf029",
+            "image": "https://segurosunimed.test.planium.io/svc/common/s3redirect.api?image=deneuve/segurosunimed/images/5eeefd7a-1359-417a-8ca3-056dc7bdf029.pdf",
+            "download": true
+        }
+    ]
+}
+
+{
+    "proposta_id": 8800001000001119,
+    "agregador": "026130570001911769019135002",
+    "tipo": "BENEFICIARIO",
+    "uuid": "bc2c1e8d-bc63-41ac-a8d7-a7cfbbb05966",
+    "cartao_proposta": {
+        "titular": "true",
+        "nome": "EDITE INACIO DE SOUZA DIAS",
+        "cpf": "14386470182",
+        "nome_mae": "CLARIZA BALTAZAR DE SOUZA",
+        "data_nascimento": "25/08/1957",
+        "rg": "",
+        "data_admissao": "02/10/1986",
+        "estado_civil": 4,
+        "tipo_vinculo": "1",
+        "oriundo_unimed": "0",
+        "carencia": "TRC",
+        "plano_destino": "PMECPENF",
+        "segmentacao": "AHCO",
+        "acomodacao": "C",
+        "abrangencia": "N",
+        "template_termo_reducao_carencia": "/termo_carencia_PME_CORPORATIVO",
+        "nome_titular": "EDITE INACIO DE SOUZA DIAS",
+        "cpf_titular": "143.864.701-82",
+        "nome_mae_titular": "CLARIZA BALTAZAR DE SOUZA",
+        "data_nascimento_titular": "25/08/1957",
+        "endereco_pessoal": {
+            "cep": "16.201-059",
+            "rua": "RUA ALFREDO GALEOTI",
+            "numero": "434",
+            "complemento": "",
+            "bairro": "PARQUE DAS PAINEIRAS",
+            "cidade": "BIRIGUI",
+            "estado": "SP"
+        },
+        "razao_social": "ESSENCIA COMERCIO DE PRODUTOS NATURAIS LTDA",
+        "cnpj": "02613057000191",
+        "endereco_empresa": {
+            "cep": "71710520",
+            "rua": "AV CENTRAL BLOCOS",
+            "numero": "595",
+            "complemento": "LOJA 01",
+            "bairro": "NUCLEO BANDEIRANTE",
+            "cidade": "BRASILIA",
+            "estado": "DF"
+        },
+        "dependentes": []
+    },
+    "arquivos": [
+        {
+            "id": "1",
+            "label": "RG ou CNH",
+            "imageref": "deneuve/segurosunimed/images/72b801c1-154d-412a-aa0e-1c4e08d09449.pdf",
+            "date": "2026-01-21T18:34:08.332Z",
+            "filename": "RG e CPF do Responsável Legal.pdf",
+            "identifier_uuid": "99adde54-3ed3-49da-b0bd-3bd79b4b1e43",
+            "multiDocId": "1.499",
+            "documentoID": "72b801c1-154d-412a-aa0e-1c4e08d09449",
+            "image": "https://segurosunimed.test.planium.io/svc/common/s3redirect.api?image=deneuve/segurosunimed/images/72b801c1-154d-412a-aa0e-1c4e08d09449.pdf",
+            "download": true
+        },
+        {
+            "id": "4",
+            "label": "Contrato social",
+            "imageref": "deneuve/segurosunimed/images/afed1085-dc24-4be9-9f4e-2bb965a14da4.pdf",
+            "date": "2026-02-05T19:11:51.959Z",
+            "filename": "Contrato Social - MARCO ANTONIO MALINI - incorreto.pdf",
+            "identifier_uuid": "895b0552-a460-481f-a3d4-d8aa7fd83848",
+            "multiDocId": "4.250",
+            "documentoID": "afed1085-dc24-4be9-9f4e-2bb965a14da4",
+            "image": "https://segurosunimed.test.planium.io/svc/common/s3redirect.api?image=deneuve/segurosunimed/images/afed1085-dc24-4be9-9f4e-2bb965a14da4.pdf",
+            "download": true
+        }
+    ]
+}
+
+{
+    "proposta_id": 8800001000001119,
+    "agregador": "026130570001911769019135002",
+    "tipo": "BENEFICIARIO",
+    "uuid": "4b5ef9b0-0a8d-4908-b3ac-cf42fa511a81",
+    "cartao_proposta": {
+        "titular": "true",
+        "nome": "JULIANE CORREIA SOARES",
+        "cpf": "00017584116",
+        "nome_mae": "ADALGISA CORREIA DA SILVA",
+        "data_nascimento": "02/10/1985",
+        "rg": "",
+        "data_admissao": "02/10/2017",
+        "estado_civil": 4,
+        "tipo_vinculo": "2",
+        "oriundo_unimed": "0",
+        "carencia": "TRC",
+        "plano_destino": "PMECPENF",
+        "segmentacao": "AHCO",
+        "acomodacao": "C",
+        "abrangencia": "N",
+        "template_termo_reducao_carencia": "/termo_carencia_PME_CORPORATIVO",
+        "nome_titular": "JULIANE CORREIA SOARES",
+        "cpf_titular": "000.175.841-16",
+        "nome_mae_titular": "ADALGISA CORREIA DA SILVA",
+        "data_nascimento_titular": "02/10/1985",
+        "endereco_pessoal": {
+            "cep": "72.450-150",
+            "rua": "QUADRA",
+            "numero": "15",
+            "complemento": "LOTE 16",
+            "bairro": "SETOR LESTE GAMA",
+            "cidade": "BRASILIA",
+            "estado": "DF"
+        },
+        "razao_social": "ESSENCIA COMERCIO DE PRODUTOS NATURAIS LTDA",
+        "cnpj": "02613057000191",
+        "endereco_empresa": {
+            "cep": "71710520",
+            "rua": "AV CENTRAL BLOCOS",
+            "numero": "595",
+            "complemento": "LOJA 01",
+            "bairro": "NUCLEO BANDEIRANTE",
+            "cidade": "BRASILIA",
+            "estado": "DF"
+        },
+        "dependentes": []
+    },
+    "arquivos": [
+        {
+            "id": "1",
+            "label": "RG ou CNH",
+            "imageref": "deneuve/segurosunimed/images/983450ff-fb04-435a-9b2e-41636b71421e.pdf",
+            "date": "2026-01-21T18:46:38.964Z",
+            "filename": "Documento de Identificação (RG e CPF).pdf",
+            "identifier_uuid": "57e70d7a-1135-4b1c-8c2c-ceef9cf91931",
+            "multiDocId": "1.883",
+            "documentoID": "983450ff-fb04-435a-9b2e-41636b71421e",
+            "image": "https://segurosunimed.test.planium.io/svc/common/s3redirect.api?image=deneuve/segurosunimed/images/983450ff-fb04-435a-9b2e-41636b71421e.pdf",
+            "download": true
+        },
+        {
+            "id": "32",
+            "label": "CTPS",
+            "imageref": "deneuve/segurosunimed/images/8f123742-341e-459b-bb81-e9291bfba474.pdf",
+            "date": "2026-02-04T17:34:15.834Z",
+            "filename": "CTPS.pdf",
+            "identifier_uuid": "e78f251a-e9c9-4cc8-a4eb-3d4f52e8f715",
+            "multiDocId": "32.330",
+            "documentoID": "8f123742-341e-459b-bb81-e9291bfba474",
+            "image": "https://segurosunimed.test.planium.io/svc/common/s3redirect.api?image=deneuve/segurosunimed/images/8f123742-341e-459b-bb81-e9291bfba474.pdf",
+            "download": true
+        }
+    ]
+}
+
+{
+    "proposta_id": 8800001000001119,
+    "agregador": "026130570001911769019135002",
+    "tipo": "BENEFICIARIO",
+    "uuid": "242170af-fa20-4869-88cf-902a4030c09f",
+    "cartao_proposta": {
+        "titular": "true",
+        "nome": "ANA BEATRIZ SILVA RIBEIRO",
+        "cpf": "08026293185",
+        "nome_mae": "ANA PAULA FREITAS SILVA",
+        "data_nascimento": "16/06/2006",
+        "rg": "",
+        "data_admissao": "01/06/2024",
+        "estado_civil": 4,
+        "tipo_vinculo": "8",
+        "oriundo_unimed": "0",
+        "carencia": "N/A",
+        "plano_destino": "PMECPENF",
+        "segmentacao": "AHCO",
+        "acomodacao": "C",
+        "abrangencia": "N",
+        "template_termo_reducao_carencia": "/termo_carencia_PME_CORPORATIVO",
+        "nome_titular": "ANA BEATRIZ SILVA RIBEIRO",
+        "cpf_titular": "080.262.931-85",
+        "nome_mae_titular": "ANA PAULA FREITAS SILVA",
+        "data_nascimento_titular": "16/06/2006",
+        "endereco_pessoal": {
+            "cep": "72.925-516",
+            "rua": "QUADRA QUADRA 19",
+            "numero": "25",
+            "complemento": "",
+            "bairro": "RESIDENCIAL JARDIM PARAISO",
+            "cidade": "AGUAS LINDAS DE GOIAS",
+            "estado": "GO"
+        },
+        "razao_social": "SOCIEDADE BRASILIENSE DE OTORRINOLARINGOLOGIA E ENDOSCOPIA PERORAL LTDA",
+        "cnpj": "01912781000153",
+        "endereco_empresa": {
+            "cep": "70200740",
+            "rua": "Q SGAS",
+            "numero": "614",
+            "complemento": "PAVMTO2 EDIF VITRIUM",
+            "bairro": "ASA SUL",
+            "cidade": "BRASILIA",
+            "estado": "DF"
+        },
+        "dependentes": []
+    },
+    "arquivos": [
+        {
+            "id": "1",
+            "label": "RG ou CNH",
+            "imageref": "deneuve/segurosunimed/images/c6e83a94-c2c3-4849-b171-03b070ea3760.pdf",
+            "date": "2026-01-21T19:19:55.415Z",
+            "filename": "rg.pdf",
+            "identifier_uuid": "443510ca-5080-479c-ba29-7a858f9b4dac",
+            "multiDocId": "1.769",
+            "documentoID": "c6e83a94-c2c3-4849-b171-03b070ea3760",
+            "image": "https://segurosunimed.test.planium.io/svc/common/s3redirect.api?image=deneuve/segurosunimed/images/c6e83a94-c2c3-4849-b171-03b070ea3760.pdf",
+            "download": true
+        },
+        {
+            "id": "29",
+            "label": "Contrato de estágio",
+            "imageref": "deneuve/segurosunimed/images/16636801-6209-4f3b-9815-52ab8631ca22.pdf",
+            "date": "2026-02-05T17:41:52.644Z",
+            "filename": "contrato de estagio - Laura - Incorreto.pdf",
+            "identifier_uuid": "215219dc-1cb7-45eb-b714-e7d8a8c61f8d",
+            "multiDocId": "29.252",
+            "documentoID": "16636801-6209-4f3b-9815-52ab8631ca22",
+            "image": "https://segurosunimed.test.planium.io/svc/common/s3redirect.api?image=deneuve/segurosunimed/images/16636801-6209-4f3b-9815-52ab8631ca22.pdf",
+            "download": true
+        }
+    ]
+}
