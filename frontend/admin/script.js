@@ -548,7 +548,7 @@ let cursoParaExcluirId = null;
 // ========== EVENTOS ==========
 btnNovoCurso.addEventListener("click", () => {
   popupNovoCurso.classList.remove("hidden");
-  carregarProfessores();
+  carregarProfessoresAtivos();
 });
 
 btnSalvarCurso.addEventListener("click", salvarNovoCurso);
@@ -771,13 +771,47 @@ async function carregarProfessoresEdicao(nomeProfessorAtual) {
   });
 }
 
+async function carregarProfessoresAtivos() {
+  try {
+    // Limpa select
+    selectProfessorCurso.innerHTML = 
+      `<option value="">Carregando professores...</option>`;
+
+    const response = await fetch(
+      "http://localhost:5027/api/Professor/getAllProfessoresAtivos"
+    );
+
+    if (!response.ok) {
+      throw new Error("Erro ao buscar professores");
+    }
+
+    const professores = await response.json();
+
+    // Limpa novamente antes de preencher
+    selectProfessorCurso.innerHTML =
+      `<option value="">Selecione um professor</option>`;
+
+    professores.forEach(prof => {
+      const option = document.createElement("option");
+      option.value = prof.id;
+      option.textContent = prof.nome;
+      selectProfessorCurso.appendChild(option);
+    });
+
+  } catch (error) {
+    console.error(error);
+
+    selectProfessorCurso.innerHTML =
+      `<option value="">Erro ao carregar professores</option>`;
+  }
+}
+
 
 async function salvarNovoCurso() {
   const nomeCurso = inputNomeCurso.value.trim();
   const professorId = Number(selectProfessorCurso.value);
   const descricaoCurso = inputDescricaoCurso.value;
   if (!nomeCurso || !professorId || !inputDescricaoCurso) {
-    alert("Preencha todos os campos corretamente.");
     
     return;
   }
@@ -804,13 +838,11 @@ async function salvarNovoCurso() {
       throw new Error(erro || "Erro ao criar curso");
     }
 
-    alert("Curso criado com sucesso!");
     fecharPopupCurso();
     carregarCursos();
 
   } catch (error) {
     console.error(error);
-    alert("Não foi possível criar o curso.");
   } finally {
     btnSalvarCurso.disabled = false;
     btnSalvarCurso.textContent = "Salvar";

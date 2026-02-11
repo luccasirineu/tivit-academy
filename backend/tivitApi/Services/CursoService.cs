@@ -96,7 +96,7 @@ namespace tivitApi.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task AtualizarCurso(CursoDTO dto)
+        public async Task AtualizarCurso(CursoDTORequest dto)
         {
             if (dto == null || dto.Id <= 0)
                 return;
@@ -149,7 +149,19 @@ namespace tivitApi.Services
             await _context.SaveChangesAsync();
         }
 
+        public async Task<List<CursoDTO>> GetAllCursosAtivos()
+        {
 
+            var cursos = await _context.Cursos.Where(p => p.Status == "ATIVO").ToListAsync();
+
+            // converter lista de Matricula -> lista de MatriculaDTO
+            var resultado = cursos
+            .Select(curso => ConvertCursoToCursoDTO(curso))
+            .ToList();
+
+            return resultado;
+
+        }
     }
 }
     

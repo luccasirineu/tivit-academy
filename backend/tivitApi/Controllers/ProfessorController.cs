@@ -60,5 +60,19 @@ namespace tivitApi.Controllers
                 return NotFound(ex.Message);
             }
         }
+
+        [HttpGet("getAllProfessoresAtivos")]
+        public async Task<IActionResult> GetAllProfessoresAtivos()
+        {
+            try
+            {
+                var professores = await _professorService.GetAllProfessoresAtivos();
+                return Ok(professores);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
     }
 }

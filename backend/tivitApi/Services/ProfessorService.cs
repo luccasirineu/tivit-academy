@@ -12,6 +12,8 @@ namespace tivitApi.Services
         Task<int> GetQntdProfessoresAtivos();
         Task<ProfessorDTOResponse> GetProfessorById(int professorId);
         Task<List<ProfessorDTOResponse>> GetAllProfessores();
+        Task<List<ProfessorDTOResponse>> GetAllProfessoresAtivos();
+
     }
 
     public class ProfessorService : IProfessorService
@@ -67,5 +69,18 @@ namespace tivitApi.Services
 
             return resultado;
         }
+
+        public async Task<List<ProfessorDTOResponse>> GetAllProfessoresAtivos()
+        {
+            var professores = await _context.Professores.Where(p => p.Status == "ATIVO").ToListAsync();
+
+            // converter lista de Professores -> lista de ProfessorDTOResponse
+            var resultado = professores
+            .Select(professor => ConvertProfessorToProfessorDTOResponse(professor))
+            .ToList();
+
+            return resultado;
+        }
+
     }
 }

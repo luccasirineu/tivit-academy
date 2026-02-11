@@ -26,6 +26,20 @@ namespace tivitApi.Controllers
             return Ok(cursosDTOs);
         }
 
+        [HttpGet("getAllCursosAtivos")]
+        public async Task<IActionResult> GetAllCursosAtivos()
+        {
+            try
+            {
+                List<CursoDTO> cursosDTOs = await _cursoService.GetAllCursosAtivos();
+                return Ok(cursosDTOs);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
         [HttpGet("{cursoId}")]
         public async Task<IActionResult> GetCursoId(int cursoId)
         {
@@ -70,7 +84,7 @@ namespace tivitApi.Controllers
         }
 
         [HttpPut("atualizarCurso")]
-        public async Task<IActionResult> AtualizarCurso([FromBody] CursoDTO dto)
+        public async Task<IActionResult> AtualizarCurso([FromBody] CursoDTORequest dto)
         {
 
             try

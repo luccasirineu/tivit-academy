@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", carregarCursos);
 
 async function carregarCursos() {
   try {
-    const response = await fetch(`${API_URL}/Curso`);
+    const response = await fetch(`${API_URL}/Curso/GetAllCursosAtivos`);
     const cursos = await response.json();
 
     preencherCards(cursos);
