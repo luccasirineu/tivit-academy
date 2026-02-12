@@ -218,8 +218,8 @@ async function carregarResumoAdmin() {
 
 
     await Promise.all([
-      carregarAlunosAtivos(),
-      carregarProfessoresAtivos(),
+      carregarQntdAlunosAtivos(),
+      carregarQntdProfessoresAtivos(),
       carregarQtdTurmas()
     ]);
 
@@ -229,7 +229,7 @@ async function carregarResumoAdmin() {
 }
 
 
-async function carregarAlunosAtivos() {
+async function carregarQntdAlunosAtivos() {
   const response = await fetch(
     `${API_BASE}/Aluno/getQntdAlunosAtivos`
   );
@@ -241,16 +241,16 @@ async function carregarAlunosAtivos() {
   document.getElementById("qtdAlunosAtivos").textContent = qtdAlunos;
 }
 
-async function carregarProfessoresAtivos() {
+async function carregarQntdProfessoresAtivos() {
   const response = await fetch(
     `${API_BASE}/Professor/getQntdProfessoresAtivos`
   );
 
   if (!response.ok) throw new Error("Erro ao buscar turmas");
 
-  const qtdTurmas = await response.json();
-
-  document.getElementById("qtdProfessoresAtivos").textContent = qtdTurmas;
+  const qtdProfessor = await response.json();
+  console.log(qtdProfessor)
+  document.getElementById("qtdProfessoresAtivos").textContent = qtdProfessor;
 }
 
 async function carregarQtdTurmas() {
