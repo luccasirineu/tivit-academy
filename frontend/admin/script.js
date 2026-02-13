@@ -157,36 +157,7 @@ async function reprovar(id) {
   }
 }
 
-formTurma.addEventListener("submit", (e) => {
-  e.preventDefault();
 
-  const nome = document.getElementById("nomeTurma").value;
-  const curso = document.getElementById("cursoTurma").value;
-  const prof = document.getElementById("professorTurma").value;
-  const turno = document.getElementById("turnoTurma").value;
-  const alunos = document.getElementById("alunosTurma").value;
-  const status = document.getElementById("statusTurma").value;
-
-  const card = document.createElement("div");
-  card.classList.add("turma-item");
-  card.innerHTML = `
-    <div class="turma-info">
-      <h3>${nome}</h3>
-      <p><i class='bx bx-book'></i> Curso: ${curso}</p>
-      <p><i class='bx bx-user'></i> Professor: ${prof}</p>
-      <p><i class='bx bx-group'></i> ${alunos} alunos • Turno: ${turno}</p>
-    </div>
-    <div class="turma-status ${status}">${status === "ativo" ? "Ativa" : "Concluída"}</div>
-    <div class="turma-actions">
-      <button class="btn-edit"><i class='bx bx-edit-alt'></i></button>
-      <button class="btn-delete"><i class='bx bx-trash'></i></button>
-    </div>
-  `;
-
-  listaTurmas.appendChild(card);
-  formTurma.reset();
-  popupNovaTurma.classList.add("hidden");
-});
 
 /* ============================
    SIDEBAR
@@ -249,7 +220,6 @@ async function carregarQntdProfessoresAtivos() {
   if (!response.ok) throw new Error("Erro ao buscar turmas");
 
   const qtdProfessor = await response.json();
-  console.log(qtdProfessor)
   document.getElementById("qtdProfessoresAtivos").textContent = qtdProfessor;
 }
 
@@ -822,7 +792,6 @@ async function salvarNovoCurso() {
     profResponsavel: professorId
   };
 
-  console.log(payload)
   btnSalvarCurso.disabled = true;
   btnSalvarCurso.textContent = "Salvando...";
 
@@ -914,3 +883,257 @@ document
 
 // Inicializar
 carregarCursos();
+
+
+function criarCardTurma(turmaId, nomeTurma, nomeCurso, cursoId, status) {
+  const card = document.createElement("div");
+  card.classList.add("turmas-card");
+
+  card.innerHTML = `
+    <div class="turma-info">
+      <h3>Turma: ${nomeTurma}</h3>
+      <p><i class='bx bx-book'></i> Curso: ${nomeCurso}</p>
+    </div>
+
+    <div class="turma-status ${status.toLowerCase()}">
+      ${status}
+    </div>
+
+    <div class="turma-actions">
+      <button 
+        class="btn-edit"
+        data-turma-id="${turmaId}"
+        data-curso-id="${cursoId}"
+        data-nome="${nomeTurma}"
+        data-status="${status}"
+      >
+        <i class='bx bx-edit-alt'></i>
+      </button>
+    
+    </div>
+  `;
+
+  turmasGrid.appendChild(card);
+}
+
+
+
+async function buscarCurso(cursoId) {
+  try {
+    const response = await fetch(
+      `http://localhost:5027/api/Curso/${cursoId}`
+    );
+    if (!response.ok) throw new Error();
+    const curso = await response.json();
+    return curso;
+  } catch (error) {
+    console.error(error);
+}
+}
+
+async function carregarTurmas() {
+  try {
+    turmasGrid.innerHTML = "";
+
+    const [turmasRes, cursosRes] = await Promise.all([
+      fetch("http://localhost:5027/api/Turma/getAllTurmas"),
+      fetch("http://localhost:5027/api/Curso")
+    ]);
+
+    if (!turmasRes.ok || !cursosRes.ok) throw new Error();
+
+    const turmas = await turmasRes.json();
+    const cursos = await cursosRes.json();
+
+    for (const turma of turmas) {
+      const curso = cursos.find(c => c.id === turma.cursoId);
+
+      criarCardTurma(
+        turma.id,
+        turma.nome,
+        curso ? curso.nome : "Curso não encontrado",
+        turma.cursoId,
+        turma.status
+      );
+    }
+
+  } catch (error) {
+    console.error(error);
+    turmasGrid.innerHTML = "<p>Erro ao carregar turmas</p>";
+  }
+}
+
+
+carregarTurmas();
+
+const popupEditarTurma = document.getElementById("popupEditarTurma");
+const editNomeTurma = document.getElementById("editNomeTurma");
+const editSelectCurso = document.getElementById("editSelectCurso");
+const editStatus = document.getElementById("editStatus");
+const btnCancelarEdicaoTurma = document.getElementById("btnCancelarEdicaoTurma");
+const btnSalvarEdicaoTurma = document.getElementById("btnSalvarEdicaoTurma");
+
+let turmaEditandoId = null;
+
+const btnNovaTurma = document.getElementById("btnNovaTurma");
+const popupNovaTurma = document.getElementById("popupNovaTurma");
+const formTurma = document.getElementById("formTurma");
+const cursoTurmaSelect = document.getElementById("cursoTurma");
+const fecharPopup = document.getElementById("fecharPopup");
+
+
+btnNovaTurma.addEventListener("click", async () => {
+  popupNovaTurma.classList.remove("hidden");
+  await carregarCursosAtivos();
+});
+
+
+async function carregarCursosAtivos() {
+  try {
+    cursoTurmaSelect.innerHTML = `<option value="">Carregando...</option>`;
+
+    const response = await fetch("http://localhost:5027/api/Curso");
+    if (!response.ok) throw new Error();
+
+    const cursos = await response.json();
+
+    const cursosAtivos = cursos.filter(c => c.status === "ATIVO");
+
+    cursoTurmaSelect.innerHTML = `<option value="">Selecione um curso</option>`;
+
+    cursosAtivos.forEach(curso => {
+      const option = document.createElement("option");
+      option.value = curso.id;
+      option.textContent = curso.nome;
+      cursoTurmaSelect.appendChild(option);
+    });
+
+  } catch (error) {
+    console.error(error);
+    cursoTurmaSelect.innerHTML = `<option value="">Erro ao carregar</option>`;
+  }
+}
+
+fecharPopup.addEventListener("click", () => {
+  popupNovaTurma.classList.add("hidden");
+  formTurma.reset();
+});
+
+
+formTurma.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const payload = {
+    nome: document.getElementById("nomeTurma").value.trim(),
+    cursoId: Number(cursoTurmaSelect.value),
+    status: document.getElementById("statusTurma").value.toUpperCase()
+  };
+
+  if (!payload.nome || !payload.cursoId) {
+    alert("Preencha todos os campos obrigatórios.");
+    return;
+  }
+
+  try {
+    const response = await fetch("http://localhost:5027/api/Turma/criarTurma", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    if (!response.ok) throw new Error();
+
+    alert("Turma criada com sucesso!");
+
+    popupNovaTurma.classList.add("hidden");
+    formTurma.reset();
+    carregarTurmas();
+
+  } catch (error) {
+    console.error(error);
+    alert("Erro ao criar turma.");
+  }
+});
+
+turmasGrid.addEventListener("click", async (e) => {
+  const btnEdit = e.target.closest(".btn-edit");
+  if (!btnEdit) return;
+
+  turmaEditandoId = btnEdit.dataset.turmaId;
+  const cursoId = btnEdit.dataset.cursoId;
+
+  editNomeTurma.value = btnEdit.dataset.nome;
+  editStatus.value = btnEdit.dataset.status;
+
+  await carregarCursosParaEdicao(cursoId);
+
+  popupEditarTurma.classList.remove("hidden");
+});
+
+
+async function carregarCursosParaEdicao(cursoSelecionadoId) {
+  try {
+    editSelectCurso.innerHTML = `<option>Carregando...</option>`;
+
+    const response = await fetch("http://localhost:5027/api/Curso");
+    if (!response.ok) throw new Error();
+
+    const cursos = await response.json();
+
+    editSelectCurso.innerHTML = "";
+
+    for (const curso of cursos) {
+      const option = document.createElement("option");
+      option.value = curso.id;
+      option.textContent = curso.nome;
+
+      if (curso.id == cursoSelecionadoId) {
+        option.selected = true;
+      }
+
+      editSelectCurso.appendChild(option);
+    }
+
+  } catch (error) {
+    console.error(error);
+    editSelectCurso.innerHTML = `<option>Erro ao carregar</option>`;
+  }
+}
+
+btnCancelarEdicaoTurma.addEventListener("click", () => {
+  popupEditarTurma.classList.add("hidden");
+  turmaEditandoId = null;
+});
+
+btnSalvarEdicaoTurma.addEventListener("click", async () => {
+  if (!turmaEditandoId) return;
+
+  const payload = {
+    id: turmaEditandoId,
+    nome: editNomeTurma.value.trim(),
+    cursoId: Number(editSelectCurso.value),
+    status: editStatus.value.toUpperCase()
+  };
+
+  try {
+    const response = await fetch(
+      `http://localhost:5027/api/Turma/atualizarTurma`,
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      }
+    );
+
+    if (!response.ok) throw new Error();
+
+    popupEditarTurma.classList.add("hidden");
+
+    carregarTurmas(); 
+
+  } catch (error) {
+    console.error(error);
+    alert("Erro ao atualizar turma");
+  }
+});
+

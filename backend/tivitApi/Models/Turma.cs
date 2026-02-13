@@ -17,10 +17,13 @@ namespace tivitApi.Models
         public int CursoId { get; set; }
         public Curso Curso { get; set; }
 
-        public Turma( string nome, int cursoId)
+        public string Status { get; set; }
+
+        public Turma( string nome, int cursoId, string status)
         {
             Nome = nome;
             CursoId = cursoId;
+            Status = status;
         }
 
     }

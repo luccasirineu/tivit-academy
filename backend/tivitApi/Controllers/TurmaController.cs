@@ -66,5 +66,32 @@ namespace tivitApi.Controllers
             }
         }
 
+        [HttpGet("getAllTurmas")]
+        public async Task<IActionResult> GetAllTurmas()
+        {
+            List<TurmaDTOResponse> turmas = await _turmaService.GetAllTurmas();
+
+            return Ok(turmas);
+        }
+
+        [HttpPut("atualizarTurma")]
+        public async Task<IActionResult> AtualizarTurma([FromBody] TurmaDTORequest dto)
+        {
+
+            try
+            {
+                await _turmaService.AtualizarTurma(dto);
+
+                return NoContent();
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    erro = ex.Message
+                });
+            }
+        }
     }
 }

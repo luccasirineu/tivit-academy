@@ -6,6 +6,12 @@ O sistema permite que **alunos realizem matrícula**, **professores gerenciem tu
 
 ---
 
+## 📖 Documentação
+
+A documentação completa do projeto, incluindo detalhes dos endpoints, instalação e arquitetura, está disponível na pasta `docs`.
+
+👉 [Acesse a Documentação Completa](./docs/index.md)
+
 #  Funcionalidades Implementadas
 
 ## 🔹 1. Processo de Matrícula

@@ -12,6 +12,8 @@ namespace tivitApi.Services
         Task<List<TurmaDTOResponse>> GetTurmasByCursoId(int cursoId);
         Task<TurmaDTOResponse> GetTurmaByAlunoId(int alunoId);
         Task<int> GetQntdTurmasAtivas();
+        Task<List<TurmaDTOResponse>> GetAllTurmas();
+        Task AtualizarTurma(TurmaDTORequest dto);
     }
 
 
@@ -28,7 +30,8 @@ namespace tivitApi.Services
         {
             return new Turma(
                 turmaDto.Nome,
-                turmaDto.CursoId
+                turmaDto.CursoId,
+                turmaDto.Status
                 );
         }
 
@@ -37,7 +40,8 @@ namespace tivitApi.Services
             return new TurmaDTOResponse(
                 turma.Id,
                 turma.Nome,
-                turma.CursoId
+                turma.CursoId,
+                turma.Status
                 );
         }
 
@@ -93,6 +97,37 @@ namespace tivitApi.Services
             return await _context.Turmas.CountAsync();
 
         }
+
+        public async Task<List<TurmaDTOResponse>> GetAllTurmas()
+        {
+            var turmas = await _context.Turmas.ToListAsync();
+
+            var resultado = turmas
+            .Select(turma => ConvertTurmaToTurmaDto(turma))
+            .ToList();
+
+            return resultado;
+        }
+
+        public async Task AtualizarTurma(TurmaDTORequest dto)
+        {
+            if (dto == null || dto.Id <= 0)
+                return;
+
+            var turma = await _context.Turmas
+                .FirstOrDefaultAsync(t => t.Id == dto.Id);
+
+            if (turma == null)
+                throw new Exception("Turma não encontrada.");
+
+            turma.Nome = dto.Nome;
+            turma.CursoId = dto.CursoId;
+            turma.Status = dto.Status;
+
+            _context.Turmas.Update(turma);
+            await _context.SaveChangesAsync();
+        }
+
     }
 }
 

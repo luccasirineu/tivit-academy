@@ -183,8 +183,8 @@
               </select>
 
               <div class="popup-actions">
-                <button type="button" class="btn-accent" id="btnSalvarCurso"> Salvar </button>
                 <button class="btn-cancelar" id="btnCancelarCurso">Cancelar</button>
+                <button type="button" class="btn-accent" id="btnSalvarCurso"> Salvar </button>
               </div>
             </div>
           </div>
@@ -247,18 +247,8 @@
 
             <!-- LISTA DE TURMAS -->
             <div class="turmas-lista" id="listaTurmas">
-              <div class="turma-item">
-                <div class="turma-info">
-                  <h3>Turma Front-End 2025</h3>
-                  <p><i class='bx bx-book'></i> Curso: Desenvolvimento Web</p>
-                  <p><i class='bx bx-user'></i> Professor: João Silva</p>
-                  <p><i class='bx bx-group'></i> 22 alunos • Turno: Manhã</p>
-                </div>
-                <div class="turma-status ativo">Ativa</div>
-                <div class="turma-actions">
-                  <button class="btn-edit"><i class='bx bx-edit-alt'></i></button>
-                  <button class="btn-delete"><i class='bx bx-trash'></i></button>
-                </div>
+              <div class="cursos-grid" id="turmasGrid">
+
               </div>
             </div>
           </div>
@@ -272,27 +262,15 @@
                 <input type="text" id="nomeTurma" placeholder="Ex: Turma FullStack 2025" required>
 
                 <label for="cursoTurma">Curso Vinculado</label>
-                <input type="text" id="cursoTurma" placeholder="Ex: Desenvolvimento Web" required>
+                  <select id="cursoTurma" required>
+                    <option value="">Selecione um curso</option>
+                  </select>
 
-                <label for="professorTurma">Professor Responsável</label>
-                <input type="text" id="professorTurma" placeholder="Ex: João da Silva" required>
-
-                <label for="alunosTurma">Quantidade de Alunos</label>
-                <input type="number" id="alunosTurma" placeholder="Ex: 25" required>
-
-
-                <label for="turnoTurma">Turno</label>
-                <select id="turnoTurma" required>
-                  <option value="" disabled selected>Selecione...</option>
-                  <option value="manhã">Manhã</option>
-                  <option value="tarde">Tarde</option>
-                  <option value="noite">Noite</option>
-                </select>
 
                 <label for="statusTurma">Status</label>
                 <select id="statusTurma" required>
-                  <option value="ativo">Ativa</option>
-                  <option value="inativo">Concluída</option>
+                  <option value="ativo">ATIVA</option>
+                  <option value="inativo">DESATIVADA</option>
                 </select>
 
                 <div class="popup-actions">
@@ -302,6 +280,31 @@
               </form>
             </div>
           </div>
+
+          <div id="popupEditarTurma" class="popup hidden">
+            <div class="popup-content">
+              <h3><i class='bx bx-edit'></i> Editar Turma</h3>
+
+              <label>Nome da Turma</label>
+              <input type="text" id="editNomeTurma" />
+
+              <label>Nome do Curso</label>
+              <select id="editSelectCurso"></select>
+
+
+              <label for="statusTurma">Status</label>
+                <select id="editStatus" required>
+                  <option value="ativo">ATIVA</option>
+                  <option value="inativo">DESATIVADA</option>
+                </select>
+
+              <div class="popup-actions">
+                <button class="btn-cancelar" id="btnCancelarEdicaoTurma">Cancelar</button>
+                <button class="btn-accent" id="btnSalvarEdicaoTurma">Salvar</button>
+              </div>
+            </div>
+          </div>
+
         </section>
 
 
