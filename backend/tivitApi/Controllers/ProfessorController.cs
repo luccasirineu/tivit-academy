@@ -74,5 +74,6 @@ namespace tivitApi.Controllers
                 return NotFound(ex.Message);
             }
         }
+
     }
 }

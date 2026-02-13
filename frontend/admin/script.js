@@ -21,6 +21,10 @@ function showSection(sectionId) {
   if (sectionId === "gerenciarMatriculas") {
     carregarMatriculasPendentes();
   }
+
+  if (sectionId === "professores") {
+      carregarProfessores();
+    }
 }
 
 menuItems.forEach(item => {
@@ -1137,3 +1141,42 @@ btnSalvarEdicaoTurma.addEventListener("click", async () => {
   }
 });
 
+const professoresGrid = document.getElementById("professoresGrid");
+
+function criarCardProfessor(nome, email, rm) {
+  const card = document.createElement("div");
+  card.classList.add("professor-card");
+
+  card.innerHTML = `
+    <h3><i class='bx bx-user'></i> ${nome}</h3>
+    <p><i class='bx bx-envelope'></i> ${email ?? "Email não informado"}</p>
+    <p><i class='bx bx-registered'></i> ${rm}</p>
+
+  `;
+
+  professoresGrid.appendChild(card);
+}
+
+async function carregarProfessores() {
+  try {
+    professoresGrid.innerHTML = "Carregando...";
+
+    const response = await fetch(
+      "http://localhost:5027/api/Professor/getAllProfessores"
+    );
+
+    if (!response.ok) throw new Error("Erro ao buscar professores");
+
+    const professores = await response.json();
+
+    professoresGrid.innerHTML = "";
+
+    professores.forEach(prof => {
+      criarCardProfessor(prof.nome, prof.email, prof.rm);
+    });
+
+  } catch (error) {
+    console.error(error);
+    professoresGrid.innerHTML = "<p>Erro ao carregar professores.</p>";
+  }
+}

@@ -1250,3 +1250,24 @@ body.light .return-btn {
   transform: translateY(-2px);
   box-shadow: 0 6px 18px var(--shadow);
 }
+
+
+.professores-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.professor-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 8px var(--shadow);
+  transition: 0.2s ease;
+}
+
+.professor-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px var(--shadow);
+}
