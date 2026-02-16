@@ -311,14 +311,20 @@
           <div class="professores-wrapper">
 
             <!-- TOPO -->
-            <div class="professores-top">
-              <div class="professores-header">
-                <h2>
-                  <i class='bx bx-clipboard'></i> Gerenciamento de Professores
-                </h2>
-                <p>Visualize todos os professores cadastrados na plataforma.</p>
+              <div class="professores-top">
+                
+                <div class="professores-header">
+                  <h2>
+                    <i class='bx bx-clipboard'></i> Gerenciamento de Professores
+                  </h2>
+                  <p>Visualize todos os professores cadastrados na plataforma.</p>
+                </div>
+
+                <button id="btnNovoProfessor" class="btn-accent">
+                  <i class='bx bx-plus-circle'></i> Novo Professor
+                </button>
+
               </div>
-            </div>
 
             <!-- LISTA -->
             <div class="professores-lista">
@@ -328,6 +334,48 @@
             </div>
 
           </div>
+
+          <div id="popupNovoProfessor" class="popup-overlay hidden">
+            <div class="popup-content">
+              <h3><i class='bx bx-user-plus'></i> Novo Professor</h3>
+
+              <form id="formProfessor">
+
+                <label>Nome</label>
+                <input type="text" id="profNome" required />
+
+                <label>Email</label>
+                <input type="email" id="profEmail" required />
+
+                <label>CPF</label>
+                <input type="text" id="profCpf" required />
+
+                <label>Status</label>
+                <select id="profStatus" required>
+                  <option value="ATIVO">Ativo</option>
+                  <option value="INATIVO">Inativo</option>
+                </select>
+
+                <div class="popup-actions">
+                  <button type="button" id="cancelarProfessor" class="btn-cancelar">
+                    Cancelar
+                  </button>
+                  <button type="submit" class="btn-accent">
+                    Salvar
+                  </button>
+                </div>
+
+              </form>
+            </div>
+          </div>
+
+          <div id="popupMensagem" class="popup hidden">
+            <div class="popup-box">
+              <p id="popupTexto"></p>
+              <button id="popupFechar">OK</button>
+            </div>
+          </div>
+
         </section>
 
 

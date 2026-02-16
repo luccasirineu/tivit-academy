@@ -75,5 +75,23 @@ namespace tivitApi.Controllers
             }
         }
 
+        [HttpPost("criarProfessor")]
+        public async Task<IActionResult> CriarProfessor([FromBody] ProfessorDTORequest professorDTO)
+        {
+            try
+            {
+                await _professorService.CriarProfessor(professorDTO);
+
+                return NoContent();
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    erro = ex.Message
+                });
+            }
+        }
     }
 }

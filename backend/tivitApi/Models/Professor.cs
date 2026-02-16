@@ -28,13 +28,14 @@ namespace tivitApi.Models
         [Required]
         public string Status { get; set; }
 
-        public Professor(string nome, string email, string cpf, string senha, string rm)
+      
+
+        public Professor(string nome, string email, string rm, string cpf, string status)
         {
             Nome = nome;
             Email = email;
             Cpf = cpf;
-            Senha = senha;
-            Rm = rm;
+            Status = status;
         }
 
 

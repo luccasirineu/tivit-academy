@@ -8,18 +8,18 @@ namespace tivitApi.DTOs
 
         public string Email { get; set; }
 
-        public string Rm { get; set; }
+
 
         public string Cpf { get; set; }
 
         public string Status { get; set; }
 
-        public ProfessorDTORequest(int id, string nome, string email, string rm, string cpf, string status)
+
+        public ProfessorDTORequest(int id, string nome, string email, string cpf, string status)
         {
             Id = id;
             Nome = nome;
             Email = email;
-            Rm = rm;
             Cpf = cpf;
             Status = status;
         }

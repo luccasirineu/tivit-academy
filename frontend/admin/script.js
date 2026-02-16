@@ -1034,7 +1034,6 @@ formTurma.addEventListener("submit", async (e) => {
   };
 
   if (!payload.nome || !payload.cursoId) {
-    alert("Preencha todos os campos obrigatórios.");
     return;
   }
 
@@ -1180,3 +1179,73 @@ async function carregarProfessores() {
     professoresGrid.innerHTML = "<p>Erro ao carregar professores.</p>";
   }
 }
+
+
+const btnNovoProfessor = document.getElementById("btnNovoProfessor");
+const popupNovoProfessor = document.getElementById("popupNovoProfessor");
+const formProfessor = document.getElementById("formProfessor");
+const cancelarProfessor = document.getElementById("cancelarProfessor");
+
+btnNovoProfessor.addEventListener("click", () => {
+  popupNovoProfessor.classList.remove("hidden");
+});
+
+cancelarProfessor.addEventListener("click", () => {
+  popupNovoProfessor.classList.add("hidden");
+  formProfessor.reset();
+});
+
+
+formProfessor.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const payload = {
+    nome: document.getElementById("profNome").value.trim(),
+    email: document.getElementById("profEmail").value.trim(),
+    cpf: document.getElementById("profCpf").value.trim(),
+    status: document.getElementById("profStatus").value
+  };
+
+  if (!payload.nome || !payload.email || !payload.cpf) {
+    return;
+  }
+
+  try {
+  const response = await fetch(
+    "http://localhost:5027/api/Professor/criarProfessor",
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error();
+  }
+
+  mostrarPopup("Professor criado com sucesso!");
+
+  popupNovoProfessor.classList.add("hidden");
+  formProfessor.reset();
+  carregarProfessores();
+
+} catch (error) {
+  console.error(error);
+  mostrarPopup("Erro ao criar professor.");
+}
+});
+
+
+const popup = document.getElementById("popupMensagem");
+const popupTexto = document.getElementById("popupTexto");
+const popupFechar = document.getElementById("popupFechar");
+
+function mostrarPopup(mensagem) {
+  popupTexto.textContent = mensagem;
+  popup.classList.remove("hidden");
+}
+
+popupFechar.addEventListener("click", () => {
+  popup.classList.add("hidden");
+});
