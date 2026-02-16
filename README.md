@@ -10,7 +10,7 @@ O sistema permite que **alunos realizem matrícula**, **professores gerenciem tu
 
 A documentação completa do projeto, incluindo detalhes dos endpoints, instalação e arquitetura, está disponível na pasta `docs`.
 
-👉 [Acesse a Documentação Completa](https://github.com/luccasirineu/luccasirineu.github.io)
+👉 [Acesse a Documentação Completa](https://luccasirineu.github.io/)
 
 #  Funcionalidades Implementadas
 
