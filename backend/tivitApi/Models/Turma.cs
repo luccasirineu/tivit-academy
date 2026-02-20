@@ -19,6 +19,9 @@ namespace tivitApi.Models
 
         public string Status { get; set; }
 
+        public ICollection<NotificacaoTurma> NotificacaoTurmas { get; set; }
+
+
         public Turma( string nome, int cursoId, string status)
         {
             Nome = nome;

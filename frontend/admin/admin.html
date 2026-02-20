@@ -378,6 +378,61 @@
 
         </section>
 
+        <!-- NOTIFICAÇÕES -->
+        <section id="notificacao">
+          <h2><i class='bx bx-bell'></i> Notificações</h2>
+
+          <div class="notificacao-container">
+            <form id="formNotificacao" class="notificacao-form">
+
+              <input 
+                type="text" 
+                id="notifTitulo" 
+                placeholder="Título da notificação" 
+                required 
+              />
+
+              <textarea 
+                id="notifDescricao" 
+                placeholder="Descrição da notificação" 
+                rows="4" 
+                required>
+              </textarea>
+
+              <!-- NOVO CAMPO -->
+              <label>Selecionar Turmas</label>
+
+              <div id="turmasContainer" class="turmas-container">
+                <!-- Turmas serão inseridas aqui -->
+              </div>
+
+
+              <button type="submit" class="btn-accent">
+                Publicar Notificação
+              </button>
+
+            </form>
+
+            <div id="listaNotificacoes" class="lista-notificacoes"></div>
+          </div>
+
+          <!-- MODAL SUCESSO NOTIFICAÇÃO -->
+          <div id="modalSucessoNotificacao" class="popup-overlay hidden">
+            <div class="popup-content modal-sucesso">
+              <h3><i class='bx bx-check-circle'></i> Sucesso</h3>
+              <p>Notificação criada com sucesso!</p>
+
+              <div class="popup-actions">
+                <button id="btnFecharModalSucesso" class="btn-accent">
+                  OK
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+
 
 
 

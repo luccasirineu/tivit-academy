@@ -25,6 +25,8 @@ builder.Services.AddScoped<IChamadaService, ChamadaService>();
 builder.Services.AddScoped<ITurmaService, TurmaService>();
 builder.Services.AddScoped<IProfessorService, ProfessorService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<INotificacaoService, NotificacaoService>();
+
 
 
 

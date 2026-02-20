@@ -2,15 +2,10 @@
   "ExpandedNodes": [
     "",
     "\\tivitApi",
-    "\\tivitApi\\Exceptions",
-    "\\tivitApi\\Infra",
-    "\\tivitApi\\Infra\\SQS",
-    "\\tivitApi\\Migrations",
+    "\\tivitApi\\Controllers",
     "\\tivitApi\\Models",
-    "\\tivitApi\\Services",
-    "\\tivitApi\\wwwroot",
-    "\\tivitApi\\wwwroot\\uploads"
+    "\\tivitApi\\Services"
   ],
-  "SelectedNode": "\\tivitApi\\Program.cs",
+  "SelectedNode": "\\tivitApi\\Controllers\\TurmaController.cs",
   "PreviewInSolutionExplorer": false
 }

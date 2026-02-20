@@ -1142,14 +1142,16 @@ btnSalvarEdicaoTurma.addEventListener("click", async () => {
 
 const professoresGrid = document.getElementById("professoresGrid");
 
-function criarCardProfessor(nome, email, rm) {
+function criarCardProfessor(nome, email, rm, cpf) {
   const card = document.createElement("div");
   card.classList.add("professor-card");
 
   card.innerHTML = `
     <h3><i class='bx bx-user'></i> ${nome}</h3>
-    <p><i class='bx bx-envelope'></i> ${email ?? "Email não informado"}</p>
-    <p><i class='bx bx-registered'></i> ${rm}</p>
+    <p><i class='bx bx-envelope'></i> Email: ${email ?? "Email não informado"}</p>
+    <p><i class='bx bx-registered'></i> RM: ${rm}</p>
+    <p><i class='bx bx-face'></i> CPF:  ${cpf}</p>
+
 
   `;
 
@@ -1171,7 +1173,7 @@ async function carregarProfessores() {
     professoresGrid.innerHTML = "";
 
     professores.forEach(prof => {
-      criarCardProfessor(prof.nome, prof.email, prof.rm);
+      criarCardProfessor(prof.nome, prof.email, prof.rm, prof.cpf);
     });
 
   } catch (error) {
@@ -1248,4 +1250,88 @@ function mostrarPopup(mensagem) {
 
 popupFechar.addEventListener("click", () => {
   popup.classList.add("hidden");
+});
+
+const turmasContainer = document.getElementById("turmasContainer");
+
+async function carregarTurmasOption() {
+  try {
+    const response = await fetch("http://localhost:5027/api/Turma/getAllTurmas");
+    const turmas = await response.json();
+
+    const turmasAtivas = turmas.filter(t => t.status === "ATIVO");
+
+    for (const turma of turmasAtivas) {
+
+      const cursoResponse = await fetch(`http://localhost:5027/api/Curso/${turma.cursoId}`);
+      const curso = await cursoResponse.json();
+
+      const div = document.createElement("label");
+      div.classList.add("turma-item");
+
+      div.innerHTML = `
+        <input type="checkbox" value="${turma.id}" />
+        <span>${turma.nome} - ${curso.nome}</span>
+      `;
+
+      turmasContainer.appendChild(div);
+    }
+
+  } catch (error) {
+    console.error("Erro ao carregar turmas:", error);
+  }
+}
+
+carregarTurmasOption();
+
+const modalSucesso = document.getElementById("modalSucessoNotificacao");
+const btnFecharModalSucesso = document.getElementById("btnFecharModalSucesso");
+
+function abrirModalSucesso() {
+  modalSucesso.classList.remove("hidden");
+}
+
+function fecharModalSucesso() {
+  modalSucesso.classList.add("hidden");
+}
+
+btnFecharModalSucesso.addEventListener("click", fecharModalSucesso);
+
+formNotificacao.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  try {
+    const turmasSelecionadas = Array.from(
+      document.querySelectorAll("#turmasContainer input:checked")
+    ).map(input => parseInt(input.value));
+
+    if (turmasSelecionadas.length === 0) {
+      alert("Selecione pelo menos uma turma!");
+      return;
+    }
+
+    const payload = {
+      titulo: document.getElementById("notifTitulo").value,
+      descricao: document.getElementById("notifDescricao").value,
+      turmasIds: turmasSelecionadas
+    };
+
+    const response = await fetch(
+      "http://localhost:5027/api/Notificacao/criarNotificacao",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      }
+    );
+
+    if (!response.ok) throw new Error("Erro na requisição");
+
+    abrirModalSucesso();
+    formNotificacao.reset();
+
+  } catch (err) {
+    console.error("Erro:", err);
+    alert("Erro ao enviar notificação: " + err.message);
+  }
 });

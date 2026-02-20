@@ -100,7 +100,6 @@ namespace tivitApi.Services
 
                 string rmFormatado = $"RM{numeroGerado}";
 
-                // Verifica no banco se já existe
                 existe = await _context.Professores
                     .AnyAsync(p => p.Rm == rmFormatado);
 

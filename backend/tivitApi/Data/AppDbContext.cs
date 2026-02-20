@@ -20,6 +20,9 @@ namespace tivitApi.Data
         public DbSet<Nota> Notas { get; set; }
         public DbSet<Chamada> Chamadas { get; set; }
         public DbSet<Turma> Turmas { get; set; }
+        public DbSet<Notificacao> Notificacoes { get; set; }
+        public DbSet<NotificacaoTurma> NotificacoesTurmas { get; set; }
+
 
 
 
@@ -56,6 +59,19 @@ namespace tivitApi.Data
                 .WithMany()
                 .HasForeignKey(c => c.TurmaId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<NotificacaoTurma>()
+                .HasKey(nt => new { nt.NotificacaoId, nt.TurmaId });
+
+            modelBuilder.Entity<NotificacaoTurma>()
+                .HasOne(nt => nt.Notificacao)
+                .WithMany(n => n.NotificacaoTurmas)
+                .HasForeignKey(nt => nt.NotificacaoId);
+
+            modelBuilder.Entity<NotificacaoTurma>()
+                .HasOne(nt => nt.Turma)
+                .WithMany(t => t.NotificacaoTurmas)
+                .HasForeignKey(nt => nt.TurmaId);
 
 
         }
