@@ -26,6 +26,8 @@ builder.Services.AddScoped<ITurmaService, TurmaService>();
 builder.Services.AddScoped<IProfessorService, ProfessorService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<INotificacaoService, NotificacaoService>();
+builder.Services.AddScoped<IPasswordHasher, BcryptPasswordHasher>();
+
 
 
 

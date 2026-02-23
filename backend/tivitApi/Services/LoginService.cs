@@ -1,12 +1,8 @@
-using tivitApi.Data;
+﻿using tivitApi.Data;
 using tivitApi.Models;
 using tivitApi.DTOs;
-using tivitApi.Infra.SQS;
 using tivitApi.Exceptions;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
-using System.Text;
-using System.Security.Cryptography;
 
 namespace tivitApi.Services
 {
@@ -19,54 +15,77 @@ namespace tivitApi.Services
     {
         private readonly AppDbContext _context;
         private readonly ILogger<LoginService> _logger;
+        private readonly IPasswordHasher _passwordHasher;
 
-        public LoginService(AppDbContext context, ILogger<LoginService> logger)
+        public LoginService(AppDbContext context, ILogger<LoginService> logger, IPasswordHasher passwordHasher)
         {
             _context = context;
             _logger = logger;
+            _passwordHasher = passwordHasher;
         }
 
         public async Task<object> LoginAsync(LoginDTO loginDTO)
         {
-            _logger.LogInformation($"Logando usuario : {loginDTO.Email}");
-
             if (loginDTO == null)
-                return "Requisi��o inv�lida";
+                throw new RequisicaoInvalidaException("Requisição inválida");
+
+            _logger.LogInformation($"Tentativa de login: {loginDTO.Cpf} | Tipo: {loginDTO.Tipo}");
 
             string tipo = loginDTO.Tipo?.ToLower();
 
-            switch (tipo)
+            return tipo switch
             {
-                case "aluno":
-                    var aluno = await _context.Alunos
-                        .FirstOrDefaultAsync(a => a.Email == loginDTO.Email && a.Senha == loginDTO.Senha);
+                "aluno" => await AutenticarAluno(loginDTO),
+                "professor" => await AutenticarProfessor(loginDTO),
+                "administrador" => await AutenticarAdministrador(loginDTO),
+                _ => throw new RequisicaoInvalidaException("Tipo de login inválido")
+            };
+        }
 
-                    if (aluno == null)
-                        return "Usu�rio ou senha inv�lidos";
+        // ─── Metodos privados por tipo ───────────────────────────────────────────
 
-                    return new { sucesso = true, tipo = "aluno", id = aluno.Id };
+        private async Task<object> AutenticarAluno(LoginDTO loginDTO)
+        {
+            var aluno = await _context.Alunos
+                .FirstOrDefaultAsync(a => a.Cpf == loginDTO.Cpf && a.Status == "ATIVO");
 
-                case "professor":
-                    var professor = await _context.Professores
-                        .FirstOrDefaultAsync(p => p.Email == loginDTO.Email && p.Senha == loginDTO.Senha);
+            ValidarCredenciais(aluno?.Senha, loginDTO.Senha);
 
-                    if (professor == null)
-                        return "Usu�rio ou senha inv�lidos";
+            _logger.LogInformation($"Login de aluno realizado com sucesso: {loginDTO.Cpf}");
+            return new { sucesso = true, tipo = "aluno", id = aluno!.Id };
+        }
 
-                    return new { sucesso = true, tipo = "professor", id = professor.Id };
+        private async Task<object> AutenticarProfessor(LoginDTO loginDTO)
+        {
+            var professor = await _context.Professores
+                .FirstOrDefaultAsync(p => p.Cpf == loginDTO.Cpf && p.Status == "ATIVO");
 
-                case "administrador":
-                    var admin = await _context.Administradores
-                        .FirstOrDefaultAsync(a => a.Email == loginDTO.Email && a.Senha == loginDTO.Senha);
+            ValidarCredenciais(professor?.Senha, loginDTO.Senha);
 
-                    if (admin == null)
-                        return "Usu�rio ou senha inv�lidos";
+            _logger.LogInformation($"Login de professor realizado com sucesso: {loginDTO.Cpf}");
+            return new { sucesso = true, tipo = "professor", id = professor!.Id };
+        }
 
-                    return new { sucesso = true, tipo = "administrador", id = admin.Id };
+        private async Task<object> AutenticarAdministrador(LoginDTO loginDTO)
+        {
+            var admin = await _context.Administradores
+                .FirstOrDefaultAsync(a => a.Cpf == loginDTO.Cpf && a.Status == "ATIVO");
 
-                default:
-                    return "Tipo de login inv�lido";
-            }
+            ValidarCredenciais(admin?.Senha, loginDTO.Senha);
+
+            _logger.LogInformation($"Login de administrador realizado com sucesso: {loginDTO.Cpf}");
+            return new { sucesso = true, tipo = "administrador", id = admin!.Id };
+        }
+
+        // ─── Validacao centralizada ──────────────────────────────────────────────
+
+        private void ValidarCredenciais(string? hashSalvo, string senhaDigitada)
+        {
+            bool usuarioExiste = hashSalvo != null;
+            bool senhaValida = usuarioExiste && _passwordHasher.Verificar(senhaDigitada, hashSalvo!);
+
+            if (!usuarioExiste || !senhaValida)
+                throw new CredenciaisInvalidasException("Usuário ou senha inválidos");
         }
     }
 }

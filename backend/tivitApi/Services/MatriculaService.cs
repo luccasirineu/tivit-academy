@@ -17,12 +17,16 @@ namespace tivitApi.Services
         private readonly AppDbContext _context;
         private readonly ILogger<MatriculaService> _logger;
         private readonly SQSProducer _queue;
+        private readonly IPasswordHasher _passwordHasher;
 
-        public MatriculaService(AppDbContext context, ILogger<MatriculaService> logger, SQSProducer queue)
+
+        public MatriculaService(AppDbContext context, ILogger<MatriculaService> logger, SQSProducer queue, IPasswordHasher passwordHasher)
         {
             _context = context;
             _logger = logger;
             _queue = queue;
+            _passwordHasher = passwordHasher;
+
 
         }
 
@@ -221,8 +225,10 @@ namespace tivitApi.Services
                 await _context.SaveChangesAsync();
 
                 var senhaGerada = GerarSenha();
+                var senhaHash = _passwordHasher.Hash(senhaGerada);
 
-                await CriarAlunoAPartirDaMatricula(matricula, senhaGerada);
+
+                await CriarAlunoAPartirDaMatricula(matricula, senhaHash);
 
 
                 try
@@ -233,7 +239,8 @@ namespace tivitApi.Services
                         Nome = matricula.Nome,
                         Email = matricula.Email,
                         Status = "APROVADO",
-                        SenhaGerada = senhaGerada
+                        SenhaGerada = senhaGerada,
+                        Cpf = matricula.Cpf
                     });
                 }
                 catch (Exception ex)

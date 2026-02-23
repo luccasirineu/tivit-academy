@@ -319,3 +319,4 @@ C:\Users\luccas.irineu\Documents\Projeto\backend\tivitApi\obj\Debug\net9.0\refin
 C:\Users\luccas.irineu\Documents\Projeto\backend\tivitApi\obj\Debug\net9.0\tivitApi.pdb
 C:\Users\luccas.irineu\Documents\Projeto\backend\tivitApi\obj\Debug\net9.0\tivitApi.genruntimeconfig.cache
 C:\Users\luccas.irineu\Documents\Projeto\backend\tivitApi\obj\Debug\net9.0\ref\tivitApi.dll
+C:\Users\luccas.irineu\Documents\Projeto\backend\tivitApi\bin\Debug\net9.0\BCrypt.Net-Next.dll

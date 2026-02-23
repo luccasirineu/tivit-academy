@@ -21,6 +21,8 @@ namespace tivitApi.Models
         [Required]
         public string Senha { get; set; }
 
+        public string Status { get; set; }
+
 
     }
 }

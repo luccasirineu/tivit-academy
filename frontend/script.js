@@ -30,7 +30,7 @@ form.addEventListener('submit', async (e) => {
       },
       body: JSON.stringify({
         Tipo: tipo,
-        Email: usuario,
+        Cpf: usuario,
         Senha: senha
       })
     });
