@@ -8,7 +8,7 @@ namespace tivitApi.Services
 {
     public interface ILoginService
     {
-        Task<object> LoginAsync(LoginDTO request);
+        Task<LoginDTOResponse> LoginAsync(LoginDTO request);
     }
 
     public class LoginService : ILoginService
@@ -24,7 +24,7 @@ namespace tivitApi.Services
             _passwordHasher = passwordHasher;
         }
 
-        public async Task<object> LoginAsync(LoginDTO loginDTO)
+        public async Task<LoginDTOResponse> LoginAsync(LoginDTO loginDTO)
         {
             if (loginDTO == null)
                 throw new RequisicaoInvalidaException("Requisição inválida");
@@ -42,42 +42,63 @@ namespace tivitApi.Services
             };
         }
 
-        // ─── Metodos privados por tipo ───────────────────────────────────────────
+        // ─── Métodos privados por tipo ───────────────────────────────────────────
 
-        private async Task<object> AutenticarAluno(LoginDTO loginDTO)
+        private async Task<LoginDTOResponse> AutenticarAluno(LoginDTO loginDTO)
         {
-            var aluno = await _context.Alunos
-                .FirstOrDefaultAsync(a => a.Cpf == loginDTO.Cpf && a.Status == "ATIVO");
+            var alunos = await _context.Alunos
+                .Where(a => a.Cpf == loginDTO.Cpf && a.Status == "ATIVO")
+                .ToListAsync();
 
-            ValidarCredenciais(aluno?.Senha, loginDTO.Senha);
+            ValidarCredenciais(alunos.FirstOrDefault()?.Senha, loginDTO.Senha);
 
-            _logger.LogInformation($"Login de aluno realizado com sucesso: {loginDTO.Cpf}");
-            return new { sucesso = true, tipo = "aluno", id = aluno!.Id };
+            _logger.LogInformation($"Login de aluno realizado com sucesso: {loginDTO.Cpf} | Cursos: {alunos.Count}");
+
+            return new LoginDTOResponse
+            {
+                Tipo = "aluno",
+                Cpf = loginDTO.Cpf,
+                CursosIds = alunos.Select(a => a.Id).ToList()
+            };
         }
 
-        private async Task<object> AutenticarProfessor(LoginDTO loginDTO)
+        private async Task<LoginDTOResponse> AutenticarProfessor(LoginDTO loginDTO)
         {
-            var professor = await _context.Professores
-                .FirstOrDefaultAsync(p => p.Cpf == loginDTO.Cpf && p.Status == "ATIVO");
+            var professores = await _context.Professores
+                .Where(p => p.Cpf == loginDTO.Cpf && p.Status == "ATIVO")
+                .ToListAsync();
 
-            ValidarCredenciais(professor?.Senha, loginDTO.Senha);
+            ValidarCredenciais(professores.FirstOrDefault()?.Senha, loginDTO.Senha);
 
-            _logger.LogInformation($"Login de professor realizado com sucesso: {loginDTO.Cpf}");
-            return new { sucesso = true, tipo = "professor", id = professor!.Id };
+            _logger.LogInformation($"Login de professor realizado com sucesso: {loginDTO.Cpf} | Cursos: {professores.Count}");
+
+            return new LoginDTOResponse
+            {
+                Tipo = "professor",
+                Cpf = loginDTO.Cpf,
+                CursosIds = professores.Select(p => p.Id).ToList()
+            };
         }
 
-        private async Task<object> AutenticarAdministrador(LoginDTO loginDTO)
+        private async Task<LoginDTOResponse> AutenticarAdministrador(LoginDTO loginDTO)
         {
-            var admin = await _context.Administradores
-                .FirstOrDefaultAsync(a => a.Cpf == loginDTO.Cpf && a.Status == "ATIVO");
+            var admins = await _context.Administradores
+                .Where(a => a.Cpf == loginDTO.Cpf && a.Status == "ATIVO")
+                .ToListAsync();
 
-            ValidarCredenciais(admin?.Senha, loginDTO.Senha);
+            ValidarCredenciais(admins.FirstOrDefault()?.Senha, loginDTO.Senha);
 
-            _logger.LogInformation($"Login de administrador realizado com sucesso: {loginDTO.Cpf}");
-            return new { sucesso = true, tipo = "administrador", id = admin!.Id };
+            _logger.LogInformation($"Login de administrador realizado com sucesso: {loginDTO.Cpf} | Registros: {admins.Count}");
+
+            return new LoginDTOResponse
+            {
+                Tipo = "administrador",
+                Cpf = loginDTO.Cpf,
+                CursosIds = admins.Select(a => a.Id).ToList()
+            };
         }
 
-        // ─── Validacao centralizada ──────────────────────────────────────────────
+        // ─── Validação centralizada ──────────────────────────────────────────────
 
         private void ValidarCredenciais(string? hashSalvo, string senhaDigitada)
         {
