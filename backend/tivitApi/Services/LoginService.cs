@@ -50,51 +50,57 @@ namespace tivitApi.Services
                 .Where(a => a.Cpf == loginDTO.Cpf && a.Status == "ATIVO")
                 .ToListAsync();
 
-            ValidarCredenciais(alunos.FirstOrDefault()?.Senha, loginDTO.Senha);
+            var alunosIds = alunos.Select(a => a.MatriculaId).ToList();
 
-            _logger.LogInformation($"Login de aluno realizado com sucesso: {loginDTO.Cpf} | Cursos: {alunos.Count}");
+            var cursosIds = await _context.Matriculas
+                .Where(m => alunosIds.Contains(m.Id))
+                .Select(m => m.CursoId)
+                .ToListAsync();
+
+            ValidarCredenciais(alunos.FirstOrDefault()?.Senha, loginDTO.Senha);
 
             return new LoginDTOResponse
             {
+                Id = alunos.FirstOrDefault()!.Id,
+                Nome = alunos.FirstOrDefault()!.Nome,
                 Tipo = "aluno",
                 Cpf = loginDTO.Cpf,
-                CursosIds = alunos.Select(a => a.Id).ToList()
+                CursosIds = cursosIds,
+                TurmaId = alunos.FirstOrDefault()!.TurmaId
             };
         }
 
         private async Task<LoginDTOResponse> AutenticarProfessor(LoginDTO loginDTO)
         {
-            var professores = await _context.Professores
-                .Where(p => p.Cpf == loginDTO.Cpf && p.Status == "ATIVO")
-                .ToListAsync();
+            var professor = await _context.Professores
+                .FirstOrDefaultAsync(p => p.Cpf == loginDTO.Cpf && p.Status == "ATIVO");
 
-            ValidarCredenciais(professores.FirstOrDefault()?.Senha, loginDTO.Senha);
-
-            _logger.LogInformation($"Login de professor realizado com sucesso: {loginDTO.Cpf} | Cursos: {professores.Count}");
+            ValidarCredenciais(professor?.Senha, loginDTO.Senha);
 
             return new LoginDTOResponse
             {
+                Id = professor!.Id,
+                Nome = professor.Nome,
                 Tipo = "professor",
                 Cpf = loginDTO.Cpf,
-                CursosIds = professores.Select(p => p.Id).ToList()
+                CursosIds = new List<int> { professor.Id }
             };
         }
 
         private async Task<LoginDTOResponse> AutenticarAdministrador(LoginDTO loginDTO)
         {
-            var admins = await _context.Administradores
-                .Where(a => a.Cpf == loginDTO.Cpf && a.Status == "ATIVO")
-                .ToListAsync();
+            var admin = await _context.Administradores
+                .FirstOrDefaultAsync(a => a.Cpf == loginDTO.Cpf && a.Status == "ATIVO");
 
-            ValidarCredenciais(admins.FirstOrDefault()?.Senha, loginDTO.Senha);
-
-            _logger.LogInformation($"Login de administrador realizado com sucesso: {loginDTO.Cpf} | Registros: {admins.Count}");
+            ValidarCredenciais(admin?.Senha, loginDTO.Senha);
 
             return new LoginDTOResponse
             {
+                Id = admin!.Id,
+                Nome = admin.Nome,
                 Tipo = "administrador",
                 Cpf = loginDTO.Cpf,
-                CursosIds = admins.Select(a => a.Id).ToList()
+                CursosIds = new List<int> { admin.Id }
             };
         }
 

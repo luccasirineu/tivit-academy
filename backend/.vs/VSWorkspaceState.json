@@ -3,9 +3,10 @@
     "",
     "\\tivitApi",
     "\\tivitApi\\Controllers",
-    "\\tivitApi\\Models",
+    "\\tivitApi\\Data",
+    "\\tivitApi\\Exceptions",
     "\\tivitApi\\Services"
   ],
-  "SelectedNode": "\\tivitApi\\Controllers\\TurmaController.cs",
+  "SelectedNode": "\\tivitApi\\DTOs",
   "PreviewInSolutionExplorer": false
 }

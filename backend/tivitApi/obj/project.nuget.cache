@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Ehk3lE9l64A=",
+  "dgSpecHash": "KiD9CA4FHyk=",
   "success": true,
-  "projectFilePath": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\tivitApi.csproj",
+  "projectFilePath": "C:\\Users\\luccas.irineu\\Documents\\TivitAcademy\\Projeto\\backend\\tivitApi\\tivitApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\luccas.irineu\\.nuget\\packages\\automapper\\16.0.0\\automapper.16.0.0.nupkg.sha512",
     "C:\\Users\\luccas.irineu\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
@@ -92,9 +92,9 @@
       "code": "NU1608",
       "level": "Warning",
       "message": "Versão detectada do pacote fora da restrição de dependência: AutoMapper.Extensions.Microsoft.DependencyInjection 12.0.1 requer AutoMapper (= 12.0.1), mas a versão AutoMapper 16.0.0 foi resolvida.",
-      "projectPath": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\tivitApi.csproj",
+      "projectPath": "C:\\Users\\luccas.irineu\\Documents\\TivitAcademy\\Projeto\\backend\\tivitApi\\tivitApi.csproj",
       "warningLevel": 1,
-      "filePath": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\tivitApi.csproj",
+      "filePath": "C:\\Users\\luccas.irineu\\Documents\\TivitAcademy\\Projeto\\backend\\tivitApi\\tivitApi.csproj",
       "libraryId": "AutoMapper",
       "targetGraphs": [
         "net9.0"
