@@ -3,6 +3,9 @@ using tivitApi.Data;
 using tivitApi.DTOs;
 using tivitApi.Models;
 using tivitApi.Exceptions;
+using QuestPDF.Fluent;
+using QuestPDF.Helpers;
+using QuestPDF.Infrastructure;
 
 namespace tivitApi.Services
 {
@@ -14,6 +17,7 @@ namespace tivitApi.Services
         Task<DesempenhoDTO> GetDesempenhoByAlunoId(int alunoId);
         Task<List<NotaDTOResponse>> GetAllNotasByMatriculaId(int matriculaId);
         Task<List<NotaDTOResponse>> GetAllNotasByNomeAluno(string nome);
+        Task<byte[]> GerarRelatorioNotasPdfAsync(int alunoId);
     }
 
     public class NotaService : INotaService
@@ -289,5 +293,92 @@ namespace tivitApi.Services
             return notas;
         }
 
+        public async Task<byte[]> GerarRelatorioNotasPdfAsync(int alunoId)
+        {
+           
+            var notas = await _context.Notas
+            .Include(n => n.Materia)
+            .Where(n => n.AlunoId == alunoId)
+            .ToListAsync();
+
+            var aluno = await _context.Alunos.FindAsync(alunoId);
+
+            var mediaGeral = notas.Any() ? notas.Average(n => n.Media) : 0;
+
+            var document = Document.Create(container =>
+            {
+                container.Page(page =>
+                {
+                    page.Size(PageSizes.A4);
+                    page.Margin(40);
+                    page.DefaultTextStyle(x => x.FontSize(12));
+
+                    page.Header().Column(col =>
+                    {
+                        col.Item().Text("TIVIT Academy — Relatório Acadêmico")
+                            .FontSize(20).Bold().FontColor(Color.FromHex("#ff0054"));
+                        col.Item().Text($"Aluno: {aluno?.Nome ?? "—"}").FontSize(13);
+                        col.Item().Text($"Gerado em: {DateTime.Now:dd/MM/yyyy HH:mm}").FontSize(10).FontColor(Colors.Grey.Medium);
+                        col.Item().PaddingTop(10).LineHorizontal(1).LineColor(Colors.Grey.Lighten2);
+                    });
+
+                    page.Content().PaddingTop(20).Column(col =>
+                    {
+                        col.Item().Table(table =>
+                        {
+                            table.ColumnsDefinition(cols =>
+                            {
+                                cols.RelativeColumn(3);
+                                cols.RelativeColumn();
+                                cols.RelativeColumn();
+                                cols.RelativeColumn();
+                                cols.RelativeColumn();
+                                cols.RelativeColumn();
+                            });
+
+                            // Header 
+                            table.Header(h =>
+                            {
+                                foreach (var header in new[] { "Matéria", "Nota 1", "Nota 2", "Média", "Faltas", "Status" })
+                                {
+                                    h.Cell().Background(Color.FromHex("#ff0054"))
+                                        .Padding(6)
+                                        .Text(header).FontColor(Colors.White).Bold();
+                                }
+                            });
+
+                            // Linhas
+                            foreach (var nota in notas)
+                            {
+                                var isAprovado = nota.Status == "APROVADO";
+                                table.Cell().Padding(6).Text(nota.Materia?.Nome ?? "—");
+                                table.Cell().Padding(6).Text(nota.Nota1.ToString("F2"));
+                                table.Cell().Padding(6).Text(nota.Nota2.ToString("F2"));
+                                table.Cell().Padding(6).Text(nota.Media.ToString("F2"));
+                                table.Cell().Padding(6).Text(nota.QtdFaltas.ToString());
+                                table.Cell().Padding(6).Text(nota.Status)
+                                    .FontColor(isAprovado ? Color.FromHex("#00aa55") : Color.FromHex("#ff0054"));
+                            }
+                        });
+
+                        col.Item().PaddingTop(20)
+                            .Text($"Média Geral: {mediaGeral:F2}")
+                            .FontSize(14).Bold();
+                    });
+
+                    page.Footer().AlignCenter()
+                        .Text(x =>
+                        {
+                            x.Span("Página ");
+                            x.CurrentPageNumber();
+                            x.Span(" de ");
+                            x.TotalPages();
+                        });
+                });
+            });
+
+            return document.GeneratePdf();
+            
+        }
     }
 }

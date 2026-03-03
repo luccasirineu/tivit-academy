@@ -1,25 +1,25 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\",
+  "WorkspaceRootPath": "C:\\Users\\luccas.irineu\\Documents\\TivitAcademy\\Projeto\\backend\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\Controllers\\LoginController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:tivitApi\\Controllers\\LoginController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\Services\\LoginService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\luccas.irineu\\Documents\\TivitAcademy\\Projeto\\backend\\tivitApi\\Services\\LoginService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:tivitApi\\Services\\LoginService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\DTOs\\LoginDTOResponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:tivitApi\\DTOs\\LoginDTOResponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\DTOs\\LoginDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\luccas.irineu\\Documents\\TivitAcademy\\Projeto\\backend\\tivitApi\\DTOs\\LoginDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:tivitApi\\DTOs\\LoginDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\Models\\Administrador.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\luccas.irineu\\Documents\\TivitAcademy\\Projeto\\backend\\tivitApi\\Controllers\\LoginController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:tivitApi\\Controllers\\LoginController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\luccas.irineu\\Documents\\TivitAcademy\\Projeto\\backend\\tivitApi\\DTOs\\LoginDTOResponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:tivitApi\\DTOs\\LoginDTOResponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\luccas.irineu\\Documents\\TivitAcademy\\Projeto\\backend\\tivitApi\\Models\\Administrador.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:tivitApi\\Models\\Administrador.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -30,28 +30,27 @@
       "DocumentGroups": [
         {
           "DockedWidth": 76,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "LoginDTOResponse.cs",
-              "DocumentMoniker": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\DTOs\\LoginDTOResponse.cs",
+              "DocumentMoniker": "C:\\Users\\luccas.irineu\\Documents\\TivitAcademy\\Projeto\\backend\\tivitApi\\DTOs\\LoginDTOResponse.cs",
               "RelativeDocumentMoniker": "tivitApi\\DTOs\\LoginDTOResponse.cs",
-              "ToolTip": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\DTOs\\LoginDTOResponse.cs",
+              "ToolTip": "C:\\Users\\luccas.irineu\\Documents\\TivitAcademy\\Projeto\\backend\\tivitApi\\DTOs\\LoginDTOResponse.cs",
               "RelativeToolTip": "tivitApi\\DTOs\\LoginDTOResponse.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAeAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-23T18:00:16.284Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-23T18:00:16.284Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 1,
               "Title": "LoginDTO.cs",
-              "DocumentMoniker": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\DTOs\\LoginDTO.cs",
+              "DocumentMoniker": "C:\\Users\\luccas.irineu\\Documents\\TivitAcademy\\Projeto\\backend\\tivitApi\\DTOs\\LoginDTO.cs",
               "RelativeDocumentMoniker": "tivitApi\\DTOs\\LoginDTO.cs",
-              "ToolTip": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\DTOs\\LoginDTO.cs",
+              "ToolTip": "C:\\Users\\luccas.irineu\\Documents\\TivitAcademy\\Projeto\\backend\\tivitApi\\DTOs\\LoginDTO.cs",
               "RelativeToolTip": "tivitApi\\DTOs\\LoginDTO.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -62,37 +61,36 @@
               "$type": "Document",
               "DocumentIndex": 4,
               "Title": "Administrador.cs",
-              "DocumentMoniker": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\Models\\Administrador.cs",
+              "DocumentMoniker": "C:\\Users\\luccas.irineu\\Documents\\TivitAcademy\\Projeto\\backend\\tivitApi\\Models\\Administrador.cs",
               "RelativeDocumentMoniker": "tivitApi\\Models\\Administrador.cs",
-              "ToolTip": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\Models\\Administrador.cs",
+              "ToolTip": "C:\\Users\\luccas.irineu\\Documents\\TivitAcademy\\Projeto\\backend\\tivitApi\\Models\\Administrador.cs",
               "RelativeToolTip": "tivitApi\\Models\\Administrador.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAqAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-23T16:47:53.094Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-23T16:47:53.094Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "LoginService.cs",
-              "DocumentMoniker": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\Services\\LoginService.cs",
+              "DocumentMoniker": "C:\\Users\\luccas.irineu\\Documents\\TivitAcademy\\Projeto\\backend\\tivitApi\\Services\\LoginService.cs",
               "RelativeDocumentMoniker": "tivitApi\\Services\\LoginService.cs",
-              "ToolTip": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\Services\\LoginService.cs",
+              "ToolTip": "C:\\Users\\luccas.irineu\\Documents\\TivitAcademy\\Projeto\\backend\\tivitApi\\Services\\LoginService.cs",
               "RelativeToolTip": "tivitApi\\Services\\LoginService.cs",
-              "ViewState": "AgIAADAAAAAAAAAAAAAAADoAAAAdAAAAAAAAAA==",
+              "ViewState": "AgIAADYAAAAAAAAAAAAAAGYAAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-02-20T17:49:58.256Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "LoginController.cs",
-              "DocumentMoniker": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\Controllers\\LoginController.cs",
+              "DocumentMoniker": "C:\\Users\\luccas.irineu\\Documents\\TivitAcademy\\Projeto\\backend\\tivitApi\\Controllers\\LoginController.cs",
               "RelativeDocumentMoniker": "tivitApi\\Controllers\\LoginController.cs",
-              "ToolTip": "C:\\Users\\luccas.irineu\\Documents\\Projeto\\backend\\tivitApi\\Controllers\\LoginController.cs",
+              "ToolTip": "C:\\Users\\luccas.irineu\\Documents\\TivitAcademy\\Projeto\\backend\\tivitApi\\Controllers\\LoginController.cs",
               "RelativeToolTip": "tivitApi\\Controllers\\LoginController.cs",
-              "ViewState": "AgIAABYAAAAAAAAAAAAqwCUAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAcAAAAAAAAAAAAqwCUAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-02-20T17:49:43.244Z",
               "EditorCaption": ""

@@ -106,5 +106,18 @@ namespace tivitApi.Controllers
             }
         }
 
+        [HttpGet("aluno/{alunoId}/exportarRelatorio")]
+        public async Task<IActionResult> ExportarRelatorio(int alunoId)
+        {
+            try
+            {
+                var pdfBytes = await _notaService.GerarRelatorioNotasPdfAsync(alunoId);
+                return File(pdfBytes, "application/pdf", $"relatorio-aluno-{alunoId}.pdf");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { erro = ex.Message});
+            }
+        }
     }
 }

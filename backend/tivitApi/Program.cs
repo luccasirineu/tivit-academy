@@ -3,6 +3,7 @@ using tivitApi.Data;
 using tivitApi.Services;
 using tivitApi.Exceptions;
 using tivitApi.Infra.SQS;
+using QuestPDF.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAutoMapper(typeof(Program));
@@ -43,6 +44,8 @@ builder.Services.AddCors(options =>
                         .AllowAnyMethod()
                         .AllowAnyHeader());
 });
+
+QuestPDF.Settings.License = LicenseType.Community; 
 
 var app = builder.Build();
 

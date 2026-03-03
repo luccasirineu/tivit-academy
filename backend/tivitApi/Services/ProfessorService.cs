@@ -4,6 +4,7 @@ using tivitApi.DTOs;
 using tivitApi.Models;
 using tivitApi.Exceptions;
 using System.Security.Cryptography;
+using tivitApi.Infra.SQS;
 
 using System.Text.Json;
 using System.Text;
@@ -26,10 +27,17 @@ namespace tivitApi.Services
     public class ProfessorService : IProfessorService
     {
         private readonly AppDbContext _context;
+        private readonly IPasswordHasher _passwordHasher;
+        private readonly SQSProducer _queue;
+        private readonly ILogger<MatriculaService> _logger;
 
-        public ProfessorService(AppDbContext context)
+        public ProfessorService(AppDbContext context, IPasswordHasher passwordHasher, SQSProducer queue, ILogger<MatriculaService> logger)
         {
             _context = context;
+            _passwordHasher = passwordHasher;
+            _queue = queue;
+            _logger = logger;
+
         }
 
         private ProfessorDTOResponse ConvertProfessorToProfessorDTOResponse(Professor professor)
@@ -157,11 +165,30 @@ namespace tivitApi.Services
         public async Task CriarProfessor(ProfessorDTORequest dto)
         {
             var senha = GerarSenha();
+            var senhaHash = _passwordHasher.Hash(senha);
+
             var rm = await GerarRm();
-            var professor = ConvertProfessorRequestToProfessor(dto, senha, rm);
+            var professor = ConvertProfessorRequestToProfessor(dto, senhaHash, rm);
 
             _context.Professores.Add(professor);
             await _context.SaveChangesAsync();
+
+            try
+            {
+                await _queue.EnviarEventoAsync(new ProfessorStatusEvento
+                {
+                    Rm = professor.Rm,
+                    Nome = professor.Nome,
+                    Email = professor.Email,
+                    Status = "APROVADO",
+                    SenhaGerada = senha,
+                    Cpf = professor.Cpf
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Erro ao enviar evento para SQS: {ex.Message}");
+            }
 
         }
 

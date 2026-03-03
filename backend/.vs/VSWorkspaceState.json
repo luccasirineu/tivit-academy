@@ -4,9 +4,12 @@
     "\\tivitApi",
     "\\tivitApi\\Controllers",
     "\\tivitApi\\Data",
-    "\\tivitApi\\Exceptions",
-    "\\tivitApi\\Services"
+    "\\tivitApi\\Infra",
+    "\\tivitApi\\Infra\\SQS",
+    "\\tivitApi\\Services",
+    "\\tivitApi\\wwwroot",
+    "\\tivitApi\\wwwroot\\uploads"
   ],
-  "SelectedNode": "\\tivitApi\\DTOs",
+  "SelectedNode": "\\tivitApi\\Services\\MatriculaService.cs",
   "PreviewInSolutionExplorer": false
 }
