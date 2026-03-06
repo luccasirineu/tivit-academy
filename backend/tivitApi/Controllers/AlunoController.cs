@@ -91,5 +91,26 @@ namespace tivitApi.Controllers
             }
         }
 
+        [HttpGet("getAllAlunos")]
+        public async Task<IActionResult> GetAllAlunos()
+        {
+
+            try
+            {
+                var alunos = await _alunoService.GetAllAlunos();
+                return Ok(alunos);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+        [HttpPatch("{id}/turma")]
+        public async Task<IActionResult> UpdateTurmaAluno(int id, [FromBody] UpdateTurmaAlunoDTO dto)
+        {
+            await _alunoService.UpdateTurmaAluno(id, dto.TurmaId);
+            return NoContent();
+        }
     }
 }

@@ -13,6 +13,8 @@ namespace tivitApi.Services
         Task<List<AlunoDTO>> GetAllAlunosByTurmaId(int turmaId);
         Task<AlunoDTO> GetAlunoByMatriculaId(int matriculaId);
         Task<int> GetQntdAlunosAtivos();
+        Task<List<AlunoDTO>> GetAllAlunos();
+        Task UpdateTurmaAluno(int alunoId, int turmaId);
 
     }
 
@@ -25,16 +27,38 @@ namespace tivitApi.Services
             _context = context;
         }
 
-        private AlunoDTO ConvertAlunoToAlunoDto(Aluno aluno)
+        private async Task<AlunoDTO> ConvertAlunoToAlunoDto(Aluno aluno)
         {
+            // Busca o cursoNome através da Matrícula
+            var matricula = await _context.Matriculas
+                .FirstOrDefaultAsync(m => m.Id == aluno.MatriculaId);
+
+            string cursoNome = string.Empty;
+            if (matricula != null)
+            {
+                var curso = await _context.Cursos
+                    .FirstOrDefaultAsync(c => c.Id == matricula.CursoId);
+
+                cursoNome = curso?.Nome ?? string.Empty;
+            }
+
+            // Busca o nome da Turma
+            var turma = await _context.Turmas
+                .FirstOrDefaultAsync(t => t.Id == aluno.TurmaId);
+
+            string turmaNome = turma?.Nome ?? string.Empty;
+            Console.WriteLine($"[DEBUG] AlunoId: {aluno.Id} | TurmaId: {aluno.TurmaId} | Turma encontrada: {turma != null} | TurmaNome: '{turmaNome}'");
+
             return new AlunoDTO(
                 aluno.Nome,
                 aluno.Email,
                 aluno.Cpf,
                 aluno.MatriculaId,
                 aluno.Id,
-                aluno.TurmaId
-                );
+                aluno.TurmaId,
+                cursoNome,
+                turmaNome
+            );
         }
 
 
@@ -95,9 +119,11 @@ namespace tivitApi.Services
                 .OrderBy(m => m.Nome)
                 .ToListAsync();
 
-            var resultado = alunos
-            .Select(aluno => ConvertAlunoToAlunoDto(aluno))
-            .ToList();
+            var resultado = new List<AlunoDTO>();
+            foreach (var aluno in alunos)
+            {
+                resultado.Add(await ConvertAlunoToAlunoDto(aluno));
+            }
 
             return resultado;
         }
@@ -184,5 +210,35 @@ namespace tivitApi.Services
 
         }
 
+        public async Task<List<AlunoDTO>> GetAllAlunos()
+        {
+            var alunos = await _context.Alunos.ToListAsync();
+
+            var resultado = new List<AlunoDTO>();
+            foreach (var aluno in alunos)
+            {
+                resultado.Add(await ConvertAlunoToAlunoDto(aluno));
+            }
+
+            return resultado;
+        }
+
+        public async Task UpdateTurmaAluno(int alunoId, int turmaId)
+        {
+            var aluno = await _context.Alunos
+                .FirstOrDefaultAsync(a => a.Id == alunoId);
+
+            if (aluno == null)
+                throw new Exception("Aluno não encontrado");
+
+            var turmaExiste = await _context.Turmas
+                .AnyAsync(t => t.Id == turmaId);
+
+            if (!turmaExiste)
+                throw new Exception("Turma não encontrada");
+
+            aluno.TurmaId = turmaId;
+            await _context.SaveChangesAsync();
+        }
     }
 }
