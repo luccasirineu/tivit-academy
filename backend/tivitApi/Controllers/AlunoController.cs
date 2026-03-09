@@ -112,5 +112,12 @@ namespace tivitApi.Controllers
             await _alunoService.UpdateTurmaAluno(id, dto.TurmaId);
             return NoContent();
         }
+
+        [HttpPatch("recuperarSenha/{cpf}")]
+        public async Task<IActionResult> RecuperarSenha(string cpf)
+        {
+            await _alunoService.ResetSenha(cpf);
+            return NoContent();
+        }
     }
 }
