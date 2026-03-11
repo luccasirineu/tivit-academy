@@ -33,6 +33,23 @@ namespace tivitApi.Controllers
                 });
             }
         }
+
+        [HttpGet("getNotificacoesByTurmaId/{turmaId}")]
+        public async Task<IActionResult> GetNotificacaoByTurmaId(int turmaId)
+        {
+            try
+            {
+                var notificacoes = await _notificacaoService.GetNotificacoesByTurmaId(turmaId);
+                return Ok(notificacoes);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    erro = ex.Message
+                });
+            }
+        }
     }
 }
 

@@ -9,7 +9,7 @@ namespace tivitApi.Services
     public interface INotificacaoService
     {
         Task<Notificacao> CriarNotificacao(NotificacaoDTORequest notificacaoDTO);
-
+        Task<List<NotificacaoDTOResponse>> GetNotificacoesByTurmaId(int turmaId);
     }
 
     public class NotificacaoService : INotificacaoService
@@ -49,5 +49,22 @@ namespace tivitApi.Services
             return notificacao;
         }
 
+        public async Task<List<NotificacaoDTOResponse>> GetNotificacoesByTurmaId(int turmaId)
+        {   
+            // consulta as duas tabelas para retornar as notificacoes
+            var notificacoes = await (
+                from nt in _context.NotificacoesTurmas
+                join n in _context.Notificacoes on nt.NotificacaoId equals n.Id
+                where nt.TurmaId == turmaId
+                select new NotificacaoDTOResponse
+                {
+                    Titulo = n.Titulo,
+                    Descricao = n.Descricao,
+                    DataCriacao = n.DataCriacao
+                }
+            ).ToListAsync();
+
+            return notificacoes;
+        }
     }
 }

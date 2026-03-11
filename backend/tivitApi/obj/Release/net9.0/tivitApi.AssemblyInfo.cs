@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("tivitApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+753e65c6252345fcd4e49b25408f1c952d1d2cf4")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+76538161a8d956f05c14433d5440ecc809d06771")]
 [assembly: System.Reflection.AssemblyProductAttribute("tivitApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("tivitApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
