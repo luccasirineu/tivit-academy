@@ -2,10 +2,12 @@ using Microsoft.AspNetCore.Mvc;
 using tivitApi.DTOs;
 using tivitApi.Services;
 using tivitApi.Models;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace tivitApi.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class MateriaController : ControllerBase

@@ -11,11 +11,14 @@ namespace tivitApi.Controllers
 	public class LoginController : ControllerBase
 	{
 		private readonly ILoginService _loginService;
+        private readonly ILogger<LoginController> _logger;
 
-		public LoginController(ILoginService loginService)
+        public LoginController(ILoginService loginService, ILogger<LoginController> logger)
 		{
 			_loginService = loginService;
-		}
+            _logger = logger;
+
+        }
 
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] LoginDTO loginDTO)
@@ -35,7 +38,9 @@ namespace tivitApi.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { sucesso = false, mensagem = "Erro interno do servidor" });
+                _logger.LogError(ex, "Erro inesperado no login. CPF: {Cpf} | Tipo: {Tipo}",
+                    loginDTO?.Cpf, loginDTO?.Tipo);
+                return StatusCode(500, new { sucesso = false, mensagem = ex.Message, detalhe = ex.InnerException?.Message });
             }
         }
     }

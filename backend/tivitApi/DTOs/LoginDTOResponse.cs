@@ -9,5 +9,6 @@ namespace tivitApi.DTOs
         public string Cpf { get; set; }
         public List<int> CursosIds { get; set; }
         public int TurmaId { get; set; }
+        public string Token { get; set; }
     }
 }

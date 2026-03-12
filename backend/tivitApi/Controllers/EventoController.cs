@@ -2,10 +2,12 @@ using Microsoft.AspNetCore.Mvc;
 using tivitApi.DTOs;
 using tivitApi.Models;
 using tivitApi.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace tivitApi.Controllers
 {
-	[ApiController]
+    [Authorize]
+    [ApiController]
 	[Route("api/[controller]")]
 	public class EventoController : ControllerBase
 	{

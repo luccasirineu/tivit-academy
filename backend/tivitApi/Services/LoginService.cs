@@ -16,12 +16,18 @@ namespace tivitApi.Services
         private readonly AppDbContext _context;
         private readonly ILogger<LoginService> _logger;
         private readonly IPasswordHasher _passwordHasher;
+        private readonly ITokenService _tokenService; 
 
-        public LoginService(AppDbContext context, ILogger<LoginService> logger, IPasswordHasher passwordHasher)
+        public LoginService(
+            AppDbContext context,
+            ILogger<LoginService> logger,
+            IPasswordHasher passwordHasher,
+            ITokenService tokenService) 
         {
             _context = context;
             _logger = logger;
             _passwordHasher = passwordHasher;
+            _tokenService = tokenService; 
         }
 
         public async Task<LoginDTOResponse> LoginAsync(LoginDTO loginDTO)
@@ -59,7 +65,7 @@ namespace tivitApi.Services
 
             ValidarCredenciais(alunos.FirstOrDefault()?.Senha, loginDTO.Senha);
 
-            return new LoginDTOResponse
+            var response = new LoginDTOResponse
             {
                 Id = alunos.FirstOrDefault()!.Id,
                 Nome = alunos.FirstOrDefault()!.Nome,
@@ -68,6 +74,9 @@ namespace tivitApi.Services
                 CursosIds = cursosIds,
                 TurmaId = alunos.FirstOrDefault()!.TurmaId
             };
+
+            response.Token = _tokenService.GerarToken(response);
+            return response;
         }
 
         private async Task<LoginDTOResponse> AutenticarProfessor(LoginDTO loginDTO)
@@ -77,7 +86,7 @@ namespace tivitApi.Services
 
             ValidarCredenciais(professor?.Senha, loginDTO.Senha);
 
-            return new LoginDTOResponse
+            var response = new LoginDTOResponse
             {
                 Id = professor!.Id,
                 Nome = professor.Nome,
@@ -85,6 +94,9 @@ namespace tivitApi.Services
                 Cpf = loginDTO.Cpf,
                 CursosIds = new List<int> { professor.Id }
             };
+
+            response.Token = _tokenService.GerarToken(response);
+            return response;
         }
 
         private async Task<LoginDTOResponse> AutenticarAdministrador(LoginDTO loginDTO)
@@ -94,7 +106,7 @@ namespace tivitApi.Services
 
             //ValidarCredenciais(admin?.Senha, loginDTO.Senha);
 
-            return new LoginDTOResponse
+            var response = new LoginDTOResponse
             {
                 Id = admin!.Id,
                 Nome = admin.Nome,
@@ -102,6 +114,9 @@ namespace tivitApi.Services
                 Cpf = loginDTO.Cpf,
                 CursosIds = new List<int> { admin.Id }
             };
+
+            response.Token = _tokenService.GerarToken(response);
+            return response;
         }
 
         // ─── Validação centralizada ──────────────────────────────────────────────
