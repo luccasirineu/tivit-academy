@@ -1,7 +1,12 @@
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
 using tivitApi.DTOs;
 using tivitApi.Services;
-using Microsoft.AspNetCore.Authorization;
 
 namespace tivitApi.Controllers
 {
@@ -11,46 +16,63 @@ namespace tivitApi.Controllers
     public class ProfessorController : ControllerBase
     {
         private readonly IProfessorService _professorService;
+        private readonly ILogger<ProfessorController> _logger;
 
-        public ProfessorController(IProfessorService professorService)
+        public ProfessorController(IProfessorService professorService, ILogger<ProfessorController> logger)
         {
             _professorService = professorService;
+            _logger = logger;
         }
-         
 
+        [Authorize(Roles = "administrador")]
         [HttpGet("getQntdProfessoresAtivos")]
-        public async Task<IActionResult> GetQntdAlunosAtivos()
+        [ProducesResponseType(typeof(int), 200)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> GetQntdProfessoresAtivos(CancellationToken cancellationToken)
         {
-
             try
             {
-                var qntdProfessoresAtivos = await _professorService.GetQntdProfessoresAtivos();
-                return Ok(qntdProfessoresAtivos);
+                var qntd = await _professorService.GetQntdProfessoresAtivos();
+                return Ok(qntd);
             }
             catch (Exception ex)
             {
-                return NotFound(ex.Message);
+                _logger.LogError(ex, "Erro ao obter quantidade de professores ativos");
+                return Problem(detail: "Erro interno ao processar a requisição.", statusCode: 500);
             }
         }
 
-
+        [Authorize(Roles = "professor,administrador")]
         [HttpGet("getProfessorById/{professorId}")]
-        public async Task<IActionResult> GetProfessorById(int professorId)
+        [ProducesResponseType(typeof(ProfessorDTOResponse), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> GetProfessorById(int professorId, CancellationToken cancellationToken)
         {
+            if (professorId <= 0)
+                return BadRequest(new { message = "professorId inválido." });
 
             try
             {
                 var professor = await _professorService.GetProfessorById(professorId);
+                if (professor == null)
+                    return NotFound(new { message = "Professor não encontrado." });
+
                 return Ok(professor);
             }
             catch (Exception ex)
             {
-                return NotFound(ex.Message);
+                _logger.LogError(ex, "Erro ao obter professor {ProfessorId}", professorId);
+                return Problem(detail: "Erro interno ao processar a requisição.", statusCode: 500);
             }
         }
 
+        [Authorize(Roles = "administrador")]
         [HttpGet("getAllProfessores")]
-        public async Task<IActionResult> GetAllProfessores()
+        [ProducesResponseType(typeof(List<ProfessorDTOResponse>), 200)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> GetAllProfessores(CancellationToken cancellationToken)
         {
             try
             {
@@ -59,12 +81,16 @@ namespace tivitApi.Controllers
             }
             catch (Exception ex)
             {
-                return NotFound(ex.Message);
+                _logger.LogError(ex, "Erro ao listar professores.");
+                return Problem(detail: "Erro interno ao processar a requisição.", statusCode: 500);
             }
         }
 
+        [Authorize(Roles = "administrador")]
         [HttpGet("getAllProfessoresAtivos")]
-        public async Task<IActionResult> GetAllProfessoresAtivos()
+        [ProducesResponseType(typeof(List<ProfessorDTOResponse>), 200)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> GetAllProfessoresAtivos(CancellationToken cancellationToken)
         {
             try
             {
@@ -73,26 +99,38 @@ namespace tivitApi.Controllers
             }
             catch (Exception ex)
             {
-                return NotFound(ex.Message);
+                _logger.LogError(ex, "Erro ao listar professores ativos.");
+                return Problem(detail: "Erro interno ao processar a requisição.", statusCode: 500);
             }
         }
 
+        [Authorize(Roles = "administrador")]
         [HttpPost("criarProfessor")]
-        public async Task<IActionResult> CriarProfessor([FromBody] ProfessorDTORequest professorDTO)
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> CriarProfessor([FromBody] ProfessorDTORequest professorDTO, CancellationToken cancellationToken)
         {
+            if (professorDTO == null)
+                return BadRequest(new { message = "Payload inválido." });
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             try
             {
                 await _professorService.CriarProfessor(professorDTO);
-
                 return NoContent();
-
+            }
+            catch (ArgumentException ex)
+            {
+                _logger.LogWarning(ex, "Dados inválidos ao criar professor.");
+                return BadRequest(new { message = ex.Message });
             }
             catch (Exception ex)
             {
-                return BadRequest(new
-                {
-                    erro = ex.Message
-                });
+                _logger.LogError(ex, "Erro ao criar professor.");
+                return Problem(detail: "Erro interno ao processar a requisição.", statusCode: 500);
             }
         }
     }

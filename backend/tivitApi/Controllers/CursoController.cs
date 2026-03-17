@@ -1,8 +1,13 @@
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using tivitApi.DTOs;
 using tivitApi.Models;
 using tivitApi.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
 
 namespace tivitApi.Controllers
 {
@@ -11,137 +16,237 @@ namespace tivitApi.Controllers
     [Route("api/[controller]")]
     public class CursoController : ControllerBase
     {
-        //injeção de dependência 
         private readonly ICursoService _cursoService;
+        private readonly ILogger<CursoController> _logger;
 
-        public CursoController(ICursoService cursoService)
+        public CursoController(ICursoService cursoService, ILogger<CursoController> logger)
         {
             _cursoService = cursoService;
+            _logger = logger;
         }
-
 
         [HttpGet]
-        public async Task<IActionResult> GetAllCursos()
-        {
-            List<CursoDTO> cursosDTOs = await _cursoService.GetAllCursosAsync();
-
-            return Ok(cursosDTOs);
-        }
-
-        [HttpGet("getAllCursosAtivos")]
-        public async Task<IActionResult> GetAllCursosAtivos()
+        [ProducesResponseType(typeof(List<CursoDTO>), 200)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> GetAllCursos(CancellationToken cancellationToken)
         {
             try
             {
-                List<CursoDTO> cursosDTOs = await _cursoService.GetAllCursosAtivos();
+                var cursosDTOs = await _cursoService.GetAllCursosAsync();
                 return Ok(cursosDTOs);
             }
             catch (Exception ex)
             {
-                return NotFound(ex.Message);
+                _logger.LogError(ex, "Erro ao listar cursos");
+                return Problem(detail: "Erro interno ao listar cursos.", statusCode: 500);
             }
         }
 
+        [AllowAnonymous]
+        [HttpGet("getAllCursosAtivos")]
+        [ProducesResponseType(typeof(List<CursoDTO>), 200)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> GetAllCursosAtivos(CancellationToken cancellationToken)
+        {
+            try
+            {
+                var cursosDTOs = await _cursoService.GetAllCursosAtivos();
+                return Ok(cursosDTOs);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao listar cursos ativos");
+                return Problem(detail: "Erro interno ao listar cursos ativos.", statusCode: 500);
+            }
+        }
+
+        [Authorize(Roles = "administrador")]
         [HttpGet("{cursoId}")]
-        public async Task<IActionResult> GetCursoId(int cursoId)
+        [ProducesResponseType(typeof(CursoDTO), 200)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> GetCursoId(int cursoId, CancellationToken cancellationToken)
         {
-            CursoDTO cursoDTO = await _cursoService.GetCursoById(cursoId);
+            try
+            {
+                var cursoDTO = await _cursoService.GetCursoById(cursoId);
+                if (cursoDTO == null)
+                    return NotFound(new { message = "Curso não encontrado." });
 
-            return Ok(cursoDTO);
+                return Ok(cursoDTO);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao obter curso {CursoId}", cursoId);
+                return Problem(detail: "Erro interno ao obter curso.", statusCode: 500);
+            }
         }
 
+        [Authorize(Roles = "administrador, professor")]
         [HttpGet("getQntdCursosProf/{professorId}")]
-        public async Task<IActionResult> GetNextWeekEvents(int professorId)
+        [ProducesResponseType(typeof(int), 200)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> GetQntdCursosProf(int professorId, CancellationToken cancellationToken)
         {
-            var qntdEventos = await _cursoService.GetQntdCursosProf(professorId);
-
-
-            return Ok(qntdEventos);
+            try
+            {
+                var qntdEventos = await _cursoService.GetQntdCursosProf(professorId);
+                return Ok(qntdEventos);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao obter quantidade de cursos do professor {ProfessorId}", professorId);
+                return Problem(detail: "Erro interno.", statusCode: 500);
+            }
         }
 
+        [Authorize(Roles = "administrador, professor")]
         [HttpGet("getAllCursosProf/{professorId}")]
-        public async Task<IActionResult> GetAllCursosProfAsync(int professorId)
+        [ProducesResponseType(typeof(List<CursoDTO>), 200)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> GetAllCursosProfAsync(int professorId, CancellationToken cancellationToken)
         {
-            var cursosProfessor = await _cursoService.GetAllCursosProfAsync(professorId);
-
-
-            return Ok(cursosProfessor);
+            try
+            {
+                var cursosProfessor = await _cursoService.GetAllCursosProfAsync(professorId);
+                return Ok(cursosProfessor);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao listar cursos do professor {ProfessorId}", professorId);
+                return Problem(detail: "Erro interno.", statusCode: 500);
+            }
         }
 
+        [Authorize(Roles = "administrador")]
         [HttpGet("getQntdAlunosByCursoId/{cursoId}")]
-        public async Task<IActionResult> GetQntdAlunosByCursoId(int cursoId)
+        [ProducesResponseType(typeof(int), 200)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> GetQntdAlunosByCursoId(int cursoId, CancellationToken cancellationToken)
         {
-            var qntdAlunos = await _cursoService.GetQntdAlunosByCursoId(cursoId);
-
-
-            return Ok(qntdAlunos);
+            try
+            {
+                var qntdAlunos = await _cursoService.GetQntdAlunosByCursoId(cursoId);
+                return Ok(qntdAlunos);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao obter quantidade de alunos do curso {CursoId}", cursoId);
+                return Problem(detail: "Erro interno.", statusCode: 500);
+            }
         }
 
+        [Authorize(Roles = "administrador")]
         [HttpPost("criarCurso")]
-        public async Task<IActionResult> CriarCurso([FromBody] CursoDTORequest dto)
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> CriarCurso([FromBody] CursoDTORequest dto, CancellationToken cancellationToken)
         {
-            await _cursoService.CriarCurso(dto);
-            return NoContent();
+            if (dto == null)
+                return BadRequest(new { message = "Payload inválido." });
 
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            try
+            {
+                await _cursoService.CriarCurso(dto);
+                return NoContent();
+            }
+            catch (ArgumentException ex)
+            {
+                _logger.LogWarning(ex, "Dados inválidos ao criar curso.");
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao criar curso.");
+                return Problem(detail: "Erro interno ao criar curso.", statusCode: 500);
+            }
         }
 
+        [Authorize(Roles = "administrador")]
         [HttpPut("atualizarCurso")]
-        public async Task<IActionResult> AtualizarCurso([FromBody] CursoDTORequest dto)
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> AtualizarCurso([FromBody] CursoDTORequest dto, CancellationToken cancellationToken)
         {
+            if (dto == null)
+                return BadRequest(new { message = "Payload inválido." });
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             try
             {
                 await _cursoService.AtualizarCurso(dto);
-
                 return NoContent();
-
+            }
+            catch (KeyNotFoundException ex)
+            {
+                _logger.LogWarning(ex, "Curso não encontrado ao atualizar.");
+                return NotFound(new { message = "Curso não encontrado." });
+            }
+            catch (ArgumentException ex)
+            {
+                _logger.LogWarning(ex, "Dados inválidos ao atualizar curso.");
+                return BadRequest(new { message = ex.Message });
             }
             catch (Exception ex)
             {
-                return BadRequest(new
-                {
-                    erro = ex.Message
-                });
+                _logger.LogError(ex, "Erro ao atualizar curso.");
+                return Problem(detail: "Erro interno ao atualizar curso.", statusCode: 500);
             }
         }
 
+        [Authorize(Roles = "administrador")]
         [HttpPut("desativarCurso/{cursoId}")]
-        public async Task<IActionResult> DesativarCurso(int cursoId)
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> DesativarCurso(int cursoId, CancellationToken cancellationToken)
         {
-
             try
             {
                 await _cursoService.DesativarCurso(cursoId);
-
                 return NoContent();
-
+            }
+            catch (KeyNotFoundException ex)
+            {
+                _logger.LogWarning(ex, "Curso não encontrado ao desativar {CursoId}", cursoId);
+                return NotFound(new { message = "Curso não encontrado." });
             }
             catch (Exception ex)
             {
-                return BadRequest(new
-                {
-                    erro = ex.Message
-                });
+                _logger.LogError(ex, "Erro ao desativar curso {CursoId}", cursoId);
+                return Problem(detail: "Erro interno ao desativar curso.", statusCode: 500);
             }
         }
 
+        [Authorize(Roles = "administrador")]
         [HttpPut("ativarCurso/{cursoId}")]
-        public async Task<IActionResult> AtivarCurso(int cursoId)
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> AtivarCurso(int cursoId, CancellationToken cancellationToken)
         {
-
             try
             {
                 await _cursoService.AtivarCurso(cursoId);
-
                 return NoContent();
-
+            }
+            catch (KeyNotFoundException ex)
+            {
+                _logger.LogWarning(ex, "Curso não encontrado ao ativar {CursoId}", cursoId);
+                return NotFound(new { message = "Curso não encontrado." });
             }
             catch (Exception ex)
             {
-                return BadRequest(new
-                {
-                    erro = ex.Message
-                });
+                _logger.LogError(ex, "Erro ao ativar curso {CursoId}", cursoId);
+                return Problem(detail: "Erro interno ao ativar curso.", statusCode: 500);
             }
         }
     }

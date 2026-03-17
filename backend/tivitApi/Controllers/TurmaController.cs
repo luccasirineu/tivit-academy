@@ -1,8 +1,13 @@
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using tivitApi.DTOs;
-using tivitApi.Models;
-using tivitApi.Services;
+using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authorization;
+using tivitApi.DTOs;
+using tivitApi.Services;
+using tivitApi.Models;
 
 namespace tivitApi.Controllers
 {
@@ -12,51 +17,98 @@ namespace tivitApi.Controllers
     public class TurmaController : ControllerBase
     {
         private readonly ITurmaService _turmaService;
+        private readonly ILogger<TurmaController> _logger;
 
-        public TurmaController(ITurmaService turmaService)
+        public TurmaController(ITurmaService turmaService, ILogger<TurmaController> logger)
         {
             _turmaService = turmaService;
+            _logger = logger;
         }
 
+        [Authorize(Roles = "administrador")]
         [HttpPost("criarTurma")]
-        public async Task<IActionResult> CriarTurma([FromBody] TurmaDTORequest turmaDTO)
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> CriarTurma([FromBody] TurmaDTORequest turmaDTO, CancellationToken cancellationToken)
         {
+            if (turmaDTO == null)
+                return BadRequest(new { message = "Payload inválido." });
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             try
             {
                 await _turmaService.CriarTurma(turmaDTO);
-
                 return NoContent();
-
+            }
+            catch (ArgumentException ex)
+            {
+                _logger.LogWarning(ex, "Dados inválidos ao criar turma.");
+                return BadRequest(new { message = ex.Message });
             }
             catch (Exception ex)
             {
-                return BadRequest(new
-                {
-                    erro = ex.Message
-                });
+                _logger.LogError(ex, "Erro ao criar turma.");
+                return Problem(detail: "Erro interno ao processar a requisição.", statusCode: 500);
             }
         }
 
+        // professor OR administrador
+        [Authorize(Roles = "professor,administrador")]
         [HttpGet("getTurmasByCursoId/{cursoId}")]
-        public async Task<IActionResult> GetTurmasByCursoId(int cursoId)
+        [ProducesResponseType(typeof(List<TurmaDTOResponse>), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> GetTurmasByCursoId(int cursoId, CancellationToken cancellationToken)
         {
-            var turmas = await _turmaService.GetTurmasByCursoId(cursoId);
+            if (cursoId <= 0)
+                return BadRequest(new { message = "cursoId inválido." });
 
-            return Ok(turmas);
+            try
+            {
+                var turmas = await _turmaService.GetTurmasByCursoId(cursoId);
+                return Ok(turmas);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao obter turmas do curso {CursoId}", cursoId);
+                return Problem(detail: "Erro interno ao processar a requisição.", statusCode: 500);
+            }
         }
 
-        [HttpGet("getTurmaByAlunoId/{alunoId}")]
-        public async Task<IActionResult> GetTurmaByAlunoId(int alunoId)
+        [HttpGet("aluno/{alunoId}/turma")]
+        [ProducesResponseType(typeof(TurmaDTOResponse), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> GetTurmaByAlunoId(int alunoId, CancellationToken cancellationToken)
         {
-            var turmaId = await _turmaService.GetTurmaByAlunoId(alunoId);
+            if (alunoId <= 0)
+                return BadRequest(new { message = "alunoId inválido." });
 
-            return Ok(turmaId);
+            try
+            {
+                var turma = await _turmaService.GetTurmaByAlunoId(alunoId);
+                if (turma == null)
+                    return NotFound(new { message = "Turma não encontrada para o aluno." });
+
+                return Ok(turma);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao obter turma do aluno {AlunoId}", alunoId);
+                return Problem(detail: "Erro interno ao processar a requisição.", statusCode: 500);
+            }
         }
 
+        [Authorize(Roles = "professor,administrador")]
         [HttpGet("getQntdTurmasAtivas")]
-        public async Task<IActionResult> GetQntdTurmasAtivas()
+        [ProducesResponseType(typeof(int), 200)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> GetQntdTurmasAtivas(CancellationToken cancellationToken)
         {
-
             try
             {
                 var qntdTurmasAtivas = await _turmaService.GetQntdTurmasAtivas();
@@ -64,35 +116,62 @@ namespace tivitApi.Controllers
             }
             catch (Exception ex)
             {
-                return NotFound(ex.Message);
+                _logger.LogError(ex, "Erro ao obter quantidade de turmas ativas.");
+                return Problem(detail: "Erro interno ao processar a requisição.", statusCode: 500);
             }
         }
 
+        [Authorize(Roles = "administrador")]
         [HttpGet("getAllTurmas")]
-        public async Task<IActionResult> GetAllTurmas()
+        [ProducesResponseType(typeof(List<TurmaDTOResponse>), 200)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> GetAllTurmas(CancellationToken cancellationToken)
         {
-            List<TurmaDTOResponse> turmas = await _turmaService.GetAllTurmas();
-
-            return Ok(turmas);
+            try
+            {
+                var turmas = await _turmaService.GetAllTurmas();
+                return Ok(turmas);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao listar turmas.");
+                return Problem(detail: "Erro interno ao processar a requisição.", statusCode: 500);
+            }
         }
 
+        [Authorize(Roles = "administrador")]
         [HttpPut("atualizarTurma")]
-        public async Task<IActionResult> AtualizarTurma([FromBody] TurmaDTORequest dto)
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> AtualizarTurma([FromBody] TurmaDTORequest dto, CancellationToken cancellationToken)
         {
+            if (dto == null)
+                return BadRequest(new { message = "Payload inválido." });
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             try
             {
                 await _turmaService.AtualizarTurma(dto);
-
                 return NoContent();
-
+            }
+            catch (KeyNotFoundException ex)
+            {
+                _logger.LogWarning(ex, "Turma não encontrada ao atualizar. Id: {Id}", dto?.Id);
+                return NotFound(new { message = "Turma não encontrada." });
+            }
+            catch (ArgumentException ex)
+            {
+                _logger.LogWarning(ex, "Dados inválidos ao atualizar turma.");
+                return BadRequest(new { message = ex.Message });
             }
             catch (Exception ex)
             {
-                return BadRequest(new
-                {
-                    erro = ex.Message
-                });
+                _logger.LogError(ex, "Erro ao atualizar turma Id:{Id}", dto?.Id);
+                return Problem(detail: "Erro interno ao processar a requisição.", statusCode: 500);
             }
         }
     }

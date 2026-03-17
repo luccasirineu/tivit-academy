@@ -1,86 +1,124 @@
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using tivitApi.DTOs;
 using tivitApi.Models;
 using tivitApi.Services;
 
 namespace tivitApi.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class MatriculaController : ControllerBase
     {
-        //injeção de dependência 
         private readonly IMatriculaService _matriculaService;
+        private readonly ILogger<MatriculaController> _logger;
 
-        public MatriculaController(IMatriculaService matriculaService)
+        public MatriculaController(IMatriculaService matriculaService, ILogger<MatriculaController> logger)
         {
             _matriculaService = matriculaService;
+            _logger = logger;
         }
 
+        [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> CriarMatricula([FromBody] MatriculaDTO dto)
+        [ProducesResponseType(typeof(object), 201)]
+        [ProducesResponseType(400)]
+        public async Task<IActionResult> CriarMatricula([FromBody] MatriculaDTO dto, CancellationToken cancellationToken)
         {
-            
-          
-            var matriculaCriada = await _matriculaService.CriarMatriculaAsync(dto);
+            if (dto == null)
+                return BadRequest(new { message = "Payload inválido." });
 
-            return Ok(new { matriculaId = matriculaCriada.Id });
-            
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var matriculaCriada = await _matriculaService.CriarMatriculaAsync(dto);
+            return CreatedAtAction(nameof(GetMatriculaById), new { id = matriculaCriada.Id }, new { matriculaId = matriculaCriada.Id });
         }
 
-        [HttpPost("{matriculaId}/pagamento")]
-        public async Task<IActionResult> EnviarComprovantePagamento(int matriculaId, IFormFile arquivo)
+        [Authorize(Roles = "administrador,professor")]
+        [HttpGet("getAllMatriculasPendentes")]
+        [ProducesResponseType(typeof(MatriculaDTO), 200)]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> GetMatriculaById( CancellationToken cancellationToken)
         {
+            var m = await _matriculaService.GetAllMatriculasPendentes(); 
+            return Ok(m);
+        }
+
+        [Authorize(Roles = "aluno")]
+        [HttpPost("{matriculaId:int}/pagamento")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [RequestSizeLimit(100_000_000)] // ex.: 10 MB
+        public async Task<IActionResult> EnviarComprovantePagamento(int matriculaId, [FromForm] IFormFile arquivo, CancellationToken cancellationToken)
+        {
+            if (matriculaId <= 0)
+                return BadRequest(new { message = "MatriculaId inválido." });
+
             if (arquivo == null || arquivo.Length == 0)
-                return BadRequest("Nenhum arquivo enviado.");
+                return BadRequest(new { message = "Nenhum arquivo enviado." });
+
+            if (!arquivo.ContentType.Equals("application/pdf") && !arquivo.FileName.EndsWith(".pdf"))
+                return BadRequest(new { message = "Apenas PDF permitido." });
 
             var resultado = await _matriculaService.EnviarComprovantePagamentoAsync(matriculaId, arquivo);
-
+            // prefira retornar metadados (url/id) em vez do conteúdo binário
             return Ok(resultado);
         }
 
-        [HttpPost("{matriculaId}/documentos")]
-        public async Task<IActionResult> EnviarComprovantePagamento(int matriculaId, IFormFile documentoHistorico, IFormFile documentoCpf)
+        [Authorize(Roles = "aluno")]
+        [HttpPost("{matriculaId:int}/documentos")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        public async Task<IActionResult> EnviarDocumentos(int matriculaId, [FromForm] IFormFile documentoHistorico, [FromForm] IFormFile documentoCpf, CancellationToken cancellationToken)
         {
-            if ((documentoHistorico == null || documentoHistorico.Length == 0) || (documentoCpf == null || documentoCpf.Length == 0))
-                return BadRequest("Nenhum arquivo enviado.");
+            if (matriculaId <= 0)
+                return BadRequest(new { message = "MatriculaId inválido." });
+
+            if (documentoHistorico == null || documentoCpf == null)
+                return BadRequest(new { message = "Ambos os documentos são obrigatórios." });
 
             var resultado = await _matriculaService.EnviarDocumentosAsync(matriculaId, documentoHistorico, documentoCpf);
-
             return Ok(resultado);
         }
 
-        [HttpGet("getAllMatriculasPendentes")]
-        public async Task<IActionResult> GetAllMatriculasPendentes()
+        [Authorize(Roles = "administrador")]
+        [HttpGet("pendentes")]
+        [ProducesResponseType(typeof(List<MatriculaDTO>), 200)]
+        public async Task<IActionResult> GetAllMatriculasPendentes(CancellationToken cancellationToken)
         {
-            List<MatriculaDTO> matriculaDTOs = await _matriculaService.GetAllMatriculasPendentes();
-
+            var matriculaDTOs = await _matriculaService.GetAllMatriculasPendentes();
             return Ok(matriculaDTOs);
         }
 
-        [HttpPost("aprovar/{matriculaId}")]
-        public async Task<IActionResult> AprovarMatricula(string matriculaId)
+        [Authorize(Roles = "administrador")]
+        [HttpPost("aprovar/{matriculaId:int}")]
+        public async Task<IActionResult> AprovarMatricula(int matriculaId)
         {
-             await _matriculaService.AprovarMatricula(matriculaId);
-
-            return Ok();
+            await _matriculaService.AprovarMatricula(matriculaId.ToString()); // ideal: padronizar service para int
+            return NoContent();
         }
 
-        [HttpPost("recusar/{matriculaId}")]
-        public async Task<IActionResult> RecusarMatricula(string matriculaId)
+        [Authorize(Roles = "administrador")]
+        [HttpPost("recusar/{matriculaId:int}")]
+        public async Task<IActionResult> RecusarMatricula(int matriculaId)
         {
-            await _matriculaService.RecusarMatricula(matriculaId);
-
-            return Ok();
+            await _matriculaService.RecusarMatricula(matriculaId.ToString());
+            return NoContent();
         }
 
-        [HttpGet("getAlunosAtivosProfessor/{professorId}")]
+        [Authorize(Roles = "professor,administrador")]
+        [HttpGet("getAlunosAtivosProfessor/{professorId:int}")]
         public async Task<IActionResult> GetAlunosAtivosProfessor(int professorId)
         {
-            int qntdAlunosAtivos = await _matriculaService.GetTotalAlunosAtivosPorProfessor(professorId);
-
+            var qntdAlunosAtivos = await _matriculaService.GetTotalAlunosAtivosPorProfessor(professorId);
             return Ok(qntdAlunosAtivos);
         }
-
     }
 }

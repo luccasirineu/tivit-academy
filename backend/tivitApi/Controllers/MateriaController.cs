@@ -1,9 +1,13 @@
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using tivitApi.DTOs;
 using tivitApi.Services;
 using tivitApi.Models;
 using Microsoft.AspNetCore.Authorization;
-
+using Microsoft.Extensions.Logging;
 
 namespace tivitApi.Controllers
 {
@@ -13,52 +17,116 @@ namespace tivitApi.Controllers
     public class MateriaController : ControllerBase
     {
         private readonly IMateriaService _materiaService;
+        private readonly ILogger<MateriaController> _logger;
 
-        public MateriaController(IMateriaService materiaService)
+        public MateriaController(IMateriaService materiaService, ILogger<MateriaController> logger)
         {
             _materiaService = materiaService;
+            _logger = logger;
         }
 
-
+        [Authorize(Roles = "administrador")]
         [HttpPost("criarMateria")]
-        public async Task<IActionResult> CriarMateria([FromBody] MateriaDTO dto)
+        [ProducesResponseType(typeof(Materia), 201)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> CriarMateria([FromBody] MateriaDTO dto, CancellationToken cancellationToken)
         {
-            var materia = await _materiaService.CriarMateriaAsync(dto);
+            if (dto == null)
+                return BadRequest(new { message = "Payload inválido." });
 
-            return CreatedAtAction(
-                nameof(CriarMateria),
-                new { id = materia.Id },
-                materia
-            );
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            try
+            {
+                var materia = await _materiaService.CriarMateriaAsync(dto);
+                // Preferível: criar um GET /api/materia/{id} e usar CreatedAtAction apontando para ele.
+                return Created($"/api/materia/{materia.Id}", materia);
+            }
+            catch (ArgumentException ex)
+            {
+                _logger.LogWarning(ex, "Dados inválidos ao criar matéria.");
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao criar matéria.");
+                return Problem(detail: "Erro interno ao processar a requisição.", statusCode: 500);
+            }
         }
 
+        // professor OR administrador
+        [Authorize(Roles = "professor,administrador,aluno")]
         [HttpGet("getMateriasByCursoId/{cursoId}")]
-        public async Task<IActionResult> GetMateriasByCursoId(int cursoId)
+        [ProducesResponseType(typeof(List<Materia>), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> GetMateriasByCursoId(int cursoId, CancellationToken cancellationToken)
         {
-            var materias = await _materiaService.GetMateriasByCursoIdAsync(cursoId);
+            if (cursoId <= 0)
+                return BadRequest(new { message = "ID do curso inválido." });
 
-            return Ok(materias);
+            try
+            {
+                var materias = await _materiaService.GetMateriasByCursoIdAsync(cursoId);
+                if (materias == null || materias.Count == 0)
+                    return NotFound(new { message = "Nenhuma matéria encontrada para este curso." });
+
+                return Ok(materias);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao obter matérias do curso {CursoId}", cursoId);
+                return Problem(detail: "Erro interno ao processar a requisição.", statusCode: 500);
+            }
         }
-
 
         [HttpGet("getCursoId/{alunoId}")]
-        public async Task<IActionResult> GetCursoId(int alunoId)
+        [ProducesResponseType(typeof(int), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> GetCursoId(int alunoId, CancellationToken cancellationToken)
         {
-            
-            var cursoId = await _materiaService.GetCursoIdByAlunoIdAsync(alunoId);
+            if (alunoId <= 0)
+                return BadRequest(new { message = "ID do aluno inválido." });
 
-            return Ok(new { cursoId });
-            
+            try
+            {
+                var cursoId = await _materiaService.GetCursoIdByAlunoIdAsync(alunoId);
+                return Ok(new { cursoId });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao obter cursoId para aluno {AlunoId}", alunoId);
+                return Problem(detail: "Erro interno ao processar a requisição.", statusCode: 500);
+            }
         }
 
         [HttpGet("getNomeMateria/{materiaId}")]
-        public async Task<IActionResult> GetMateriaNome(int materiaId)
+        [ProducesResponseType(typeof(string), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> GetMateriaNome(int materiaId, CancellationToken cancellationToken)
         {
+            if (materiaId <= 0)
+                return BadRequest(new { message = "ID da matéria inválido." });
 
-            var materiaNome = await _materiaService.GetMateriaNomeByMateriaIdAsync(materiaId);
+            try
+            {
+                var materiaNome = await _materiaService.GetMateriaNomeByMateriaIdAsync(materiaId);
+                if (string.IsNullOrEmpty(materiaNome))
+                    return NotFound(new { message = "Matéria não encontrada." });
 
-            return Ok(new { materiaNome });
-
+                return Ok(new { materiaNome });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao obter nome da matéria {MateriaId}", materiaId);
+                return Problem(detail: "Erro interno ao processar a requisição.", statusCode: 500);
+            }
         }
     }
 }
