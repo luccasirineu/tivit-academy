@@ -24,7 +24,7 @@ namespace tivitApi.Controllers
         }
 
         [Authorize(Roles = "professor")]
-        [HttpPost]
+        [HttpPost("adicionarEvento")]
         [ProducesResponseType(typeof(EventoDTO), 201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(500)]
@@ -60,7 +60,6 @@ namespace tivitApi.Controllers
             }
         }
 
-        // professor OR aluno
         [Authorize(Roles = "professor,aluno")]
         [HttpGet("proximoEvento")]
         [ProducesResponseType(typeof(object), 200)]

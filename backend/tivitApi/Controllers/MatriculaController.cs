@@ -51,12 +51,11 @@ namespace tivitApi.Controllers
             return Ok(m);
         }
 
-        [Authorize(Roles = "aluno")]
-        [HttpPost("{matriculaId:int}/pagamento")]
+        [AllowAnonymous]
+        [HttpPost("{matriculaId}/pagamento")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        [RequestSizeLimit(100_000_000)] // ex.: 10 MB
-        public async Task<IActionResult> EnviarComprovantePagamento(int matriculaId, [FromForm] IFormFile arquivo, CancellationToken cancellationToken)
+        public async Task<IActionResult> EnviarComprovantePagamento(int matriculaId, IFormFile arquivo)
         {
             if (matriculaId <= 0)
                 return BadRequest(new { message = "MatriculaId inválido." });
@@ -64,15 +63,13 @@ namespace tivitApi.Controllers
             if (arquivo == null || arquivo.Length == 0)
                 return BadRequest(new { message = "Nenhum arquivo enviado." });
 
-            if (!arquivo.ContentType.Equals("application/pdf") && !arquivo.FileName.EndsWith(".pdf"))
-                return BadRequest(new { message = "Apenas PDF permitido." });
 
             var resultado = await _matriculaService.EnviarComprovantePagamentoAsync(matriculaId, arquivo);
-            // prefira retornar metadados (url/id) em vez do conteúdo binário
+
             return Ok(resultado);
         }
 
-        [Authorize(Roles = "aluno")]
+        [AllowAnonymous]
         [HttpPost("{matriculaId:int}/documentos")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]

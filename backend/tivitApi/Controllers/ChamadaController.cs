@@ -24,7 +24,7 @@ namespace tivitApi.Controllers
         }
 
         [Authorize(Roles = "professor")]
-        [HttpPost]
+        [HttpPost("realizarChamada")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(409)]
@@ -42,10 +42,14 @@ namespace tivitApi.Controllers
                 await _chamadaService.RealizarChamada(dtos);
                 return NoContent();
             }
-            catch (ArgumentException ex)
+            catch (BusinessException ex)
             {
-                _logger.LogWarning(ex, "Requisição inválida ao realizar chamada.");
-                return BadRequest(new { message = ex.Message });
+                _logger.LogWarning(ex, "C");
+                return Conflict(new
+                {
+                    tipo = "CHAMADA_JA_REALIZADA",
+                    mensagem = ex.Message
+                });
             }
             catch (Exception ex)
             {
@@ -55,7 +59,7 @@ namespace tivitApi.Controllers
         }
 
         [Authorize(Roles = "professor")]
-        [HttpPut]
+        [HttpPut("atualizarChamada")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(500)]

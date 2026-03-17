@@ -92,7 +92,7 @@ namespace tivitApi.Controllers
         }
 
         [Authorize(Roles = "professor,administrador")]
-        [HttpGet("matricula/{matriculaId}")]
+        [HttpGet("getAlunoByMatriculaId/{matriculaId}")]
         [ProducesResponseType(typeof(AlunoDTO), 200)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
@@ -186,7 +186,8 @@ namespace tivitApi.Controllers
                 return Problem(statusCode: 500, detail: "Erro interno ao processar a requisição.");
             }
         }
-
+        
+        [AllowAnonymous]
         [HttpPatch("recuperarSenha/{cpf}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
