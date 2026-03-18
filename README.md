@@ -7,7 +7,7 @@ Um sistema completo e moderno de gestão escolar desenvolvido com **C# .NET 9** 
 ## 📚 Documentação Adicional
 
 Para mais detalhes sobre endpoints, modelos e arquitetura, consulte a documentação em:
-👉 [Documentação Completa]([./docs/index.md](https://luccasirineu.github.io/))
+👉 [Documentação Completa](https://luccasirineu.github.io/)
 
 ---
 
