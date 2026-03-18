@@ -1,0 +1,444 @@
+
+
+h1, h2 { color: var(--accent); }
+
+/* === ÚLTIMO EVENTO === */
+.ultimo-evento {
+  margin-bottom: 50px;
+  text-align: center;
+}
+
+.ultimo-evento h2 {
+  font-size: 1.4rem;
+  margin-bottom: 20px;
+  color: var(--accent);
+}
+
+.evento-card {
+  background-color: var(--bg-secondary);
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 2px 12px var(--shadow);
+  max-width: 700px;
+  margin: 0 auto;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.evento-info {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.evento-data {
+  background-color: var(--accent);
+  color: #fff;
+  border-radius: 10px;
+  padding: 10px 15px;
+  text-align: center;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.evento-data .dia {
+  font-size: 1.8rem;
+  display: block;
+}
+
+.evento-data .mes {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.evento-detalhes {
+  text-align: left;
+}
+
+.evento-detalhes h3 {
+  margin-bottom: 8px;
+  font-size: 1.2rem;
+}
+
+.evento-detalhes p {
+  margin: 4px 0;
+  opacity: 0.9;
+}
+
+.evento-detalhes .descricao {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  margin-top: 10px;
+}
+
+/* === CALENDÁRIO === */
+#calendario {
+  padding: 30px;
+}
+
+.calendar-container {
+  background: var(--bg-secondary);
+  border-radius: 16px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  padding: 20px;
+  max-width: 90%;
+  margin: auto;
+}
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.calendar-header h2 {
+  font-size: 20px;
+  color: var(--text);
+  min-width: 160px;
+  text-align: center;
+}
+
+.calendar-header button {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.calendar-header button:hover {
+  background: #e6004b;
+}
+
+.calendar-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-weight: bold;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.calendar-day {
+  position: relative;
+  background: var(--bg);
+  border-radius: 10px;
+  padding: 15px 0;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.calendar-day:hover {
+  background: rgba(255, 0, 84, 0.1);
+}
+
+.calendar-day .event-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* === DESEMPENHO DO ALUNO === */
+#desempenho-aluno {
+  padding: 30px;
+  animation: fadeIn 0.6s ease;
+}
+
+.desempenho-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.desempenho-header h1 {
+  color: var(--accent);
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.desempenho-header p {
+  opacity: 0.8;
+}
+
+/* CARDS DESEMPENHO */
+.desempenho-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 25px;
+  margin-bottom: 40px;
+}
+
+.desempenho-cards .card {
+  background: var(--bg-secondary);
+  border-radius: 16px;
+  box-shadow: 0 6px 18px var(--shadow);
+  padding: 25px;
+  text-align: center;
+  width: 25%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.desempenho-cards .card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 25px var(--shadow);
+}
+
+.valor {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-top: 10px;
+}
+
+.destaque {
+  font-size: 2rem;
+}
+
+/* NÍVEL GAMIFICADO */
+.nivel-card {
+  background: linear-gradient(135deg, #ffd70033, #ff005433);
+  border: 2px solid var(--accent);
+}
+
+.nivel-label {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-top: 8px;
+}
+
+.nivel-card.ouro { border: 2px solid gold; }
+.nivel-card.prata { border: 2px solid silver; }
+.nivel-card.bronze { border: 2px solid #cd7f32; }
+
+/* GRÁFICOS */
+.graficos-container {
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.grafico {
+  background: var(--bg-secondary);
+  padding: 20px;
+  border-radius: 16px;
+  width: 45%;
+  height: auto; 
+}
+
+/* === MATÉRIAS === */
+.materias-section {
+  padding: 30px;
+  animation: fadeIn 0.5s ease;
+}
+
+.titulo-materias {
+  color: var(--accent);
+  font-size: 2em;
+  margin-bottom: 10px;
+}
+
+.subtitulo-materias {
+  opacity: 0.8;
+  margin-bottom: 25px;
+}
+
+.materias-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.materia {
+  background: var(--bg-secondary);
+  border-radius: 15px;
+  box-shadow: 0 0 15px var(--shadow);
+  padding: 25px;
+  width: calc(25% - 20px);
+  min-width: 220px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.materia:hover {
+  transform: translateY(-6px);
+  background: var(--accent);
+  color: #fff;
+}
+
+.materia i {
+  font-size: 2.5em;
+  margin-bottom: 10px;
+  display: block;
+  color: var(--accent);
+  transition: 0.3s;
+}
+
+.materia:hover i {
+  color: white;
+}
+
+.materia h3 {
+  font-size: 1.1em;
+}
+
+.materia-detalhes.hidden {
+  display: none;
+}
+
+.btn-voltar {
+  background: var(--accent);
+  border: none;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  transition: 0.3s;
+}
+
+.btn-voltar:hover {
+  background: #ff2d6b;
+}
+
+/* LISTA DE ARQUIVOS */
+.lista-arquivos {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.lista-arquivos li {
+  display: flex;
+  align-items: center;
+  background: var(--bg-secondary);
+  margin-bottom: 10px;
+  padding: 15px 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px var(--shadow);
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.lista-arquivos li:hover {
+  background: var(--accent);
+  color: white;
+}
+
+.lista-arquivos li i {
+  font-size: 1.4em;
+  margin-right: 10px;
+  color: var(--accent);
+  transition: 0.3s;
+}
+
+.lista-arquivos li:hover i {
+  color: white;
+}
+
+/* === RELATÓRIO === */
+.relatorio-section {
+  padding: 40px;
+  animation: fadeIn 0.5s ease;
+}
+
+.titulo-relatorio {
+  color: var(--accent);
+  font-size: 2em;
+  margin-bottom: 10px;
+}
+
+.relatorio-container {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.materia-card {
+  background: var(--bg-secondary);
+  border-radius: 15px;
+  box-shadow: 0 0 15px var(--shadow);
+  padding: 25px;
+  transition: transform 0.2s ease;
+}
+
+.materia-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.tabela-notas {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.tabela-notas th, .tabela-notas td {
+  padding: 10px;
+  text-align: left;
+}
+
+.tabela-notas thead {
+  background: var(--accent);
+  color: white;
+}
+
+.tabela-notas tbody tr {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.status-aprovado { color: #4caf50; font-weight: bold; }
+.status-recuperacao { color: #ffb300; font-weight: bold; }
+.status-reprovado { color: #e53935; font-weight: bold; }
+
+.btn-gerar-pdf {
+  margin-top: 25px;
+  background: #e53935;
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: 0.3s;
+  align-self: flex-start;
+}
+
+/* === ANIMAÇÕES === */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* === RESPONSIVIDADE === */
+@media (max-width: 900px) {
+  .desempenho-cards .card { width: 45%; }
+  .grafico { width: 100%; }
+  .materias-cards { flex-direction: column; }
+  .materia { width: 100%; }
+}
+
+@media (max-width: 600px) {
+  .desempenho-cards .card { width: 100%; }
+}

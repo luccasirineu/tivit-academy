@@ -4,12 +4,10 @@
     "\\tivitApi",
     "\\tivitApi\\Controllers",
     "\\tivitApi\\Data",
-    "\\tivitApi\\Infra",
     "\\tivitApi\\Infra\\SQS",
-    "\\tivitApi\\Services",
     "\\tivitApi\\wwwroot",
     "\\tivitApi\\wwwroot\\uploads"
   ],
-  "SelectedNode": "\\tivitApi\\Services\\MatriculaService.cs",
+  "SelectedNode": "\\tivitApi\\Controllers\\AlunoController.cs",
   "PreviewInSolutionExplorer": false
 }

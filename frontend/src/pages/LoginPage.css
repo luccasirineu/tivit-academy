@@ -1,0 +1,346 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* We target a specific class on the body to apply these styles only for the login page */
+body.login-page-active {
+  min-height: 100dvh; /* usa viewport dinâmica moderna */
+  font-family: 'Montserrat', sans-serif;
+  background: radial-gradient(circle at center, #2b001e, #120010);
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.login-page-active .background {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+  background-size: 40px 40px;
+  opacity: 0.2;
+  z-index: 0;
+}
+
+.login-page-active .login-container {
+  position: relative;
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 0 40px rgba(255, 0, 100, 0.3);
+  text-align: center;
+  width: 110%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+.login-page-active .logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.login-page-active .logo img {
+  width: 140px;
+  max-width: 60%;
+  height: auto;
+  filter: drop-shadow(0 0 6px rgba(255, 0, 0, 0.5));
+}
+
+.login-page-active .brand-text {
+  font-size: 1.3em;
+  letter-spacing: 2px;
+  color: #fff;
+}
+
+.login-page-active .brand-text .tivit {
+  color: #ff002b;
+  font-family: 'Rajdhani', 'Exo 2', 'Orbitron', sans-serif;
+  font-weight: 700;
+  letter-spacing: 3px;
+}
+
+.login-page-active .brand-text .academy {
+  color: #ffffff;
+  font-weight: 400;
+  letter-spacing: 1px;
+  opacity: 0.9;
+}
+
+.login-page-active label {
+  display: block;
+  text-align: left;
+  font-size: 0.8em;
+  margin-top: 15px;
+  color: #c7c7c7;
+}
+
+.login-page-active input,
+.login-page-active select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 1em;
+  outline: none;
+}
+
+.login-page-active select option {
+  background-color: #0e0d0d; 
+  color: #ffffff; 
+}
+
+.login-page-active select option:disabled {
+  color: #777; 
+}
+
+.login-page-active input:focus,
+.login-page-active select:focus {
+  box-shadow: 0 0 5px #ff0054;
+}
+
+
+.login-page-active .senha-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.login-page-active .senha-wrapper input {
+  width: 100%;
+  padding-right: 35px; /* espaço pro ícone */
+}
+
+.login-page-active .senha-wrapper .toggle-senha {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  color: var(--text, #fff); /* Fallback for --text variable */
+  font-size: 18px;
+  transition: color 0.3s;
+}
+
+.login-page-active .senha-wrapper .toggle-senha:hover {
+  color: var(--accent, #ff0054); /* Fallback for --accent variable */
+}
+
+
+.login-page-active .btn {
+  width: 100%;
+  background: #ff0054;
+  border: none;
+  color: #fff;
+  padding: 12px;
+  margin-top: 25px;
+  border-radius: 6px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.login-page-active .btn:hover {
+  background: #ff3380;
+  transform: translateY(-2px);
+}
+
+.login-page-active .forgot {
+  display: block;
+  margin-top: 10px;
+  color: #ff3380;
+  text-decoration: none;
+  font-size: 0.85em;
+}
+
+.login-page-active .forgot:hover {
+  text-decoration: underline;
+}
+
+
+/* Tablet */
+@media (max-width: 768px) {
+  .login-page-active .login-container {
+    width: 85%;
+    padding: 1.8rem;
+  }
+
+  .login-page-active .logo img {
+    width: 120px;
+  }
+
+  .login-page-active .brand-text {
+    font-size: 1.1em;
+  }
+}
+
+/* Celulares */
+@media (max-width: 480px) {
+  body.login-page-active {
+    padding: 1rem;
+  }
+
+  .login-page-active .login-container {
+    width: 100%;
+    padding: 1.5rem;
+  }
+
+  .login-page-active .logo img {
+    width: 100px;
+  }
+
+  .login-page-active .brand-text {
+    font-size: 1em;
+  }
+
+  .login-page-active input,
+  .login-page-active select {
+    font-size: 0.9em;
+    padding: 9px;
+  }
+
+  .login-page-active .btn {
+    padding: 10px;
+  }
+}
+
+/* ===== LIGHT MODE LOGIN ===== */
+body.login-page-active.login-light {
+  background: radial-gradient(circle at center, #f5e6f0, #f0d6e8);
+  color: #111;
+}
+
+body.login-page-active.login-light .background {
+  background: radial-gradient(circle, rgba(0,0,0,0.08) 1px, transparent 1px);
+  background-size: 40px 40px;
+  opacity: 0.3;
+}
+
+body.login-page-active.login-light .login-container {
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 0 40px rgba(255, 0, 100, 0.2);
+}
+
+body.login-page-active.login-light .brand-text {
+  color: #111;
+}
+
+body.login-page-active.login-light .brand-text .academy {
+  color: #333;
+}
+
+body.login-page-active.login-light label {
+  color: #444;
+}
+
+body.login-page-active.login-light input,
+body.login-page-active.login-light select {
+  background: rgba(0, 0, 0, 0.06);
+  color: #111;
+  border: 1px solid rgba(255, 0, 84, 0.2);
+}
+
+body.login-page-active.login-light input::placeholder {
+  color: #888;
+}
+
+body.login-page-active.login-light select option {
+  background-color: #fff;
+  color: #111;
+}
+
+body.login-page-active.login-light .senha-wrapper .toggle-senha {
+  color: #333;
+}
+
+body.login-page-active.login-light .forgot {
+  color: #cc0044;
+}
+
+/* ===== BOTÃO TOGGLE TEMA ===== */
+.login-theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 0, 84, 0.3);
+  color: #fff;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s;
+  z-index: 10;
+  backdrop-filter: blur(4px);
+}
+
+.login-theme-toggle:hover {
+  background: var(--accent, #ff0054);
+  border-color: transparent;
+}
+
+body.login-page-active.login-light .login-theme-toggle {
+  background: rgba(0, 0, 0, 0.08);
+  color: #333;
+  border-color: rgba(255, 0, 84, 0.25);
+}
+
+body.login-page-active.login-light .login-theme-toggle:hover {
+  background: #ff0054;
+  color: #fff;
+}
+
+/* ===== LIGHT MODE - POPUP ESQUECI SENHA ===== */
+body.login-page-active.login-light .popup-overlay {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+body.login-page-active.login-light .popup-content {
+  background: #ffffff;
+  border-color: rgba(255, 0, 84, 0.25);
+  box-shadow: 0 8px 32px rgba(255, 0, 84, 0.15);
+}
+
+body.login-page-active.login-light .popup-content h3 {
+  color: #ff0054;
+}
+
+body.login-page-active.login-light .popup-content label {
+  color: #444;
+}
+
+body.login-page-active.login-light .popup-content input {
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(255, 0, 84, 0.2);
+  color: #111;
+}
+
+body.login-page-active.login-light .popup-content input::placeholder {
+  color: #888;
+}
+
+body.login-page-active.login-light .popup-content input:focus {
+  border-color: #ff0054;
+  box-shadow: 0 0 8px rgba(255, 0, 84, 0.2);
+}
+
+body.login-page-active.login-light .btn-cancelar {
+  border-color: rgba(255, 0, 84, 0.4);
+  color: #ff0054;
+}
+
+body.login-page-active.login-light .btn-cancelar:hover {
+  background: #ff0054;
+  color: #fff;
+}

@@ -56,7 +56,7 @@ form.addEventListener('submit', async (e) => {
     if (data.tipo === 'administrador') {
       window.location.href = 'admin/admin.html';
     } else if (data.tipo === 'professor') {
-      window.location.href = 'professor/professor.html';
+      window.location.href = '../professor/professor.html';
     } else if (data.tipo === 'aluno') {
       window.location.href = 'aluno/aluno.html';
     }

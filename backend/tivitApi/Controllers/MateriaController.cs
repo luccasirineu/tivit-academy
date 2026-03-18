@@ -56,7 +56,6 @@ namespace tivitApi.Controllers
             }
         }
 
-        // professor OR administrador
         [Authorize(Roles = "professor,administrador,aluno")]
         [HttpGet("getMateriasByCursoId/{cursoId}")]
         [ProducesResponseType(typeof(List<Materia>), 200)]
