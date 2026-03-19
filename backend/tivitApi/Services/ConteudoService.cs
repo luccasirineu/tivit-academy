@@ -11,24 +11,28 @@ namespace tivitApi.Services
         Task<Conteudo> CriarConteudoPdfAsync(CreateConteudoPdfDTO dto, int professorId);
         Task<Conteudo> CriarConteudoLinkAsync(CreateConteudoLinkDTO dto, int professorId);
         Task<List<ConteudoDTO>> GetConteudosByMateriaIdAsync(int materiaId, int turmaId);
-
     }
 
     public class ConteudoService : IConteudoService
     { 
         private readonly AppDbContext _context;
         private readonly ILogger<ConteudoService> _logger;
+        private readonly IGeminiService _geminiService;
 
-        public ConteudoService(AppDbContext context, ILogger<ConteudoService> logger)
+        public ConteudoService(
+            AppDbContext context, 
+            ILogger<ConteudoService> logger,
+            IGeminiService geminiService)
         {
             _context = context;
             _logger = logger;
-
+            _geminiService = geminiService;
         }
 
         private ConteudoDTO ConvertConteudoToConteudoDTO(Conteudo conteudo)
         {
             return new ConteudoDTO(
+                conteudo.Id,
                 conteudo.Titulo,
                 conteudo.Tipo,
                 conteudo.CaminhoOuUrl,
@@ -43,7 +47,7 @@ namespace tivitApi.Services
         public async Task<Conteudo> CriarConteudoPdfAsync(CreateConteudoPdfDTO dto, int professorId)
         {
             if (dto.Arquivo == null || dto.Arquivo.Length == 0)
-                throw new Exception("Arquivo inválido");
+                throw new Exception("Arquivo invï¿½lido");
 
             var pasta = Path.Combine("wwwroot", "uploads", $"turma_{dto.TurmaId}", $"materia_{dto.MateriaId}");
             Directory.CreateDirectory(pasta);
@@ -51,8 +55,10 @@ namespace tivitApi.Services
             var nomeArquivo = $"{Guid.NewGuid()}{Path.GetExtension(dto.Arquivo.FileName)}";
             var caminhoCompleto = Path.Combine(pasta, nomeArquivo);
 
-            using var stream = new FileStream(caminhoCompleto, FileMode.Create);
-            await dto.Arquivo.CopyToAsync(stream);
+            using (var stream = new FileStream(caminhoCompleto, FileMode.Create))
+            {
+                await dto.Arquivo.CopyToAsync(stream);
+            }
 
             var conteudo = new Conteudo
             {
@@ -68,13 +74,32 @@ namespace tivitApi.Services
             _context.Conteudos.Add(conteudo);
             await _context.SaveChangesAsync();
 
+            // Processar conteÃºdo com a IA e armazenar contexto
+            try
+            {
+                _logger.LogInformation($"Iniciando processamento de contexto para PDF: {conteudo.Id}");
+                var conteudoContexto = await _geminiService.ExtrairEProcessarConteudoAsync(
+                    conteudo,
+                    caminhoCompleto,
+                    "pdf");
+
+                _context.ConteudosContexto.Add(conteudoContexto);
+                await _context.SaveChangesAsync();
+                _logger.LogInformation($"Contexto armazenado com sucesso para ConteudoId: {conteudo.Id}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Erro ao processar contexto do PDF: {ex.Message}. ConteÃºdo salvo sem contexto.");
+                // NÃ£o falhar o upload se houver erro no processamento de IA
+            }
+
             return conteudo;
         }
 
         public async Task<Conteudo> CriarConteudoLinkAsync(CreateConteudoLinkDTO dto, int professorId)
         {
             if (!Uri.IsWellFormedUriString(dto.Url, UriKind.Absolute))
-                throw new Exception("URL inválida");
+                throw new Exception("URL invï¿½lida");
 
             var conteudo = new Conteudo
             {
@@ -90,6 +115,25 @@ namespace tivitApi.Services
             _context.Conteudos.Add(conteudo);
             await _context.SaveChangesAsync();
 
+            // Processar conteÃºdo com a IA e armazenar contexto
+            try
+            {
+                _logger.LogInformation($"Iniciando processamento de contexto para Link: {conteudo.Id}");
+                var conteudoContexto = await _geminiService.ExtrairEProcessarConteudoAsync(
+                    conteudo,
+                    dto.Url,
+                    "link");
+
+                _context.ConteudosContexto.Add(conteudoContexto);
+                await _context.SaveChangesAsync();
+                _logger.LogInformation($"Contexto armazenado com sucesso para ConteudoId: {conteudo.Id}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Erro ao processar contexto do Link: {ex.Message}. ConteÃºdo salvo sem contexto.");
+                // NÃ£o falhar o upload se houver erro no processamento de IA
+            }
+
             return conteudo;
         }
 
@@ -97,7 +141,7 @@ namespace tivitApi.Services
         {
             var materiaExiste = await _context.Materias.AnyAsync(c => c.Id == materiaId);
             if (!materiaExiste)
-                throw new Exception("Matéria não encontrada");
+                throw new Exception("Matï¿½ria nï¿½o encontrada");
 
             var conteudos = await _context.Conteudos.Where(m => m.MateriaId == materiaId && m.TurmaId == turmaId).ToListAsync();
 

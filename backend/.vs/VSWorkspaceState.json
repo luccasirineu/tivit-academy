@@ -3,11 +3,13 @@
     "",
     "\\tivitApi",
     "\\tivitApi\\Controllers",
-    "\\tivitApi\\Data",
-    "\\tivitApi\\Infra\\SQS",
+    "\\tivitApi\\Services",
+    "\\tivitApi\\Utils\\Mappers",
     "\\tivitApi\\wwwroot",
-    "\\tivitApi\\wwwroot\\uploads"
+    "\\tivitApi\\wwwroot\\uploads",
+    "\\tivitApi\\wwwroot\\uploads\\turma_1",
+    "\\tivitApi\\wwwroot\\uploads\\turma_1\\materia_8"
   ],
-  "SelectedNode": "\\tivitApi\\Controllers\\AlunoController.cs",
+  "SelectedNode": "\\tivitApi\\wwwroot\\uploads\\turma_1\\materia_8\\5709cd27-5faa-4eab-b7e8-b3c4a39198a9.pdf",
   "PreviewInSolutionExplorer": false
 }

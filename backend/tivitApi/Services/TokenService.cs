@@ -33,6 +33,7 @@ namespace tivitApi.Services
                 new Claim(ClaimTypes.Name, usuario.Nome),
                 new Claim(ClaimTypes.Role, usuario.Tipo),
                 new Claim("cpf", usuario.Cpf ?? ""),
+                new Claim("turmaId", usuario.TurmaId.ToString()),
             };
 
             var expiration = DateTime.UtcNow.AddHours(

@@ -3,6 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import api from "../../services/api";
 import { fetchConteudosMateria } from "../../services/aluno.service";
 import { useAuth } from "../../context/AuthContext";
+import ChatConteudo from "../../components/aluno/ChatConteudo";
+import taiIcon from "../../assets/TAI.png";
 
 export default function MateriaDetalhes() {
   const { materiaId } = useParams();
@@ -10,6 +12,7 @@ export default function MateriaDetalhes() {
   const navigate = useNavigate();
   const [conteudos, setConteudos] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [chatAberto, setChatAberto] = useState<{ conteudoId: number; titulo: string } | null>(null);
   const turmaId = user?.turmaId;
   const BASE_URL = api.defaults.baseURL?.replace("/api", "") ?? "http://localhost:5027";
 
@@ -48,10 +51,9 @@ export default function MateriaDetalhes() {
 
       <div className="materias-cards">
         {conteudos.map((c) => (
-          <div key={c.id} className="materia conteudo-card">
-            <i className="fas fa-file-alt" style={{ fontSize: "32px", color: "var(--accent)", marginBottom: "10px" }}></i>
+          <div key={c.id} className="materia conteudo-card" style={{ position: "relative", minHeight: "200px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
             <h3>{c.titulo}</h3>
-            
+
             {c.caminhoOuUrl && (
               <a
                 href={c.tipo === "pdf" ? `${BASE_URL}${c.caminhoOuUrl}` : c.caminhoOuUrl}
@@ -63,9 +65,41 @@ export default function MateriaDetalhes() {
                 Acessar material →
               </a>
             )}
+            {c.tipo === "pdf" && (
+              <button
+                onClick={() => setChatAberto({ conteudoId: c.id, titulo: c.titulo })}
+                style={{
+                  position: "absolute",
+                  bottom: "10px",
+                  left: "10px",
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  padding: "0",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  transition: "transform 0.2s",
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.1)")}
+                onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+                title="Perguntar sobre este conteúdo"
+              >
+                <img src={taiIcon} alt="TAI" style={{ width: "58px", height: "48px" }} />
+              </button>
+            )}
           </div>
         ))}
       </div>
+
+      {chatAberto && (
+        <ChatConteudo
+          conteudoId={chatAberto.conteudoId}
+          tituloConteudo={chatAberto.titulo}
+          isOpen={!!chatAberto}
+          onClose={() => setChatAberto(null)}
+        />
+      )}
     </section>
   );
 }

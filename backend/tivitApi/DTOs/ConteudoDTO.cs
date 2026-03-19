@@ -4,6 +4,7 @@ namespace tivitApi.DTOs
     public class ConteudoDTO
     {
 
+        public int Id { get; set; }
         public string Titulo { get; set; }
         public string Tipo { get; set; }
         public string CaminhoOuUrl { get; set; }
@@ -14,8 +15,9 @@ namespace tivitApi.DTOs
 
 
 
-        public ConteudoDTO(string titulo, string tipo, string caminhoOuUrl, DateTime DataPublicao, int materiaId, int professorId, int turmaId)
+        public ConteudoDTO(int id, string titulo, string tipo, string caminhoOuUrl, DateTime DataPublicao, int materiaId, int professorId, int turmaId)
         {
+            Id = id;
             Titulo = titulo;
             Tipo = tipo;
             CaminhoOuUrl = caminhoOuUrl;

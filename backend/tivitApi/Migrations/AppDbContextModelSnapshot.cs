@@ -197,6 +197,41 @@ namespace tivitApi.Migrations
                     b.ToTable("Conteudos");
                 });
 
+            modelBuilder.Entity("tivitApi.Models.ConteudoContexto", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ConteudoId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ContextoTexto")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DataArmazenamento")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("MensagemErro")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StatusExtracao")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TurmaId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ConteudoId");
+
+                    b.ToTable("ConteudosContexto");
+                });
+
             modelBuilder.Entity("tivitApi.Models.Curso", b =>
                 {
                     b.Property<int>("Id")
@@ -549,6 +584,17 @@ namespace tivitApi.Migrations
                     b.Navigation("Materia");
 
                     b.Navigation("Professor");
+                });
+
+            modelBuilder.Entity("tivitApi.Models.ConteudoContexto", b =>
+                {
+                    b.HasOne("tivitApi.Models.Conteudo", "Conteudo")
+                        .WithMany()
+                        .HasForeignKey("ConteudoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Conteudo");
                 });
 
             modelBuilder.Entity("tivitApi.Models.Curso", b =>
