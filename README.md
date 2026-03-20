@@ -4,6 +4,13 @@ Um sistema completo e moderno de gestão escolar desenvolvido com **C# .NET 9** 
 
 ---
 
+## 📚 Documentação Adicional
+
+Para mais detalhes sobre endpoints, modelos e arquitetura, consulte a documentação em:
+👉 [Documentação Completa](https://luccasirineu.github.io/)
+
+---
+
 ## 📋 Visão Geral
 
 O **TIVIT Academy** é uma plataforma educacional robusta que permite:
@@ -438,13 +445,6 @@ constants/        - Constantes da aplicação
 - **Requisições**: Axios com interceptors
 - **Forma**: Controlled Components + Zod
 
-
----
-
-## 📚 Documentação Adicional
-
-Para mais detalhes sobre endpoints, modelos e arquitetura, consulte a documentação em:
-👉 [Documentação Completa](./docs/index.md)
 
 ---
 
