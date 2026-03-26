@@ -102,6 +102,10 @@
               "target": "Package",
               "version": "[2026.2.2, )"
             },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[6.8.1, )"
+            },
             "itext7": {
               "target": "Package",
               "version": "[9.5.0, )"

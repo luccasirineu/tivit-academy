@@ -19,7 +19,11 @@ namespace tivitApi.Controllers
             _alunoService = alunoService;
             _logger = logger;
         }
-
+        
+        /// <summary>
+        /// Obt√©m as informa√ß√µes do aluno autenticado atual.
+        /// </summary>
+        [Authorize(Roles = "aluno")]
         [HttpGet("contextMe/{alunoId}")]
         [ProducesResponseType(typeof(AlunoDTO), 200)]
         [ProducesResponseType(404)]
@@ -33,16 +37,19 @@ namespace tivitApi.Controllers
             }
             catch (KeyNotFoundException ex)
             {
-                _logger.LogWarning(ex, "Aluno n„o encontrado: {AlunoId}", alunoId);
-                return NotFound(new { message = "Aluno n„o encontrado." });
+                _logger.LogWarning(ex, "Aluno n√£o encontrado: {AlunoId}", alunoId);
+                return NotFound(new { message = "Aluno n√£o encontrado." });
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Erro ao obter informaÁıes do aluno {AlunoId}", alunoId);
-                return Problem(detail: "Erro interno ao processar a requisiÁ„o.", statusCode: 500);
+                _logger.LogError(ex, "Erro ao obter informa√ß√µes do aluno {AlunoId}", alunoId);
+                return Problem(detail: "Erro interno ao processar a requisi√ß√£o.", statusCode: 500);
             }
         }
 
+        /// <summary>
+        /// Obt√©m a lista de todos os alunos matriculados em um curso espec√≠fico.
+        /// </summary>
         [Authorize(Roles = "professor,administrador")]
         [HttpGet("getAllAlunosByCurso/{cursoId}")]
         [ProducesResponseType(typeof(List<AlunoDTO>), 200)]
@@ -57,16 +64,19 @@ namespace tivitApi.Controllers
             }
             catch (KeyNotFoundException ex)
             {
-                _logger.LogWarning(ex, "Curso n„o encontrado: {CursoId}", cursoId);
-                return NotFound(new { message = "Curso n„o encontrado." });
+                _logger.LogWarning(ex, "Curso n√£o encontrado: {CursoId}", cursoId);
+                return NotFound(new { message = "Curso n√£o encontrado." });
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Erro ao listar alunos do curso {CursoId}", cursoId);
-                return Problem(statusCode: 500, detail: "Erro interno ao processar a requisiÁ„o.");
+                return Problem(statusCode: 500, detail: "Erro interno ao processar a requisi√ß√£o.");
             }
         }
 
+        /// <summary>
+        /// Obt√©m a lista de todos os alunos de uma turma espec√≠fica.
+        /// </summary>
         [Authorize(Roles = "professor,administrador")]
         [HttpGet("getAllAlunosByTurmaId/{turmaId}")]
         [ProducesResponseType(typeof(List<AlunoDTO>), 200)]
@@ -81,16 +91,19 @@ namespace tivitApi.Controllers
             }
             catch (KeyNotFoundException ex)
             {
-                _logger.LogWarning(ex, "Turma n„o encontrada: {TurmaId}", turmaId);
-                return NotFound(new { message = "Turma n„o encontrada." });
+                _logger.LogWarning(ex, "Turma n√£o encontrada: {TurmaId}", turmaId);
+                return NotFound(new { message = "Turma n√£o encontrada." });
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Erro ao listar alunos da turma {TurmaId}", turmaId);
-                return Problem(statusCode: 500, detail: "Erro interno ao processar a requisiÁ„o.");
+                return Problem(statusCode: 500, detail: "Erro interno ao processar a requisi√ß√£o.");
             }
         }
 
+        /// <summary>
+        /// Obt√©m as informa√ß√µes de um aluno atrav√©s do seu ID de matr√≠cula.
+        /// </summary>
         [Authorize(Roles = "professor,administrador")]
         [HttpGet("getAlunoByMatriculaId/{matriculaId}")]
         [ProducesResponseType(typeof(AlunoDTO), 200)]
@@ -105,16 +118,19 @@ namespace tivitApi.Controllers
             }
             catch (KeyNotFoundException ex)
             {
-                _logger.LogWarning(ex, "MatrÌcula n„o encontrada: {MatriculaId}", matriculaId);
-                return NotFound(new { message = "MatrÌcula n„o encontrada." });
+                _logger.LogWarning(ex, "Matr√≠cula n√£o encontrada: {MatriculaId}", matriculaId);
+                return NotFound(new { message = "Matr√≠cula n√£o encontrada." });
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Erro ao obter aluno por matrÌcula {MatriculaId}", matriculaId);
-                return Problem(statusCode: 500, detail: "Erro interno ao processar a requisiÁ„o.");
+                _logger.LogError(ex, "Erro ao obter aluno por matr√≠cula {MatriculaId}", matriculaId);
+                return Problem(statusCode: 500, detail: "Erro interno ao processar a requisi√ß√£o.");
             }
         }
 
+        /// <summary>
+        /// Obt√©m a quantidade total de alunos com status ativo.
+        /// </summary>
         [Authorize(Roles = "professor,administrador")]
         [HttpGet("getQntdAlunosAtivos")]
         [ProducesResponseType(typeof(int), 200)]
@@ -129,10 +145,13 @@ namespace tivitApi.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Erro ao obter quantidade de alunos ativos");
-                return Problem(statusCode: 500, detail: "Erro interno ao processar a requisiÁ„o.");
+                return Problem(statusCode: 500, detail: "Erro interno ao processar a requisi√ß√£o.");
             }
         }
 
+        /// <summary>
+        /// Obt√©m a lista com as informa√ß√µes de todos os alunos.
+        /// </summary>
         [Authorize(Roles = "professor,administrador")]
         [HttpGet("getAllAlunos")]
         [ProducesResponseType(typeof(List<AlunoDTO>), 200)]
@@ -147,10 +166,13 @@ namespace tivitApi.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Erro ao listar todos os alunos");
-                return Problem(statusCode: 500, detail: "Erro interno ao processar a requisiÁ„o.");
+                return Problem(statusCode: 500, detail: "Erro interno ao processar a requisi√ß√£o.");
             }
         }
 
+        /// <summary>
+        /// Atualiza a turma de um aluno espec√≠fico.
+        /// </summary>
         [Authorize(Roles = "administrador")]
         [HttpPatch("{id}/turma")]
         [ProducesResponseType(204)]
@@ -160,7 +182,7 @@ namespace tivitApi.Controllers
         public async Task<IActionResult> UpdateTurmaAluno(int id, [FromBody] UpdateTurmaAlunoDTO dto)
         {
             if (dto == null)
-                return BadRequest(new { message = "Payload inv·lido." });
+                return BadRequest(new { message = "Payload inv√°lido." });
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -172,21 +194,24 @@ namespace tivitApi.Controllers
             }
             catch (KeyNotFoundException ex)
             {
-                _logger.LogWarning(ex, "Aluno ou Turma n„o encontrado ao atualizar turma do aluno {AlunoId}", id);
-                return NotFound(new { message = "Aluno ou Turma n„o encontrado." });
+                _logger.LogWarning(ex, "Aluno ou Turma n√£o encontrado ao atualizar turma do aluno {AlunoId}", id);
+                return NotFound(new { message = "Aluno ou Turma n√£o encontrado." });
             }
             catch (ArgumentException ex)
             {
-                _logger.LogWarning(ex, "RequisiÁ„o inv·lida ao atualizar turma do aluno {AlunoId}", id);
+                _logger.LogWarning(ex, "Requisi√ß√£o inv√°lida ao atualizar turma do aluno {AlunoId}", id);
                 return BadRequest(new { message = ex.Message });
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Erro ao atualizar turma do aluno {AlunoId}", id);
-                return Problem(statusCode: 500, detail: "Erro interno ao processar a requisiÁ„o.");
+                return Problem(statusCode: 500, detail: "Erro interno ao processar a requisi√ß√£o.");
             }
         }
         
+        /// <summary>
+        /// Envia uma solicita√ß√£o de recupera√ß√£o de senha para o CPF informado.
+        /// </summary>
         [AllowAnonymous]
         [HttpPatch("recuperarSenha/{cpf}")]
         [ProducesResponseType(204)]
@@ -195,7 +220,7 @@ namespace tivitApi.Controllers
         public async Task<IActionResult> RecuperarSenha(string cpf)
         {
             if (string.IsNullOrWhiteSpace(cpf))
-                return BadRequest(new { message = "CPF È obrigatÛrio." });
+                return BadRequest(new { message = "CPF √© obrigat√≥rio." });
 
             try
             {
@@ -204,13 +229,13 @@ namespace tivitApi.Controllers
             }
             catch (ArgumentException ex)
             {
-                _logger.LogWarning(ex, "CPF inv·lido ao recuperar senha {Cpf}", cpf);
+                _logger.LogWarning(ex, "CPF inv√°lido ao recuperar senha {Cpf}", cpf);
                 return BadRequest(new { message = ex.Message });
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Erro ao recuperar senha do CPF {Cpf}", cpf);
-                return Problem(statusCode: 500, detail: "Erro interno ao processar a requisiÁ„o.");
+                return Problem(statusCode: 500, detail: "Erro interno ao processar a requisi√ß√£o.");
             }
         }
     }

@@ -25,6 +25,9 @@ namespace tivitApi.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// Adiciona uma nova nota para um aluno.
+        /// </summary>
         [Authorize(Roles = "professor")]
         [HttpPost("adicionarNota")]
         [ProducesResponseType(typeof(NotaDTOResponse), 201)]
@@ -33,7 +36,7 @@ namespace tivitApi.Controllers
         public async Task<IActionResult> AdicionarNota([FromBody] NotaDTORequest dto, CancellationToken cancellationToken)
         {
             if (dto == null)
-                return BadRequest(new { erro = "Payload inválido." });
+                return BadRequest(new { erro = "Payload invï¿½lido." });
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -49,16 +52,19 @@ namespace tivitApi.Controllers
             }
             catch (ArgumentException ex)
             {
-                _logger.LogWarning(ex, "Dados inválidos ao adicionar nota.");
+                _logger.LogWarning(ex, "Dados invï¿½lidos ao adicionar nota.");
                 return BadRequest(new { erro = ex.Message });
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Erro ao adicionar nota para AlunoId={AlunoId} MateriaId={MateriaId}", dto?.AlunoId, dto?.MateriaId);
-                return Problem(detail: "Erro interno ao processar a requisição.", statusCode: 500);
+                return Problem(detail: "Erro interno ao processar a requisiï¿½ï¿½o.", statusCode: 500);
             }
         }
 
+        /// <summary>
+        /// ObtÃ©m o desempenho (mÃ©dia, total, etc) de um aluno.
+        /// </summary>
         [Authorize(Roles = "aluno")]
         [HttpGet("aluno/{alunoId}/getDesempenho")]
         [ProducesResponseType(typeof(object), 200)]
@@ -67,7 +73,7 @@ namespace tivitApi.Controllers
         public async Task<IActionResult> GetDesempenhoByAlunoId(int alunoId, CancellationToken cancellationToken)
         {
             if (alunoId <= 0)
-                return BadRequest(new { erro = "AlunoId inválido." });
+                return BadRequest(new { erro = "AlunoId invï¿½lido." });
 
             try
             {
@@ -76,17 +82,20 @@ namespace tivitApi.Controllers
             }
             catch (ArgumentException ex)
             {
-                _logger.LogWarning(ex, "Requisição inválida ao obter desempenho do aluno {AlunoId}", alunoId);
+                _logger.LogWarning(ex, "Requisiï¿½ï¿½o invï¿½lida ao obter desempenho do aluno {AlunoId}", alunoId);
                 return BadRequest(new { erro = ex.Message });
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Erro ao obter desempenho do aluno {AlunoId}", alunoId);
-                return Problem(detail: "Erro interno ao processar a requisição.", statusCode: 500);
+                return Problem(detail: "Erro interno ao processar a requisiï¿½ï¿½o.", statusCode: 500);
             }
         }
 
         // professor OR aluno
+        /// <summary>
+        /// ObtÃ©m todas as notas de um aluno especÃ­fico.
+        /// </summary>
         [Authorize(Roles = "professor,aluno")]
         [HttpGet("aluno/{alunoId}/getAllNotas")]
         [ProducesResponseType(typeof(System.Collections.Generic.List<NotaDTOResponse>), 200)]
@@ -95,7 +104,7 @@ namespace tivitApi.Controllers
         public async Task<IActionResult> GetAllNotasByAlunoId(int alunoId, CancellationToken cancellationToken)
         {
             if (alunoId <= 0)
-                return BadRequest(new { erro = "AlunoId inválido." });
+                return BadRequest(new { erro = "AlunoId invï¿½lido." });
 
             try
             {
@@ -105,20 +114,23 @@ namespace tivitApi.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Erro ao listar notas do aluno {AlunoId}", alunoId);
-                return Problem(detail: "Erro interno ao processar a requisição.", statusCode: 500);
+                return Problem(detail: "Erro interno ao processar a requisiï¿½ï¿½o.", statusCode: 500);
             }
         }
 
         // professor OR aluno
+        /// <summary>
+        /// ObtÃ©m todas as notas vinculadas a uma matrÃ­cula especÃ­fica.
+        /// </summary>
         [Authorize(Roles = "professor,aluno")]
-        [HttpGet("aluno/{matriculaId}/getAllNotasByMatriculaId")]
+        [HttpGet("aluno/matricula/{matriculaId}/getAllNotasByMatriculaId")]
         [ProducesResponseType(typeof(System.Collections.Generic.List<NotaDTOResponse>), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(500)]
         public async Task<IActionResult> GetAllNotasByMatriculaId(int matriculaId, CancellationToken cancellationToken)
         {
             if (matriculaId <= 0)
-                return BadRequest(new { erro = "MatriculaId inválido." });
+                return BadRequest(new { erro = "MatriculaId invï¿½lido." });
 
             try
             {
@@ -127,11 +139,14 @@ namespace tivitApi.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Erro ao listar notas pela matrícula {MatriculaId}", matriculaId);
-                return Problem(detail: "Erro interno ao processar a requisição.", statusCode: 500);
+                _logger.LogError(ex, "Erro ao listar notas pela matrï¿½cula {MatriculaId}", matriculaId);
+                return Problem(detail: "Erro interno ao processar a requisiï¿½ï¿½o.", statusCode: 500);
             }
         }
 
+        /// <summary>
+        /// Busca notas pesquisando pelo nome do aluno.
+        /// </summary>
         [Authorize(Roles = "professor")]
         [HttpGet("aluno/getAllNotasByNome")]
         [ProducesResponseType(typeof(System.Collections.Generic.List<NotaDTOResponse>), 200)]
@@ -141,7 +156,7 @@ namespace tivitApi.Controllers
         public async Task<IActionResult> GetAllNotasByNome([FromQuery] string nome, CancellationToken cancellationToken)
         {
             if (string.IsNullOrWhiteSpace(nome))
-                return BadRequest("Nome do aluno é obrigatório.");
+                return BadRequest("Nome do aluno ï¿½ obrigatï¿½rio.");
 
             try
             {
@@ -154,10 +169,13 @@ namespace tivitApi.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Erro ao buscar notas por nome '{Nome}'", nome);
-                return Problem(detail: "Erro interno ao processar a requisição.", statusCode: 500);
+                return Problem(detail: "Erro interno ao processar a requisiï¿½ï¿½o.", statusCode: 500);
             }
         }
 
+        /// <summary>
+        /// Gera e exporta um relatÃ³rio em PDF com as notas do aluno.
+        /// </summary>
         [Authorize(Roles = "professor,aluno")]
         [HttpGet("aluno/{alunoId}/exportarRelatorio")]
         [ProducesResponseType(200)]
@@ -167,9 +185,9 @@ namespace tivitApi.Controllers
         public async Task<IActionResult> ExportarRelatorio(int alunoId, CancellationToken cancellationToken)
         {
             if (alunoId <= 0)
-                return BadRequest(new { erro = "AlunoId inválido." });
+                return BadRequest(new { erro = "AlunoId invï¿½lido." });
 
-            // Se for aluno, só permite exportar o próprio relatório
+            // Se for aluno, sï¿½ permite exportar o prï¿½prio relatï¿½rio
             if (User.IsInRole("aluno"))
             {
                 var claim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? User.FindFirst("id")?.Value;
@@ -181,14 +199,14 @@ namespace tivitApi.Controllers
             {
                 var pdfBytes = await _notaService.GerarRelatorioNotasPdfAsync(alunoId);
                 if (pdfBytes == null || pdfBytes.Length == 0)
-                    return NotFound(new { mensagem = "Relatório não encontrado." });
+                    return NotFound(new { mensagem = "Relatï¿½rio nï¿½o encontrado." });
 
                 return File(pdfBytes, "application/pdf", $"relatorio-aluno-{alunoId}.pdf");
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Erro ao gerar relatório do aluno {AlunoId}", alunoId);
-                return Problem(detail: "Erro interno ao processar a requisição.", statusCode: 500);
+                _logger.LogError(ex, "Erro ao gerar relatï¿½rio do aluno {AlunoId}", alunoId);
+                return Problem(detail: "Erro interno ao processar a requisiï¿½ï¿½o.", statusCode: 500);
             }
         }
     }

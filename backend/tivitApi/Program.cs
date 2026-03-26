@@ -7,12 +7,45 @@ using tivitApi.Services;
 using tivitApi.Exceptions;
 using tivitApi.Infra.SQS;
 using QuestPDF.Infrastructure;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
+var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+builder.Services.AddSwaggerGen(c =>
+{
+    c.IncludeXmlComments(xmlPath);
+    c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
+
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "Ex: Bearer {seu_token}",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT"
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+    });
+});
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -72,10 +105,13 @@ QuestPDF.Settings.License = LicenseType.Community;
 
 var app = builder.Build();
 
-app.UseMiddleware<ExceptionHandler>();
-
 if (app.Environment.IsDevelopment())
-    app.MapOpenApi();
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseMiddleware<ExceptionHandler>();
 
 app.UseRouting();
 app.UseCors("AllowAll");

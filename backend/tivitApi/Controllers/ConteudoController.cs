@@ -27,6 +27,9 @@ namespace tivitApi.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// Faz o upload de um novo conte√∫do em formato PDF.
+        /// </summary>
         [Authorize(Roles = "professor")]
         [HttpPost("upload/pdf")]
         [ProducesResponseType(typeof(Conteudo), StatusCodes.Status201Created)]
@@ -35,16 +38,16 @@ namespace tivitApi.Controllers
         public async Task<IActionResult> UploadPdf([FromForm] CreateConteudoPdfDTO dto, CancellationToken cancellationToken)
         {
             if (dto == null)
-                return BadRequest(new { message = "Payload inv·lido." });
+                return BadRequest(new { message = "Payload inv√°lido." });
 
             if (dto.Arquivo == null || dto.Arquivo.Length == 0)
-                return BadRequest(new { message = "Arquivo È obrigatÛrio." });
+                return BadRequest(new { message = "Arquivo √© obrigat√≥rio." });
 
-            // simples validaÁ„o de tipo/ extens„o
+            // simples valida√ß√£o de tipo/ extens√£o
             if (!string.Equals(dto.Arquivo.ContentType, "application/pdf", StringComparison.OrdinalIgnoreCase)
                 && !dto.Arquivo.FileName.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase))
             {
-                return BadRequest(new { message = "Apenas arquivos PDF s„o permitidos." });
+                return BadRequest(new { message = "Apenas arquivos PDF s√£o permitidos." });
             }
 
             // obter professorId do token (ajuste conforme claim usado no seu Auth)
@@ -55,21 +58,23 @@ namespace tivitApi.Controllers
             try
             {
                 var conteudo = await _conteudoService.CriarConteudoPdfAsync(dto, professorId);
-                // preferir Created com localizaÁ„o; se n„o houver endpoint para o recurso, retornar Created com URI simples
                 return Created($"/api/conteudo/{conteudo.Id}", conteudo);
             }
             catch (ArgumentException ex)
             {
-                _logger.LogWarning(ex, "RequisiÁ„o inv·lida ao criar conte˙do PDF.");
+                _logger.LogWarning(ex, "Requisi√ß√£o inv√°lida ao criar conte√∫do PDF.");
                 return BadRequest(new { message = ex.Message });
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Erro ao criar conte˙do PDF.");
-                return Problem(detail: "Erro interno ao processar a requisiÁ„o.", statusCode: 500);
+                _logger.LogError(ex, "Erro ao criar conte√∫do PDF.");
+                return Problem(detail: "Erro interno ao processar a requisi√ß√£o.", statusCode: 500);
             }
         }
 
+        /// <summary>
+        /// Cria um novo conte√∫do a partir de um link externo.
+        /// </summary>
         [Authorize(Roles = "professor")]
         [HttpPost("upload/link")]
         [ProducesResponseType(typeof(Conteudo), StatusCodes.Status201Created)]
@@ -78,12 +83,12 @@ namespace tivitApi.Controllers
         public async Task<IActionResult> CriarLink([FromBody] CreateConteudoLinkDTO dto, CancellationToken cancellationToken)
         {
             if (dto == null)
-                return BadRequest(new { message = "Payload inv·lido." });
+                return BadRequest(new { message = "Payload inv√°lido." });
 
             if (string.IsNullOrWhiteSpace(dto.Url) || !Uri.TryCreate(dto.Url, UriKind.Absolute, out var uri)
                 || (uri.Scheme != Uri.UriSchemeHttp && uri.Scheme != Uri.UriSchemeHttps))
             {
-                return BadRequest(new { message = "URL inv·lida." });
+                return BadRequest(new { message = "URL inv√°lida." });
             }
 
             var claimValue = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? User.FindFirst("id")?.Value;
@@ -97,16 +102,19 @@ namespace tivitApi.Controllers
             }
             catch (ArgumentException ex)
             {
-                _logger.LogWarning(ex, "RequisiÁ„o inv·lida ao criar conte˙do link.");
+                _logger.LogWarning(ex, "Requisi√ß√£o inv√°lida ao criar conte√∫do link.");
                 return BadRequest(new { message = ex.Message });
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Erro ao criar conte˙do link.");
-                return Problem(detail: "Erro interno ao processar a requisiÁ„o.", statusCode: 500);
+                _logger.LogError(ex, "Erro ao criar conte√∫do link.");
+                return Problem(detail: "Erro interno ao processar a requisiÔøΩÔøΩo.", statusCode: 500);
             }
         }
 
+        /// <summary>
+        /// Obt√©m a lista de conte√∫dos vinculados a uma mat√©ria e turma.
+        /// </summary>
         [Authorize(Roles = "aluno")]
         [HttpGet("getAllConteudos/{materiaId:int}/{turmaId:int}")]
         [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
@@ -115,7 +123,7 @@ namespace tivitApi.Controllers
         public async Task<IActionResult> GetConteudo(int materiaId, int turmaId, CancellationToken cancellationToken)
         {
             if (materiaId <= 0 || turmaId <= 0)
-                return BadRequest(new { message = "Par‚metros inv·lidos." });
+                return BadRequest(new { message = "Par√¢metros inv√°lidos." });
 
             try
             {
@@ -124,8 +132,8 @@ namespace tivitApi.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Erro ao obter conte˙dos.");
-                return Problem(detail: "Erro interno ao processar a requisiÁ„o.", statusCode: 500);
+                _logger.LogError(ex, "Erro ao obter conte√∫dos.");
+                return Problem(detail: "Erro interno ao processar a requisi√ß√£o.", statusCode: 500);
             }
         }
     }

@@ -24,6 +24,9 @@ namespace tivitApi.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// Obt√©m a quantidade de professores com status ativo no sistema.
+        /// </summary>
         [Authorize(Roles = "administrador")]
         [HttpGet("getQntdProfessoresAtivos")]
         [ProducesResponseType(typeof(int), 200)]
@@ -38,10 +41,13 @@ namespace tivitApi.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Erro ao obter quantidade de professores ativos");
-                return Problem(detail: "Erro interno ao processar a requisiÁ„o.", statusCode: 500);
+                return Problem(detail: "Erro interno ao processar a requisi√ß√£o.", statusCode: 500);
             }
         }
 
+        /// <summary>
+        /// Obt√©m os dados de um professor espec√≠fico buscando pelo ID.
+        /// </summary>
         [Authorize(Roles = "professor,administrador")]
         [HttpGet("getProfessorById/{professorId}")]
         [ProducesResponseType(typeof(ProfessorDTOResponse), 200)]
@@ -51,23 +57,26 @@ namespace tivitApi.Controllers
         public async Task<IActionResult> GetProfessorById(int professorId, CancellationToken cancellationToken)
         {
             if (professorId <= 0)
-                return BadRequest(new { message = "professorId inv·lido." });
+                return BadRequest(new { message = "professorId inv√°lido." });
 
             try
             {
                 var professor = await _professorService.GetProfessorById(professorId);
                 if (professor == null)
-                    return NotFound(new { message = "Professor n„o encontrado." });
+                    return NotFound(new { message = "Professor n√£o encontrado." });
 
                 return Ok(professor);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Erro ao obter professor {ProfessorId}", professorId);
-                return Problem(detail: "Erro interno ao processar a requisiÁ„o.", statusCode: 500);
+                return Problem(detail: "Erro interno ao processar a requisi√ß√£o.", statusCode: 500);
             }
         }
 
+        /// <summary>
+        /// Obt√©m a lista de todos os professores cadastrados.
+        /// </summary>
         [Authorize(Roles = "administrador")]
         [HttpGet("getAllProfessores")]
         [ProducesResponseType(typeof(List<ProfessorDTOResponse>), 200)]
@@ -82,10 +91,13 @@ namespace tivitApi.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Erro ao listar professores.");
-                return Problem(detail: "Erro interno ao processar a requisiÁ„o.", statusCode: 500);
+                return Problem(detail: "Erro interno ao processar a requisi√ß√£o.", statusCode: 500);
             }
         }
 
+        /// <summary>
+        /// Obt√©m todos os professores que est√£o com o status ativo.
+        /// </summary>
         [Authorize(Roles = "administrador")]
         [HttpGet("getAllProfessoresAtivos")]
         [ProducesResponseType(typeof(List<ProfessorDTOResponse>), 200)]
@@ -100,10 +112,13 @@ namespace tivitApi.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Erro ao listar professores ativos.");
-                return Problem(detail: "Erro interno ao processar a requisiÁ„o.", statusCode: 500);
+                return Problem(detail: "Erro interno ao processar a requisi√ß√£o.", statusCode: 500);
             }
         }
 
+        /// <summary>
+        /// Registra um novo professor no sistema.
+        /// </summary>
         [Authorize(Roles = "administrador")]
         [HttpPost("criarProfessor")]
         [ProducesResponseType(204)]
@@ -112,7 +127,7 @@ namespace tivitApi.Controllers
         public async Task<IActionResult> CriarProfessor([FromBody] ProfessorDTORequest professorDTO, CancellationToken cancellationToken)
         {
             if (professorDTO == null)
-                return BadRequest(new { message = "Payload inv·lido." });
+                return BadRequest(new { message = "Payload inv√°lido." });
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -124,13 +139,13 @@ namespace tivitApi.Controllers
             }
             catch (ArgumentException ex)
             {
-                _logger.LogWarning(ex, "Dados inv·lidos ao criar professor.");
+                _logger.LogWarning(ex, "Dados inv√°lidos ao criar professor.");
                 return BadRequest(new { message = ex.Message });
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Erro ao criar professor.");
-                return Problem(detail: "Erro interno ao processar a requisiÁ„o.", statusCode: 500);
+                return Problem(detail: "Erro interno ao processar a requisi√ß√£o.", statusCode: 500);
             }
         }
     }

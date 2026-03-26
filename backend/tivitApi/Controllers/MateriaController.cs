@@ -25,6 +25,9 @@ namespace tivitApi.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// Cria uma nova mat√©ria no sistema.
+        /// </summary>
         [Authorize(Roles = "administrador")]
         [HttpPost("criarMateria")]
         [ProducesResponseType(typeof(Materia), 201)]
@@ -33,7 +36,7 @@ namespace tivitApi.Controllers
         public async Task<IActionResult> CriarMateria([FromBody] MateriaDTO dto, CancellationToken cancellationToken)
         {
             if (dto == null)
-                return BadRequest(new { message = "Payload inv·lido." });
+                return BadRequest(new { message = "Payload inv√°lido." });
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -41,21 +44,24 @@ namespace tivitApi.Controllers
             try
             {
                 var materia = await _materiaService.CriarMateriaAsync(dto);
-                // PreferÌvel: criar um GET /api/materia/{id} e usar CreatedAtAction apontando para ele.
+                // Prefervel: criar um GET /api/materia/{id} e usar CreatedAtAction apontando para ele.
                 return Created($"/api/materia/{materia.Id}", materia);
             }
             catch (ArgumentException ex)
             {
-                _logger.LogWarning(ex, "Dados inv·lidos ao criar matÈria.");
+                _logger.LogWarning(ex, "Dados inv√°lidos ao criar mat√©ria.");
                 return BadRequest(new { message = ex.Message });
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Erro ao criar matÈria.");
-                return Problem(detail: "Erro interno ao processar a requisiÁ„o.", statusCode: 500);
+                _logger.LogError(ex, "Erro ao criar mat√©ria.");
+                return Problem(detail: "Erro interno ao processar a requisi√ß√£o.", statusCode: 500);
             }
         }
 
+        /// <summary>
+        /// Obt√©m as mat√©rias vinculadas a um curso espec√≠fico.
+        /// </summary>
         [Authorize(Roles = "professor,administrador,aluno")]
         [HttpGet("getMateriasByCursoId/{cursoId}")]
         [ProducesResponseType(typeof(List<Materia>), 200)]
@@ -65,23 +71,26 @@ namespace tivitApi.Controllers
         public async Task<IActionResult> GetMateriasByCursoId(int cursoId, CancellationToken cancellationToken)
         {
             if (cursoId <= 0)
-                return BadRequest(new { message = "ID do curso inv·lido." });
+                return BadRequest(new { message = "ID do curso inv√°lido." });
 
             try
             {
                 var materias = await _materiaService.GetMateriasByCursoIdAsync(cursoId);
                 if (materias == null || materias.Count == 0)
-                    return NotFound(new { message = "Nenhuma matÈria encontrada para este curso." });
+                    return NotFound(new { message = "Nenhuma matÔøΩria encontrada para este curso." });
 
                 return Ok(materias);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Erro ao obter matÈrias do curso {CursoId}", cursoId);
-                return Problem(detail: "Erro interno ao processar a requisiÁ„o.", statusCode: 500);
+                _logger.LogError(ex, "Erro ao obter mat√©rias do curso {CursoId}", cursoId);
+                return Problem(detail: "Erro interno ao processar a requisi√ß√£o.", statusCode: 500);
             }
         }
 
+        /// <summary>
+        /// Obt√©m o ID do curso em que um aluno est√° matriculado.
+        /// </summary>
         [HttpGet("getCursoId/{alunoId}")]
         [ProducesResponseType(typeof(int), 200)]
         [ProducesResponseType(400)]
@@ -89,7 +98,7 @@ namespace tivitApi.Controllers
         public async Task<IActionResult> GetCursoId(int alunoId, CancellationToken cancellationToken)
         {
             if (alunoId <= 0)
-                return BadRequest(new { message = "ID do aluno inv·lido." });
+                return BadRequest(new { message = "ID do aluno inv√°lido." });
 
             try
             {
@@ -99,10 +108,13 @@ namespace tivitApi.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Erro ao obter cursoId para aluno {AlunoId}", alunoId);
-                return Problem(detail: "Erro interno ao processar a requisiÁ„o.", statusCode: 500);
+                return Problem(detail: "Erro interno ao processar a requisi√ß√£o.", statusCode: 500);
             }
         }
 
+        /// <summary>
+        /// Obt√©m o nome de uma mat√©ria pelo seu ID.
+        /// </summary>
         [HttpGet("getNomeMateria/{materiaId}")]
         [ProducesResponseType(typeof(string), 200)]
         [ProducesResponseType(400)]
@@ -111,20 +123,20 @@ namespace tivitApi.Controllers
         public async Task<IActionResult> GetMateriaNome(int materiaId, CancellationToken cancellationToken)
         {
             if (materiaId <= 0)
-                return BadRequest(new { message = "ID da matÈria inv·lido." });
+                return BadRequest(new { message = "ID da mat√©ria inv√°lido." });
 
             try
             {
                 var materiaNome = await _materiaService.GetMateriaNomeByMateriaIdAsync(materiaId);
                 if (string.IsNullOrEmpty(materiaNome))
-                    return NotFound(new { message = "MatÈria n„o encontrada." });
+                    return NotFound(new { message = "Mat√©ria n√£o encontrada." });
 
                 return Ok(new { materiaNome });
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Erro ao obter nome da matÈria {MateriaId}", materiaId);
-                return Problem(detail: "Erro interno ao processar a requisiÁ„o.", statusCode: 500);
+                _logger.LogError(ex, "Erro ao obter nome da mat√©ria {MateriaId}", materiaId);
+                return Problem(detail: "Erro interno ao processar a requisi√ß√£o.", statusCode: 500);
             }
         }
     }

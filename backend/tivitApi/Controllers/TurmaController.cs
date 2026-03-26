@@ -25,6 +25,9 @@ namespace tivitApi.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// Cria uma nova turma no sistema.
+        /// </summary>
         [Authorize(Roles = "administrador")]
         [HttpPost("criarTurma")]
         [ProducesResponseType(204)]
@@ -33,7 +36,7 @@ namespace tivitApi.Controllers
         public async Task<IActionResult> CriarTurma([FromBody] TurmaDTORequest turmaDTO, CancellationToken cancellationToken)
         {
             if (turmaDTO == null)
-                return BadRequest(new { message = "Payload inv·lido." });
+                return BadRequest(new { message = "Payload inv√°lido." });
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -45,17 +48,20 @@ namespace tivitApi.Controllers
             }
             catch (ArgumentException ex)
             {
-                _logger.LogWarning(ex, "Dados inv·lidos ao criar turma.");
+                _logger.LogWarning(ex, "Dados inv√°lidos ao criar turma.");
                 return BadRequest(new { message = ex.Message });
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Erro ao criar turma.");
-                return Problem(detail: "Erro interno ao processar a requisiÁ„o.", statusCode: 500);
+                return Problem(detail: "Erro interno ao processar a requisi√ß√£o.", statusCode: 500);
             }
         }
 
         // professor OR administrador
+        /// <summary>
+        /// Obt√©m as turmas associadas a um curso espec√≠fico.
+        /// </summary>
         [Authorize(Roles = "professor,administrador")]
         [HttpGet("getTurmasByCursoId/{cursoId}")]
         [ProducesResponseType(typeof(List<TurmaDTOResponse>), 200)]
@@ -64,7 +70,7 @@ namespace tivitApi.Controllers
         public async Task<IActionResult> GetTurmasByCursoId(int cursoId, CancellationToken cancellationToken)
         {
             if (cursoId <= 0)
-                return BadRequest(new { message = "cursoId inv·lido." });
+                return BadRequest(new { message = "cursoId inv√°lido." });
 
             try
             {
@@ -74,10 +80,13 @@ namespace tivitApi.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Erro ao obter turmas do curso {CursoId}", cursoId);
-                return Problem(detail: "Erro interno ao processar a requisiÁ„o.", statusCode: 500);
+                return Problem(detail: "Erro interno ao processar a requisi√ß√£o.", statusCode: 500);
             }
         }
 
+        /// <summary>
+        /// Obt√©m a turma na qual um aluno espec√≠fico est√° matriculado.
+        /// </summary>
         [HttpGet("aluno/{alunoId}/turma")]
         [ProducesResponseType(typeof(TurmaDTOResponse), 200)]
         [ProducesResponseType(400)]
@@ -86,23 +95,26 @@ namespace tivitApi.Controllers
         public async Task<IActionResult> GetTurmaByAlunoId(int alunoId, CancellationToken cancellationToken)
         {
             if (alunoId <= 0)
-                return BadRequest(new { message = "alunoId inv·lido." });
+                return BadRequest(new { message = "alunoId inv√°lido." });
 
             try
             {
                 var turma = await _turmaService.GetTurmaByAlunoId(alunoId);
                 if (turma == null)
-                    return NotFound(new { message = "Turma n„o encontrada para o aluno." });
+                    return NotFound(new { message = "Turma n√£o encontrada para o aluno." });
 
                 return Ok(turma);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Erro ao obter turma do aluno {AlunoId}", alunoId);
-                return Problem(detail: "Erro interno ao processar a requisiÁ„o.", statusCode: 500);
+                return Problem(detail: "Erro interno ao processar a requisi√ß√£o.", statusCode: 500);
             }
         }
 
+        /// <summary>
+        /// Obt√©m a quantidade total de turmas ativas.
+        /// </summary>
         [Authorize(Roles = "professor,administrador")]
         [HttpGet("getQntdTurmasAtivas")]
         [ProducesResponseType(typeof(int), 200)]
@@ -117,10 +129,13 @@ namespace tivitApi.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Erro ao obter quantidade de turmas ativas.");
-                return Problem(detail: "Erro interno ao processar a requisiÁ„o.", statusCode: 500);
+                return Problem(detail: "Erro interno ao processar a requisi√ß√£o.", statusCode: 500);
             }
         }
 
+        /// <summary>
+        /// Obt√©m a lista de todas as turmas cadastradas.
+        /// </summary>
         [Authorize(Roles = "administrador")]
         [HttpGet("getAllTurmas")]
         [ProducesResponseType(typeof(List<TurmaDTOResponse>), 200)]
@@ -135,10 +150,13 @@ namespace tivitApi.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Erro ao listar turmas.");
-                return Problem(detail: "Erro interno ao processar a requisiÁ„o.", statusCode: 500);
+                return Problem(detail: "Erro interno ao processar a requisi√ß√£o.", statusCode: 500);
             }
         }
 
+        /// <summary>
+        /// Edita as informa√ß√µes de uma turma existente.
+        /// </summary>
         [Authorize(Roles = "administrador")]
         [HttpPut("atualizarTurma")]
         [ProducesResponseType(204)]
@@ -148,7 +166,7 @@ namespace tivitApi.Controllers
         public async Task<IActionResult> AtualizarTurma([FromBody] TurmaDTORequest dto, CancellationToken cancellationToken)
         {
             if (dto == null)
-                return BadRequest(new { message = "Payload inv·lido." });
+                return BadRequest(new { message = "Payload inv√°lido." });
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -160,18 +178,18 @@ namespace tivitApi.Controllers
             }
             catch (KeyNotFoundException ex)
             {
-                _logger.LogWarning(ex, "Turma n„o encontrada ao atualizar. Id: {Id}", dto?.Id);
-                return NotFound(new { message = "Turma n„o encontrada." });
+                _logger.LogWarning(ex, "Turma n√£o encontrada ao atualizar. Id: {Id}", dto?.Id);
+                return NotFound(new { message = "Turma n√£o encontrada." });
             }
             catch (ArgumentException ex)
             {
-                _logger.LogWarning(ex, "Dados inv·lidos ao atualizar turma.");
+                _logger.LogWarning(ex, "Dados inv√°lidos ao atualizar turma.");
                 return BadRequest(new { message = ex.Message });
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Erro ao atualizar turma Id:{Id}", dto?.Id);
-                return Problem(detail: "Erro interno ao processar a requisiÁ„o.", statusCode: 500);
+                return Problem(detail: "Erro interno ao processar a requisi√ß√£o.", statusCode: 500);
             }
         }
     }

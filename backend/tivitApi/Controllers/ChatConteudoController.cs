@@ -48,7 +48,6 @@ namespace tivitApi.Controllers
                     return BadRequest(new { message = "Pergunta é obrigatória" });
                 }
 
-                // Obter aluno ID do token
                 var alunoIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
                 if (alunoIdClaim == null || !int.TryParse(alunoIdClaim.Value, out var alunoId))
                 {
@@ -81,7 +80,7 @@ namespace tivitApi.Controllers
         }
 
         /// <summary>
-        /// Obtém o contexto de um conteúdo (para debug)
+        /// Obtém o contexto de um conteúdo 
         /// </summary>
         [HttpGet("{conteudoId}/contexto")]
         [ProducesResponseType(StatusCodes.Status200OK)]

@@ -23,7 +23,7 @@ public class ExceptionHandler
         catch (Exception ex)
         {
             context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-            await context.Response.WriteAsJsonAsync(new { erro = "Erro interno no servidor." });
+            await context.Response.WriteAsJsonAsync(new { erro = ex.ToString() });
         }
     }
 }

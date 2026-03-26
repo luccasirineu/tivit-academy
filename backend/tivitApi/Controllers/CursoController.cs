@@ -25,6 +25,9 @@ namespace tivitApi.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// Obtém a lista de todos os cursos.
+        /// </summary>
         [HttpGet]
         [ProducesResponseType(typeof(List<CursoDTO>), 200)]
         [ProducesResponseType(500)]
@@ -42,6 +45,9 @@ namespace tivitApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Obtém a lista de todos os cursos ativos.
+        /// </summary>
         [AllowAnonymous]
         [HttpGet("getAllCursosAtivos")]
         [ProducesResponseType(typeof(List<CursoDTO>), 200)]
@@ -60,6 +66,9 @@ namespace tivitApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Obtém os detalhes de um curso específico pelo ID.
+        /// </summary>
         [Authorize(Roles = "administrador")]
         [HttpGet("{cursoId}")]
         [ProducesResponseType(typeof(CursoDTO), 200)]
@@ -71,7 +80,7 @@ namespace tivitApi.Controllers
             {
                 var cursoDTO = await _cursoService.GetCursoById(cursoId);
                 if (cursoDTO == null)
-                    return NotFound(new { message = "Curso n�o encontrado." });
+                    return NotFound(new { message = "Curso não encontrado." });
 
                 return Ok(cursoDTO);
             }
@@ -82,6 +91,9 @@ namespace tivitApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Obtém a quantidade de cursos atribuídos a um professor específico.
+        /// </summary>
         [Authorize(Roles = "administrador, professor")]
         [HttpGet("getQntdCursosProf/{professorId}")]
         [ProducesResponseType(typeof(int), 200)]
@@ -100,6 +112,9 @@ namespace tivitApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Obtém a lista de cursos atribuídos a um professor específico.
+        /// </summary>
         [Authorize(Roles = "administrador, professor")]
         [HttpGet("getAllCursosProf/{professorId}")]
         [ProducesResponseType(typeof(List<CursoDTO>), 200)]
@@ -118,6 +133,9 @@ namespace tivitApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Obtém a quantidade de alunos matriculados em um curso específico.
+        /// </summary>
         [Authorize(Roles = "administrador")]
         [HttpGet("getQntdAlunosByCursoId/{cursoId}")]
         [ProducesResponseType(typeof(int), 200)]
@@ -136,6 +154,9 @@ namespace tivitApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Registra um novo curso no sistema.
+        /// </summary>
         [Authorize(Roles = "administrador")]
         [HttpPost("criarCurso")]
         [ProducesResponseType(204)]
@@ -144,7 +165,7 @@ namespace tivitApi.Controllers
         public async Task<IActionResult> CriarCurso([FromBody] CursoDTORequest dto, CancellationToken cancellationToken)
         {
             if (dto == null)
-                return BadRequest(new { message = "Payload inv�lido." });
+                return BadRequest(new { message = "Payload inválido." });
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -156,7 +177,7 @@ namespace tivitApi.Controllers
             }
             catch (ArgumentException ex)
             {
-                _logger.LogWarning(ex, "Dados inv�lidos ao criar curso.");
+                _logger.LogWarning(ex, "Dados inválidos ao criar curso.");
                 return BadRequest(new { message = ex.Message });
             }
             catch (Exception ex)
@@ -166,6 +187,9 @@ namespace tivitApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Atualiza as informações de um curso existente.
+        /// </summary>
         [Authorize(Roles = "administrador")]
         [HttpPut("atualizarCurso")]
         [ProducesResponseType(204)]
@@ -175,7 +199,7 @@ namespace tivitApi.Controllers
         public async Task<IActionResult> AtualizarCurso([FromBody] CursoDTORequest dto, CancellationToken cancellationToken)
         {
             if (dto == null)
-                return BadRequest(new { message = "Payload inv�lido." });
+                return BadRequest(new { message = "Payload inválido." });
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -187,12 +211,12 @@ namespace tivitApi.Controllers
             }
             catch (KeyNotFoundException ex)
             {
-                _logger.LogWarning(ex, "Curso n�o encontrado ao atualizar.");
-                return NotFound(new { message = "Curso n�o encontrado." });
+                _logger.LogWarning(ex, "Curso não encontrado ao atualizar.");
+                return NotFound(new { message = "Curso não encontrado." });
             }
             catch (ArgumentException ex)
             {
-                _logger.LogWarning(ex, "Dados inv�lidos ao atualizar curso.");
+                _logger.LogWarning(ex, "Dados inválidos ao atualizar curso.");
                 return BadRequest(new { message = ex.Message });
             }
             catch (Exception ex)
@@ -202,6 +226,9 @@ namespace tivitApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Desativa um curso existente no sistema.
+        /// </summary>
         [Authorize(Roles = "administrador")]
         [HttpPut("desativarCurso/{cursoId}")]
         [ProducesResponseType(204)]
@@ -216,8 +243,8 @@ namespace tivitApi.Controllers
             }
             catch (KeyNotFoundException ex)
             {
-                _logger.LogWarning(ex, "Curso n�o encontrado ao desativar {CursoId}", cursoId);
-                return NotFound(new { message = "Curso n�o encontrado." });
+                _logger.LogWarning(ex, "Curso não encontrado ao desativar {CursoId}", cursoId);
+                return NotFound(new { message = "Curso não encontrado." });
             }
             catch (Exception ex)
             {
@@ -226,6 +253,9 @@ namespace tivitApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Ativa um curso previamente desativado.
+        /// </summary>
         [Authorize(Roles = "administrador")]
         [HttpPut("ativarCurso/{cursoId}")]
         [ProducesResponseType(204)]
@@ -240,8 +270,8 @@ namespace tivitApi.Controllers
             }
             catch (KeyNotFoundException ex)
             {
-                _logger.LogWarning(ex, "Curso n�o encontrado ao ativar {CursoId}", cursoId);
-                return NotFound(new { message = "Curso n�o encontrado." });
+                _logger.LogWarning(ex, "Curso não encontrado ao ativar {CursoId}", cursoId);
+                return NotFound(new { message = "Curso não encontrado." });
             }
             catch (Exception ex)
             {

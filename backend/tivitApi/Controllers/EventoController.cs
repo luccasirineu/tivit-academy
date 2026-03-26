@@ -23,6 +23,9 @@ namespace tivitApi.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// Adiciona um novo evento na agenda.
+        /// </summary>
         [Authorize(Roles = "professor")]
         [HttpPost("adicionarEvento")]
         [ProducesResponseType(typeof(EventoDTO), 201)]
@@ -31,7 +34,7 @@ namespace tivitApi.Controllers
         public async Task<IActionResult> AdicionarEvento([FromBody] EventoDTO eventoDTO, CancellationToken cancellationToken)
         {
             if (eventoDTO == null)
-                return BadRequest(new { message = "Payload inv·lido." });
+                return BadRequest(new { message = "Payload inv√°lido." });
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -39,7 +42,6 @@ namespace tivitApi.Controllers
             try
             {
                 var resultado = await _eventoService.criarEvento(eventoDTO);
-                // serviÁo atual retorna object: trate tipos esperados (preferir alterar o service para retornar EventoDTO/Result)
                 if (resultado is string erro)
                     return BadRequest(new { sucesso = false, mensagem = erro });
 
@@ -50,16 +52,19 @@ namespace tivitApi.Controllers
             }
             catch (ArgumentException ex)
             {
-                _logger.LogWarning(ex, "Dados inv·lidos ao criar evento.");
+                _logger.LogWarning(ex, "Dados inv√°lidos ao criar evento.");
                 return BadRequest(new { message = ex.Message });
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Erro ao criar evento.");
-                return Problem(detail: "Erro interno ao processar a requisiÁ„o.", statusCode: 500);
+                return Problem(detail: "Erro interno ao processar a requisi√ß√£o.", statusCode: 500);
             }
         }
 
+        /// <summary>
+        /// Obt√©m o pr√≥ximo evento agendado.
+        /// </summary>
         [Authorize(Roles = "professor,aluno")]
         [HttpGet("proximoEvento")]
         [ProducesResponseType(typeof(object), 200)]
@@ -82,11 +87,14 @@ namespace tivitApi.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Erro ao obter prÛximo evento.");
-                return Problem(detail: "Erro interno ao processar a requisiÁ„o.", statusCode: 500);
+                _logger.LogError(ex, "Erro ao obter prximo evento.");
+                return Problem(detail: "Erro interno ao processar a requisio.", statusCode: 500);
             }
         }
 
+        /// <summary>
+        /// Obt√©m a lista de todos os eventos.
+        /// </summary>
         [Authorize(Roles = "professor,aluno")]
         [HttpGet("getAllEvents")]
         [ProducesResponseType(typeof(System.Collections.Generic.List<EventoDTO>), 200)]
@@ -101,10 +109,13 @@ namespace tivitApi.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Erro ao obter eventos.");
-                return Problem(detail: "Erro interno ao processar a requisiÁ„o.", statusCode: 500);
+                return Problem(detail: "Erro interno ao processar a requisi√ß√£o.", statusCode: 500);
             }
         }
 
+        /// <summary>
+        /// Obt√©m a quantidade de eventos programados para a pr√≥xima semana.
+        /// </summary>
         [Authorize(Roles = "professor,aluno")]
         [HttpGet("getNextWeekEvents")]
         [ProducesResponseType(typeof(int), 200)]
@@ -118,8 +129,8 @@ namespace tivitApi.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Erro ao obter eventos da prÛxima semana.");
-                return Problem(detail: "Erro interno ao processar a requisiÁ„o.", statusCode: 500);
+                _logger.LogError(ex, "Erro ao obter eventos da pr√≥xima semana.");
+                return Problem(detail: "Erro interno ao processar a requisi√ß√£o.", statusCode: 500);
             }
         }
     }

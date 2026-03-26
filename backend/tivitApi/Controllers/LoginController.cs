@@ -22,6 +22,9 @@ namespace tivitApi.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// Autentica o usu√°rio (aluno, professor ou administrador) e retorna o token JWT.
+        /// </summary>
         [HttpPost]
         [ProducesResponseType(typeof(LoginDTOResponse), 200)]
         [ProducesResponseType(400)]
@@ -30,18 +33,18 @@ namespace tivitApi.Controllers
         public async Task<IActionResult> Login([FromBody] LoginDTO loginDTO, CancellationToken cancellationToken)
         {
             if (loginDTO == null)
-                return BadRequest(new { sucesso = false, mensagem = "Payload inv·lido." });
+                return BadRequest(new { sucesso = false, mensagem = "Payload inv√°lido." });
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             if (string.IsNullOrWhiteSpace(loginDTO.Cpf) || string.IsNullOrWhiteSpace(loginDTO.Senha))
-                return BadRequest(new { sucesso = false, mensagem = "CPF e senha s„o obrigatÛrios." });
+                return BadRequest(new { sucesso = false, mensagem = "CPF e senha s√£o obrigat√≥rios." });
 
-            // validaÁ„o b·sica do tipo (ajuste conforme valores aceitos no sistema)
+            // valida√ß√£o b√°sica do tipo (ajuste conforme valores aceitos no sistema)
             var tipo = loginDTO.Tipo?.Trim()?.ToLowerInvariant();
             if (string.IsNullOrEmpty(tipo) || (tipo != "aluno" && tipo != "professor" && tipo != "administrador"))
-                return BadRequest(new { sucesso = false, mensagem = "Tipo inv·lido." });
+                return BadRequest(new { sucesso = false, mensagem = "Tipo inv√°lido." });
 
             try
             {
@@ -50,20 +53,20 @@ namespace tivitApi.Controllers
             }
             catch (RequisicaoInvalidaException ex)
             {
-                _logger.LogWarning(ex, "Login inv·lido (payload) para CPF {Cpf}", MaskCpf(loginDTO.Cpf));
+                _logger.LogWarning(ex, "Login inv√°lido (payload) para CPF {Cpf}", MaskCpf(loginDTO.Cpf));
                 return BadRequest(new { sucesso = false, mensagem = ex.Message });
             }
             catch (CredenciaisInvalidasException ex)
             {
                 // contabilizar tentativa falha / lockout no service
-                _logger.LogWarning("Credenciais inv·lidas para CPF {Cpf}", MaskCpf(loginDTO.Cpf));
-                return Unauthorized(new { sucesso = false, mensagem = "Credenciais inv·lidas." });
+                _logger.LogWarning("Credenciais inv√°lidas para CPF {Cpf}", MaskCpf(loginDTO.Cpf));
+                return Unauthorized(new { sucesso = false, mensagem = "Credenciais inv√°lidas." });
             }
             catch (Exception ex)
             {
-                // logue o erro completo apenas nos logs; responda mensagem genÈrica ao cliente
+                // logue o erro completo apenas nos logs; responda mensagem gen√©rica ao cliente
                 _logger.LogError(ex, "Erro inesperado ao autenticar CPF {Cpf}", MaskCpf(loginDTO?.Cpf));
-                return Problem(detail: "Erro interno ao processar a requisiÁ„o.", statusCode: 500);
+                return Problem(detail: "Erro interno ao processar a requisi√ß√£o.", statusCode: 500);
             }
         }
 
@@ -76,7 +79,7 @@ namespace tivitApi.Controllers
             if (clean.Length < 4)
                 return "***";
 
-            var suffix = clean[^2..]; // ˙ltimos 2 dÌgitos
+            var suffix = clean[^2..]; // √∫ltimos 2 d√≠gitos
             return $"***.***.***-{suffix}";
         }
     }

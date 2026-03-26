@@ -23,6 +23,9 @@ namespace tivitApi.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// Realiza a chamada para uma lista de alunos.
+        /// </summary>
         [Authorize(Roles = "professor")]
         [HttpPost("realizarChamada")]
         [ProducesResponseType(204)]
@@ -32,10 +35,10 @@ namespace tivitApi.Controllers
         public async Task<IActionResult> RealizarChamada([FromBody] List<ChamadaDTO> dtos, CancellationToken cancellationToken)
         {
             if (dtos == null || !dtos.Any())
-                return BadRequest(new { message = "Lista de chamadas não pode ser vazia." });
+                return BadRequest(new { message = "Lista de chamadas nÃ£o pode ser vazia." });
 
             if (dtos.Any(d => d.MatriculaId <= 0 || d.MateriaId <= 0 || d.TurmaId <= 0))
-                return BadRequest(new { message = "Cada chamada deve conter MatriculaId, MateriaId e TurmaId válidos." });
+                return BadRequest(new { message = "Cada chamada deve conter MatriculaId, MateriaId e TurmaId vÃ¡lidos." });
 
             try
             {
@@ -54,10 +57,13 @@ namespace tivitApi.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Erro inesperado ao realizar chamada.");
-                return Problem(detail: "Erro interno ao processar a requisição.", statusCode: 500);
+                return Problem(detail: "Erro interno ao processar a requisiÃ§Ã£o.", statusCode: 500);
             }
         }
 
+        /// <summary>
+        /// Atualiza os registros de chamada de uma lista de alunos.
+        /// </summary>
         [Authorize(Roles = "professor")]
         [HttpPut("atualizarChamada")]
         [ProducesResponseType(204)]
@@ -66,10 +72,10 @@ namespace tivitApi.Controllers
         public async Task<IActionResult> AtualizarChamada([FromBody] List<ChamadaDTO> dtos, CancellationToken cancellationToken)
         {
             if (dtos == null || !dtos.Any())
-                return BadRequest(new { message = "Lista de chamadas não pode ser vazia." });
+                return BadRequest(new { message = "Lista de chamadas nÃ£o pode ser vazia." });
 
             if (dtos.Any(d => d.MatriculaId <= 0 || d.MateriaId <= 0 || d.TurmaId <= 0))
-                return BadRequest(new { message = "Cada chamada deve conter MatriculaId, MateriaId e TurmaId válidos." });
+                return BadRequest(new { message = "Cada chamada deve conter MatriculaId, MateriaId e TurmaId vÃ¡lidos." });
 
             try
             {
@@ -78,13 +84,13 @@ namespace tivitApi.Controllers
             }
             catch (ArgumentException ex)
             {
-                _logger.LogWarning(ex, "Requisição inválida ao atualizar chamada.");
+                _logger.LogWarning(ex, "Requisiï¿½ï¿½o invï¿½lida ao atualizar chamada.");
                 return BadRequest(new { message = ex.Message });
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Erro inesperado ao atualizar chamada.");
-                return Problem(detail: "Erro interno ao processar a requisição.", statusCode: 500);
+                return Problem(detail: "Erro interno ao processar a requisiÃ§Ã£o.", statusCode: 500);
             }
         }
     }

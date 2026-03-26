@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -25,6 +25,9 @@ namespace tivitApi.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// Cria uma nova matrícula.
+        /// </summary>
         [AllowAnonymous]
         [HttpPost]
         [ProducesResponseType(typeof(object), 201)]
@@ -32,7 +35,7 @@ namespace tivitApi.Controllers
         public async Task<IActionResult> CriarMatricula([FromBody] MatriculaDTO dto, CancellationToken cancellationToken)
         {
             if (dto == null)
-                return BadRequest(new { message = "Payload inv�lido." });
+                return BadRequest(new { message = "Payload inv�lido." });
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -41,6 +44,9 @@ namespace tivitApi.Controllers
             return CreatedAtAction(nameof(GetMatriculaById), new { id = matriculaCriada.Id }, new { matriculaId = matriculaCriada.Id });
         }
 
+        /// <summary>
+        /// Retorna todas as matrículas pendentes.
+        /// </summary>
         [Authorize(Roles = "administrador,professor")]
         [HttpGet("getAllMatriculasPendentes")]
         [ProducesResponseType(typeof(MatriculaDTO), 200)]
@@ -51,14 +57,18 @@ namespace tivitApi.Controllers
             return Ok(m);
         }
 
+        /// <summary>
+        /// Envia o comprovante de pagamento para uma matrícula específica.
+        /// </summary>
         [AllowAnonymous]
         [HttpPost("{matriculaId}/pagamento")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> EnviarComprovantePagamento(int matriculaId, IFormFile arquivo)
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> EnviarComprovantePagamento([FromRoute] int matriculaId, IFormFile arquivo)
         {
             if (matriculaId <= 0)
-                return BadRequest(new { message = "MatriculaId inv�lido." });
+                return BadRequest(new { message = "MatriculaId inv�lido." });
 
             if (arquivo == null || arquivo.Length == 0)
                 return BadRequest(new { message = "Nenhum arquivo enviado." });
@@ -69,22 +79,29 @@ namespace tivitApi.Controllers
             return Ok(resultado);
         }
 
+        /// <summary>
+        /// Envia os documentos necessários para a matrícula (Histórico e CPF).
+        /// </summary>
         [AllowAnonymous]
         [HttpPost("{matriculaId:int}/documentos")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> EnviarDocumentos(int matriculaId, [FromForm] IFormFile documentoHistorico, [FromForm] IFormFile documentoCpf, CancellationToken cancellationToken)
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> EnviarDocumentos([FromRoute] int matriculaId, IFormFile documentoHistorico, IFormFile documentoCpf, CancellationToken cancellationToken)
         {
             if (matriculaId <= 0)
-                return BadRequest(new { message = "MatriculaId inv�lido." });
+                return BadRequest(new { message = "MatriculaId inv�lido." });
 
             if (documentoHistorico == null || documentoCpf == null)
-                return BadRequest(new { message = "Ambos os documentos s�o obrigat�rios." });
+                return BadRequest(new { message = "Ambos os documentos s�o obrigat�rios." });
 
             var resultado = await _matriculaService.EnviarDocumentosAsync(matriculaId, documentoHistorico, documentoCpf);
             return Ok(resultado);
         }
 
+        /// <summary>
+        /// Obtém a lista de todas as matrículas pendentes.
+        /// </summary>
         [Authorize(Roles = "administrador")]
         [HttpGet("pendentes")]
         [ProducesResponseType(typeof(List<MatriculaDTO>), 200)]
@@ -94,6 +111,9 @@ namespace tivitApi.Controllers
             return Ok(matriculaDTOs);
         }
 
+        /// <summary>
+        /// Aprova uma matrícula específica.
+        /// </summary>
         [Authorize(Roles = "administrador")]
         [HttpPost("aprovar/{matriculaId:int}")]
         public async Task<IActionResult> AprovarMatricula(int matriculaId)
@@ -102,6 +122,9 @@ namespace tivitApi.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Recusa uma matrícula específica.
+        /// </summary>
         [Authorize(Roles = "administrador")]
         [HttpPost("recusar/{matriculaId:int}")]
         public async Task<IActionResult> RecusarMatricula(int matriculaId)
@@ -110,6 +133,9 @@ namespace tivitApi.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Obtém a quantidade de alunos ativos vinculados a um professor.
+        /// </summary>
         [Authorize(Roles = "professor,administrador")]
         [HttpGet("getAlunosAtivosProfessor/{professorId:int}")]
         public async Task<IActionResult> GetAlunosAtivosProfessor(int professorId)

@@ -24,6 +24,9 @@ namespace tivitApi.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// Cria uma nova notifica√ß√£o e envia para as turmas selecionadas.
+        /// </summary>
         [Authorize(Roles = "administrador")]
         [HttpPost("criarNotificacao")]
         [ProducesResponseType(typeof(object), 201)]
@@ -32,7 +35,7 @@ namespace tivitApi.Controllers
         public async Task<IActionResult> CriarNotificacao([FromBody] NotificacaoDTORequest notificacaoDTO, CancellationToken cancellationToken)
         {
             if (notificacaoDTO == null)
-                return BadRequest(new { message = "Payload inv·lido." });
+                return BadRequest(new { message = "Payload inv√°lido." });
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -47,16 +50,19 @@ namespace tivitApi.Controllers
             }
             catch (ArgumentException ex)
             {
-                _logger.LogWarning(ex, "Dados inv·lidos ao criar notificaÁ„o.");
+                _logger.LogWarning(ex, "Dados inv√°lidos ao criar notifica√ß√£o.");
                 return BadRequest(new { message = ex.Message });
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Erro ao criar notificaÁ„o.");
-                return Problem(detail: "Erro interno ao processar a requisiÁ„o.", statusCode: 500);
+                _logger.LogError(ex, "Erro ao criar notifica√ß√£o.");
+                return Problem(detail: "Erro interno ao processar a requisiÔøΩÔøΩo.", statusCode: 500);
             }
         }
 
+        /// <summary>
+        /// Obt√©m todas as notifica√ß√µes vinculadas a uma turma espec√≠fica.
+        /// </summary>
         [Authorize(Roles = "aluno")]
         [HttpGet("getNotificacoesByTurmaId/{turmaId}")]
         [ProducesResponseType(typeof(List<NotificacaoDTOResponse>), 200)]
@@ -65,18 +71,18 @@ namespace tivitApi.Controllers
         public async Task<IActionResult> GetNotificacaoByTurmaId(int turmaId, CancellationToken cancellationToken)
         {
             if (turmaId <= 0)
-                return BadRequest(new { message = "turmaId inv·lido." });
+                return BadRequest(new { message = "turmaId inv√°lido." });
 
             try
             {
-                // Recomenda-se validar no service se o aluno pertence ‡ turma (claims)
+                // Recomenda-se validar no service se o aluno pertence  turma (claims)
                 var notificacoes = await _notificacaoService.GetNotificacoesByTurmaId(turmaId);
                 return Ok(notificacoes ?? new List<NotificacaoDTOResponse>());
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Erro ao obter notificaÁıes da turma {TurmaId}", turmaId);
-                return Problem(detail: "Erro interno ao processar a requisiÁ„o.", statusCode: 500);
+                _logger.LogError(ex, "Erro ao obter notifica√ß√µes da turma {TurmaId}", turmaId);
+                return Problem(detail: "Erro interno ao processar a requisi√ß√£o.", statusCode: 500);
             }
         }
     }
