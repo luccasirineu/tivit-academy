@@ -5,3 +5,5 @@ appsettings.Production.json
 .aws/
 *.env
 .env.*
+[Bb]in/
+[Oo]bj/
