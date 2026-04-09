@@ -51,7 +51,7 @@ namespace tivitApi.Services
         {
             var curso = await _context.Cursos.FindAsync(cursoId);
             if (curso == null)
-                throw new Exception("Curso não encontrado.");
+                throw new NotFoundException("Curso", cursoId);
 
             CursoDTO cursoDTO =  ConvertCursoToCursoDTO(curso);
             return cursoDTO;
@@ -67,7 +67,7 @@ namespace tivitApi.Services
             }
             catch (Exception ex)
             {
-                throw new Exception("Erro interno ao buscar quantidade de cursos relacionados ao professor.");
+                throw new BusinessException("Erro interno ao buscar quantidade de cursos relacionados ao professor.");
             }
         }
 
@@ -105,7 +105,7 @@ namespace tivitApi.Services
                 .FirstOrDefaultAsync(c => c.Id == dto.Id);
 
             if (curso == null)
-                throw new Exception("Curso não encontrado.");
+                throw new NotFoundException("Curso", dto.Id);
 
             curso.Nome = dto.Nome;
             curso.Descricao = dto.Descricao;
@@ -124,7 +124,7 @@ namespace tivitApi.Services
                 .FirstOrDefaultAsync(c => c.Id == cursoId);
 
             if (curso == null)
-                throw new Exception("Curso não encontrado.");
+                throw new NotFoundException("Curso", cursoId);
 
             curso.Status = "DESATIVADO";
             
@@ -141,7 +141,7 @@ namespace tivitApi.Services
                 .FirstOrDefaultAsync(c => c.Id == cursoId);
 
             if (curso == null)
-                throw new Exception("Curso não encontrado.");
+                throw new NotFoundException("Curso", cursoId);
 
             curso.Status = "ATIVO";
 

@@ -4,12 +4,11 @@
     "\\tivitApi",
     "\\tivitApi\\Controllers",
     "\\tivitApi\\Services",
-    "\\tivitApi\\Utils\\Mappers",
     "\\tivitApi\\wwwroot",
     "\\tivitApi\\wwwroot\\uploads",
     "\\tivitApi\\wwwroot\\uploads\\turma_1",
     "\\tivitApi\\wwwroot\\uploads\\turma_1\\materia_8"
   ],
-  "SelectedNode": "\\tivitApi\\wwwroot\\uploads\\turma_1\\materia_8\\5709cd27-5faa-4eab-b7e8-b3c4a39198a9.pdf",
+  "SelectedNode": "\\tivitApi\\Services\\GeminiService.cs",
   "PreviewInSolutionExplorer": false
 }

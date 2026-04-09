@@ -93,11 +93,8 @@ namespace tivitApi.Services
 
                 if (!alunoExiste)
                 {
-                    _logger.LogWarning(
-                        "Aluno n„o encontrado. AlunoId: {AlunoId}",
-                        dto.AlunoId
-                    );
-                    throw new Exception("Aluno n„o encontrado.");
+                    _logger.LogWarning("Aluno n√£o encontrado. AlunoId: {AlunoId}", dto.AlunoId);
+                    throw new NotFoundException("Aluno", dto.AlunoId);
                 }
 
                 var materiaExiste = await _context.Materias
@@ -105,23 +102,20 @@ namespace tivitApi.Services
 
                 if (!materiaExiste)
                 {
-                    _logger.LogWarning(
-                        "MatÈria n„o encontrada. MateriaId: {MateriaId}",
-                        dto.MateriaId
-                    );
-                    throw new Exception("MatÈria n„o encontrada.");
+                    _logger.LogWarning("Mat√©ria n√£o encontrada. MateriaId: {MateriaId}", dto.MateriaId);
+                    throw new NotFoundException("Materia", dto.MateriaId);
                 }
 
                 if (dto.Nota1 < 0 || dto.Nota1 > 10 ||
                     dto.Nota2 < 0 || dto.Nota2 > 10)
                 {
                     _logger.LogWarning(
-                        "Notas inv·lidas informadas. Nota1: {Nota1}, Nota2: {Nota2}, AlunoId: {AlunoId}",
+                        "Notas inv√°lidas informadas. Nota1: {Nota1}, Nota2: {Nota2}, AlunoId: {AlunoId}",
                         dto.Nota1,
                         dto.Nota2,
                         dto.AlunoId
                     );
-                    throw new Exception("Notas devem estar entre 0 e 10.");
+                    throw new ValidationException("Notas devem estar entre 0 e 10.");
                 }
 
                 var qntdFaltas = await ObterFaltas(dto.AlunoId, dto.MateriaId);
@@ -154,8 +148,8 @@ namespace tivitApi.Services
                         dto.MateriaId
                     );
 
-                    throw new Exception(
-                        "Erro ao salvar a nota. Verifique se j· existe cadastro para este aluno e matÈria."
+                    throw new BusinessException(
+                        "Erro ao salvar a nota. Verifique se j√° existe cadastro para este aluno e mat√©ria."
                     );
                 }
 
@@ -170,15 +164,10 @@ namespace tivitApi.Services
                     Status = status
                 };
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is not NotFoundException && ex is not ValidationException && ex is not BusinessException)
             {
-                _logger.LogError(
-                    ex,
-                    "Erro inesperado ao adicionar nota. Payload: {@NotaDTO}",
-                    dto
-                );
-
-                throw;
+                _logger.LogError(ex, "Erro inesperado ao adicionar nota. Payload: {@NotaDTO}", dto);
+                throw new BusinessException($"Erro ao adicionar nota: {ex.Message}");
             }
         }
 
@@ -187,7 +176,7 @@ namespace tivitApi.Services
             // Valida se o aluno existe
             var alunoExiste = await _context.Alunos.AnyAsync(a => a.Id == alunoId);
             if (!alunoExiste)
-                throw new Exception("Aluno n„o encontrado.");
+                throw new NotFoundException("Aluno", alunoId);
 
             var notas = await _context.Notas
                 .Where(n => n.AlunoId == alunoId)
@@ -214,7 +203,7 @@ namespace tivitApi.Services
                 .FirstOrDefaultAsync();
 
             if (notasAluno == null)
-                throw new Exception("Nenhuma nota encontrada para este aluno.");
+                throw new NotFoundException("Nota", $"AlunoId: {alunoId}");
 
             var materia = await _context.Materias
                 .Where(m => m.Id == notasAluno.MateriaId)
@@ -222,7 +211,7 @@ namespace tivitApi.Services
                 .FirstOrDefaultAsync();
 
             if (materia == null)
-                throw new Exception("MatÈria n„o encontrada.");
+                throw new NotFoundException("Materia", notasAluno.MateriaId);
 
             string nivel;
 
@@ -251,7 +240,7 @@ namespace tivitApi.Services
                 .FirstOrDefaultAsync();
             
             if (alunoId == 0)
-                throw new Exception("Aluno n„o encontrado.");
+                throw new NotFoundException("Aluno", $"MatriculaId: {matriculaId}");
 
             var notas = await _context.Notas
                 .Where(n => n.AlunoId == alunoId)
@@ -288,7 +277,7 @@ namespace tivitApi.Services
                 .ToListAsync();
 
             if (!notas.Any())
-                throw new Exception("Nenhuma nota encontrada para este aluno.");
+                throw new NotFoundException("Nota", $"Nome do aluno: {nome}");
 
             return notas;
         }
@@ -315,9 +304,9 @@ namespace tivitApi.Services
 
                     page.Header().Column(col =>
                     {
-                        col.Item().Text("TIVIT Academy ó RelatÛrio AcadÍmico")
+                        col.Item().Text("TIVIT Academy | Relat√≥rio Acad√™mico")
                             .FontSize(20).Bold().FontColor(Color.FromHex("#ff0054"));
-                        col.Item().Text($"Aluno: {aluno?.Nome ?? "ó"}").FontSize(13);
+                        col.Item().Text($"Aluno: {aluno?.Nome ?? ""}").FontSize(13);
                         col.Item().Text($"Gerado em: {DateTime.Now:dd/MM/yyyy HH:mm}").FontSize(10).FontColor(Colors.Grey.Medium);
                         col.Item().PaddingTop(10).LineHorizontal(1).LineColor(Colors.Grey.Lighten2);
                     });
@@ -339,7 +328,7 @@ namespace tivitApi.Services
                             // Header 
                             table.Header(h =>
                             {
-                                foreach (var header in new[] { "MatÈria", "Nota 1", "Nota 2", "MÈdia", "Faltas", "Status" })
+                                foreach (var header in new[] { "Mat√©ria", "Nota 1", "Nota 2", "M√©dia", "Faltas", "Status" })
                                 {
                                     h.Cell().Background(Color.FromHex("#ff0054"))
                                         .Padding(6)
@@ -351,7 +340,7 @@ namespace tivitApi.Services
                             foreach (var nota in notas)
                             {
                                 var isAprovado = nota.Status == "APROVADO";
-                                table.Cell().Padding(6).Text(nota.Materia?.Nome ?? "ó");
+                                table.Cell().Padding(6).Text(nota.Materia?.Nome ?? "");
                                 table.Cell().Padding(6).Text(nota.Nota1.ToString("F2"));
                                 table.Cell().Padding(6).Text(nota.Nota2.ToString("F2"));
                                 table.Cell().Padding(6).Text(nota.Media.ToString("F2"));
@@ -362,14 +351,14 @@ namespace tivitApi.Services
                         });
 
                         col.Item().PaddingTop(20)
-                            .Text($"MÈdia Geral: {mediaGeral:F2}")
+                            .Text($"M√©dia Geral: {mediaGeral:F2}")
                             .FontSize(14).Bold();
                     });
 
                     page.Footer().AlignCenter()
                         .Text(x =>
                         {
-                            x.Span("P·gina ");
+                            x.Span("P√°gina ");
                             x.CurrentPageNumber();
                             x.Span(" de ");
                             x.TotalPages();

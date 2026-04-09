@@ -55,7 +55,7 @@ namespace tivitApi.Services
             );
 
             if (chamadaJaExiste)
-                throw new BusinessException("Chamada já feita para essa matéria dessa turma.");
+                throw new BusinessException("Chamada jÃ¡ feita para essa matÃ©ria dessa turma.");
 
             var chamadas = dtos.Select(dto => ConvertChamadaDtoToChamada(dto)).ToList();
 

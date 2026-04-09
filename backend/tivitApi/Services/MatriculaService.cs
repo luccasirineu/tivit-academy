@@ -90,7 +90,7 @@ namespace tivitApi.Services
         {
             var matricula = await _context.Matriculas.FindAsync(id);
             if (matricula == null)
-                throw new Exception("Matrícula não encontrada.");
+                throw new NotFoundException("Matricula", id);
 
             return matricula;
         }

@@ -31,7 +31,7 @@ namespace tivitApi.Services
                 .ToListAsync();
 
             if (turmas.Count != notificacaoDTO.TurmasIds.Count)
-                throw new Exception("Uma ou mais turmas informadas n„o foram encontradas.");
+                throw new NotFoundException("Uma ou mais turmas informadas n√£o foram encontradas.");
 
             var notificacao = new Notificacao(
                 notificacaoDTO.Titulo,

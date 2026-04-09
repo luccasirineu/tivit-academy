@@ -98,7 +98,7 @@ namespace tivitApi.Services
                 return professor;
 
 
-            throw new Exception("Usuário não encontrado.");
+            throw new NotFoundException("Usuario", $"CPF: {cpf}");
         }
 
         public async Task<List<UserDTOResponse>> GetUsersByNome(string nome)
@@ -111,7 +111,7 @@ namespace tivitApi.Services
                 .ToList();
 
             if (!usuarios.Any())
-                throw new Exception("Usuário não encontrado.");
+                throw new NotFoundException("Usuario", $"Nome: {nome}");
 
             return usuarios;
         }
@@ -119,10 +119,10 @@ namespace tivitApi.Services
         public async Task DesativarUser(string cpf, string tipo)
         {
             if (string.IsNullOrWhiteSpace(cpf))
-                throw new ArgumentException("CPF inválido.");
+                throw new ValidationException("CPF invÃ¡lido.");
 
             if (string.IsNullOrWhiteSpace(tipo))
-                throw new ArgumentException("Tipo de usuário inválido.");
+                throw new ValidationException("Tipo de usuÃ¡rio invÃ¡lido.");
 
             tipo = tipo.Trim().ToLower();
 
@@ -132,7 +132,7 @@ namespace tivitApi.Services
                     .FirstOrDefaultAsync(a => a.Cpf == cpf);
 
                 if (aluno == null)
-                    throw new Exception("Aluno não encontrado.");
+                    throw new NotFoundException("Aluno", $"CPF: {cpf}");
 
                 aluno.Status = "DESATIVADO";
             }
@@ -142,13 +142,13 @@ namespace tivitApi.Services
                     .FirstOrDefaultAsync(p => p.Cpf == cpf);
 
                 if (professor == null)
-                    throw new Exception("Professor não encontrado.");
+                    throw new NotFoundException("Professor", $"CPF: {cpf}");
 
                 professor.Status = "DESATIVADO";
             }
             else
             {
-                throw new Exception("Tipo de usuário inválido.");
+                throw new ValidationException("Tipo de usuÃ¡rio invÃ¡lido.");
             }
 
             await _context.SaveChangesAsync();
@@ -157,10 +157,10 @@ namespace tivitApi.Services
         public async Task AtivarUser(string cpf, string tipo)
         {
             if (string.IsNullOrWhiteSpace(cpf))
-                throw new ArgumentException("CPF inválido.");
+                throw new ValidationException("CPF invÃ¡lido.");
 
             if (string.IsNullOrWhiteSpace(tipo))
-                throw new ArgumentException("Tipo de usuário inválido.");
+                throw new ValidationException("Tipo de usuÃ¡rio invÃ¡lido.");
 
             tipo = tipo.Trim().ToLower();
 
@@ -170,7 +170,7 @@ namespace tivitApi.Services
                     .FirstOrDefaultAsync(a => a.Cpf == cpf);
 
                 if (aluno == null)
-                    throw new Exception("Aluno não encontrado.");
+                    throw new NotFoundException("Aluno", $"CPF: {cpf}");
 
                 aluno.Status = "ATIVO";
             }
@@ -180,13 +180,13 @@ namespace tivitApi.Services
                     .FirstOrDefaultAsync(p => p.Cpf == cpf);
 
                 if (professor == null)
-                    throw new Exception("Professor não encontrado.");
+                    throw new NotFoundException("Professor", $"CPF: {cpf}");
 
                 professor.Status = "ATIVO";
             }
             else
             {
-                throw new Exception("Tipo de usuário inválido.");
+                throw new ValidationException("Tipo de usuÃ¡rio invÃ¡lido.");
             }
 
             await _context.SaveChangesAsync();

@@ -44,15 +44,15 @@ namespace tivitApi.Services
         {
             try
             {
-                // ===== ValidaÁıes =====
+                // ===== Valida√ß√µes =====
                 if (eventoDTO == null)
-                    throw new Exception("Dados do evento n„o enviados.");
+                    throw new ValidationException("Dados do evento n√£o enviados.");
 
                 if (string.IsNullOrWhiteSpace(eventoDTO.Titulo))
-                    throw new Exception("O tÌtulo do evento È obrigatÛrio.");
+                    throw new ValidationException("O t√≠tulo do evento √© obrigat√≥rio.");
 
                 if (eventoDTO.Horario == default)
-                    throw new Exception("O hor·rio do evento È inv·lido.");
+                    throw new ValidationException("O hor√°rio do evento √© inv√°lido.");
 
                 var evento = new Evento
                 {
@@ -70,10 +70,10 @@ namespace tivitApi.Services
                     mensagem = "Evento criado com sucesso."
                 };
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is not ValidationException)
             {
-                _logger.LogError(ex, "Erro ao criar evento no calend·rio");
-                throw new Exception("Erro interno ao criar evento.");
+                _logger.LogError(ex, "Erro ao criar evento no calend√°rio");
+                throw new BusinessException("Erro interno ao criar evento.");
             }
         }
 
@@ -90,7 +90,7 @@ namespace tivitApi.Services
                     .FirstOrDefaultAsync();
 
                 if (proximoEvento == null)
-                    throw new BusinessException("Nenhum evento futuro encontrado.");
+                    throw new NotFoundException("Evento futuro n√£o encontrado.");
 
                 
                 return new EventoDTO
@@ -100,10 +100,10 @@ namespace tivitApi.Services
                     Horario = proximoEvento.Horario
                 };
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is not NotFoundException)
             {
-                _logger.LogError(ex, "Erro ao buscar prÛximo evento no calend·rio");
-                throw new Exception("Erro interno ao buscar evento.");
+                _logger.LogError(ex, "Erro ao buscar pr√≥ximo evento no calend√°rio");
+                throw new BusinessException("Erro interno ao buscar evento.");
             }
 
 
@@ -134,8 +134,8 @@ namespace tivitApi.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Erro ao contar eventos dos prÛximos 7 dias");
-                throw new Exception("Erro interno ao buscar quantidade de eventos.");
+                _logger.LogError(ex, "Erro ao contar eventos dos pr√≥ximos 7 dias");
+                throw new BusinessException("Erro interno ao buscar quantidade de eventos.");
             }
         }
 

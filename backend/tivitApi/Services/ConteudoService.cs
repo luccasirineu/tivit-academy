@@ -47,7 +47,7 @@ namespace tivitApi.Services
         public async Task<Conteudo> CriarConteudoPdfAsync(CreateConteudoPdfDTO dto, int professorId)
         {
             if (dto.Arquivo == null || dto.Arquivo.Length == 0)
-                throw new Exception("Arquivo inv�lido");
+                throw new ValidationException("Arquivo inválido");
 
             var pasta = Path.Combine("wwwroot", "uploads", $"turma_{dto.TurmaId}", $"materia_{dto.MateriaId}");
             Directory.CreateDirectory(pasta);
@@ -77,7 +77,7 @@ namespace tivitApi.Services
             // Processar conteúdo com a IA e armazenar contexto
             try
             {
-                _logger.LogInformation($"Iniciando processamento de contexto para PDF: {conteudo.Id}");
+                _logger.LogInformation("Iniciando processamento de contexto para PDF: {ConteudoId}", conteudo.Id);
                 var conteudoContexto = await _geminiService.ExtrairEProcessarConteudoAsync(
                     conteudo,
                     caminhoCompleto,
@@ -85,11 +85,11 @@ namespace tivitApi.Services
 
                 _context.ConteudosContexto.Add(conteudoContexto);
                 await _context.SaveChangesAsync();
-                _logger.LogInformation($"Contexto armazenado com sucesso para ConteudoId: {conteudo.Id}");
+                _logger.LogInformation("Contexto armazenado com sucesso para ConteudoId: {ConteudoId}", conteudo.Id);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Erro ao processar contexto do PDF: {ex.Message}. Conteúdo salvo sem contexto.");
+                _logger.LogError(ex, "Erro ao processar contexto do PDF. Conteúdo salvo sem contexto.");
                 // Não falhar o upload se houver erro no processamento de IA
             }
 
@@ -99,7 +99,7 @@ namespace tivitApi.Services
         public async Task<Conteudo> CriarConteudoLinkAsync(CreateConteudoLinkDTO dto, int professorId)
         {
             if (!Uri.IsWellFormedUriString(dto.Url, UriKind.Absolute))
-                throw new Exception("URL inv�lida");
+                throw new ValidationException("URL inválida");
 
             var conteudo = new Conteudo
             {
@@ -118,7 +118,7 @@ namespace tivitApi.Services
             // Processar conteúdo com a IA e armazenar contexto
             try
             {
-                _logger.LogInformation($"Iniciando processamento de contexto para Link: {conteudo.Id}");
+                _logger.LogInformation("Iniciando processamento de contexto para Link: {ConteudoId}", conteudo.Id);
                 var conteudoContexto = await _geminiService.ExtrairEProcessarConteudoAsync(
                     conteudo,
                     dto.Url,
@@ -126,11 +126,11 @@ namespace tivitApi.Services
 
                 _context.ConteudosContexto.Add(conteudoContexto);
                 await _context.SaveChangesAsync();
-                _logger.LogInformation($"Contexto armazenado com sucesso para ConteudoId: {conteudo.Id}");
+                _logger.LogInformation("Contexto armazenado com sucesso para ConteudoId: {ConteudoId}", conteudo.Id);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Erro ao processar contexto do Link: {ex.Message}. Conteúdo salvo sem contexto.");
+                _logger.LogError(ex, "Erro ao processar contexto do Link. Conteúdo salvo sem contexto.");
                 // Não falhar o upload se houver erro no processamento de IA
             }
 
@@ -141,7 +141,7 @@ namespace tivitApi.Services
         {
             var materiaExiste = await _context.Materias.AnyAsync(c => c.Id == materiaId);
             if (!materiaExiste)
-                throw new Exception("Mat�ria n�o encontrada");
+                throw new NotFoundException("Materia", materiaId);
 
             var conteudos = await _context.Conteudos.Where(m => m.MateriaId == materiaId && m.TurmaId == turmaId).ToListAsync();
 

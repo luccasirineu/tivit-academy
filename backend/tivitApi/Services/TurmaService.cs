@@ -59,7 +59,7 @@ namespace tivitApi.Services
         {
             var cursoExiste = await _context.Cursos.AnyAsync(c => c.Id == cursoId);
             if (!cursoExiste)
-                throw new Exception("Curso não encontrado");
+                throw new NotFoundException("Curso", cursoId);
 
             var turmas = await _context.Turmas
                 .Where(m => m.CursoId == cursoId)
@@ -79,13 +79,13 @@ namespace tivitApi.Services
                 .FirstOrDefaultAsync(a => a.Id == alunoId);
 
             if (aluno == null)
-                throw new Exception("Aluno não encontrado");
+                throw new NotFoundException("Aluno", alunoId);
 
             var turma = await _context.Turmas
                 .FirstOrDefaultAsync(t => t.Id == aluno.TurmaId);
 
             if (turma == null)
-                throw new Exception("Turma não encontrada");
+                throw new NotFoundException("Turma", aluno.TurmaId);
 
             var resultado = ConvertTurmaToTurmaDto(turma);
 
@@ -118,7 +118,7 @@ namespace tivitApi.Services
                 .FirstOrDefaultAsync(t => t.Id == dto.Id);
 
             if (turma == null)
-                throw new Exception("Turma não encontrada.");
+                throw new NotFoundException("Turma", dto.Id);
 
             turma.Nome = dto.Nome;
             turma.CursoId = dto.CursoId;

@@ -39,14 +39,14 @@ namespace tivitApi.Services
         public async Task<Materia> CriarMateriaAsync(MateriaDTO materiaDto)
         {
 
-            _logger.LogInformation($"Criando matéria : {materiaDto.Nome}");
+            _logger.LogInformation("Criando matéria: {NomeMateria}", materiaDto.Nome);
 
             // 1️ Verifica se o curso existe
             var curso = await _context.Cursos
                 .FirstOrDefaultAsync(c => c.Id == materiaDto.CursoId);
 
             if (curso == null)
-                throw new Exception ("Curso não encontrado");
+                throw new NotFoundException("Curso", materiaDto.CursoId);
 
 
             var materia = ConvertMateriaDtoToMateria(materiaDto);
@@ -62,7 +62,7 @@ namespace tivitApi.Services
         {
             var cursoExiste = await _context.Cursos.AnyAsync(c => c.Id == cursoId);
             if (!cursoExiste)
-                throw new Exception("Curso não encontrado");
+                throw new NotFoundException("Curso", cursoId);
 
             return await _context.Materias
                 .Where(m => m.CursoId == cursoId)
@@ -77,14 +77,14 @@ namespace tivitApi.Services
                 .FirstOrDefaultAsync(a => a.Id == alunoId);
 
             if (aluno == null)
-                throw new Exception("Aluno não encontrado.");
+                throw new NotFoundException("Aluno", alunoId);
 
             // 2. Buscar matrícula usando MatriculaId
             var matricula = await _context.Matriculas
                 .FirstOrDefaultAsync(m => m.Id == aluno.MatriculaId);
 
             if (matricula == null)
-                throw new Exception("Matrícula não encontrada.");
+                throw new NotFoundException("Matricula", aluno.MatriculaId);
 
             return matricula.CursoId;
         }
@@ -97,7 +97,7 @@ namespace tivitApi.Services
                 .FirstOrDefaultAsync(m => m.Id == materiaId);
 
             if (materia == null)
-                throw new Exception("Matéria não encontrada.");
+                throw new NotFoundException("Materia", materiaId);
 
             return materia.Nome;
         }

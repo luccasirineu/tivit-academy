@@ -4,7 +4,6 @@ using tivitApi.DTOs;
 using tivitApi.Models;
 using tivitApi.Exceptions;
 using tivitApi.Infra.SQS;
-using System.Text.Json;
 using System.Text;
 using System.Security.Cryptography;
 
@@ -38,27 +37,21 @@ namespace tivitApi.Services
 
         }
 
-        private async Task<AlunoDTO> ConvertAlunoToAlunoDto(Aluno aluno)
+        private AlunoDTO ConvertAlunoToAlunoDto(Aluno aluno)
         {
-            // Busca o cursoNome através da Matrícula
-            var matricula = await _context.Matriculas
-                .FirstOrDefaultAsync(m => m.Id == aluno.MatriculaId);
+            var cursoNome = aluno.Matricula?.curso?.Nome ?? string.Empty;
+            var turmaNome = string.Empty;
 
-            string cursoNome = string.Empty;
-            if (matricula != null)
+            if (aluno.TurmaId > 0)
             {
-                var curso = await _context.Cursos
-                    .FirstOrDefaultAsync(c => c.Id == matricula.CursoId);
-
-                cursoNome = curso?.Nome ?? string.Empty;
+                turmaNome = _context.Turmas
+                    .Where(t => t.Id == aluno.TurmaId)
+                    .Select(t => t.Nome)
+                    .FirstOrDefault() ?? string.Empty;
             }
 
-            // Busca o nome da Turma
-            var turma = await _context.Turmas
-                .FirstOrDefaultAsync(t => t.Id == aluno.TurmaId);
-
-            string turmaNome = turma?.Nome ?? string.Empty;
-            Console.WriteLine($"[DEBUG] AlunoId: {aluno.Id} | TurmaId: {aluno.TurmaId} | Turma encontrada: {turma != null} | TurmaNome: '{turmaNome}'");
+            _logger.LogDebug("AlunoId: {AlunoId} | TurmaId: {TurmaId} | CursoNome: {CursoNome} | TurmaNome: {TurmaNome}", 
+                aluno.Id, aluno.TurmaId, cursoNome, turmaNome);
 
             return new AlunoDTO(
                 aluno.Nome,
@@ -122,7 +115,7 @@ namespace tivitApi.Services
             ).ToListAsync();
 
             if (!alunosByCurso.Any())
-                throw new Exception("Matrículas não encontradas.");
+                throw new NotFoundException("Matricula", $"CursoId: {cursoId}");
 
             return alunosByCurso
                 .Select(x => ConvertAtributosToAlunoDTO(
@@ -140,55 +133,36 @@ namespace tivitApi.Services
         {
             var turmaExiste = await _context.Turmas.AnyAsync(t => t.Id == turmaId);
             if (!turmaExiste)
-                throw new Exception("Turma não encontrada");
+                throw new NotFoundException("Turma", turmaId);
 
+            // Query otimizada com Include para carregar Matricula e Curso de uma vez
             var alunos = await _context.Alunos
+                .Include(a => a.Matricula)
+                    .ThenInclude(m => m.curso)
                 .Where(a => a.TurmaId == turmaId)
-                .OrderBy(m => m.Nome)
+                .OrderBy(a => a.Nome)
                 .ToListAsync();
 
-            var resultado = new List<AlunoDTO>();
-            foreach (var aluno in alunos)
-            {
-                resultado.Add(await ConvertAlunoToAlunoDto(aluno));
-            }
-
-            return resultado;
+            return alunos.Select(aluno => ConvertAlunoToAlunoDto(aluno)).ToList();
         }
 
         public async Task<AlunoDTO> GetInfoAluno(int alunoId)
         {
+            // Query otimizada com Include para carregar tudo de uma vez
             var aluno = await _context.Alunos
+                .Include(a => a.Matricula)
+                    .ThenInclude(m => m.curso)
                 .Where(a => a.Id == alunoId)
-                .Select(a => new
-                {
-                    a.Id,
-                    a.Nome,
-                    a.Email,
-                    a.Cpf,
-                    a.MatriculaId,
-                    a.TurmaId
-                })
                 .FirstOrDefaultAsync();
 
             if (aluno == null)
-                throw new Exception("Aluno não encontrado.");
+                throw new NotFoundException("Aluno", alunoId);
 
-            var matricula = await _context.Matriculas
-                .Where(m => m.Id == aluno.MatriculaId)
-                .Select(m => m.CursoId)
-                .FirstOrDefaultAsync();
+            if (aluno.Matricula == null)
+                throw new NotFoundException("Matricula", aluno.MatriculaId);
 
-            if (matricula == 0)
-                throw new Exception("Matrícula não encontrada.");
-
-            var cursoNome = await _context.Cursos
-                .Where(c => c.Id == matricula)
-                .Select(c => c.Nome)
-                .FirstOrDefaultAsync();
-
-            if (cursoNome == null)
-                throw new Exception("Curso não encontrado.");
+            if (aluno.Matricula.curso == null)
+                throw new NotFoundException("Curso", aluno.Matricula.CursoId);
 
             return new AlunoDTO
             {
@@ -196,7 +170,7 @@ namespace tivitApi.Services
                 Email = aluno.Email,
                 Cpf = aluno.Cpf,
                 MatriculaId = aluno.MatriculaId,
-                CursoNome = cursoNome,
+                CursoNome = aluno.Matricula.curso.Nome,
                 TurmaId = aluno.TurmaId
             };
         }
@@ -217,9 +191,7 @@ namespace tivitApi.Services
                 .FirstOrDefaultAsync();
 
             if (aluno == null)
-                throw new Exception("Aluno não encontrado.");
-
-            
+                throw new NotFoundException("Aluno", $"MatriculaId: {matriculaId}");
 
             return new AlunoDTO
             {
@@ -240,15 +212,13 @@ namespace tivitApi.Services
 
         public async Task<List<AlunoDTO>> GetAllAlunos()
         {
-            var alunos = await _context.Alunos.ToListAsync();
+            // Query otimizada com Include para carregar Matricula e Curso de uma vez
+            var alunos = await _context.Alunos
+                .Include(a => a.Matricula)
+                    .ThenInclude(m => m.curso)
+                .ToListAsync();
 
-            var resultado = new List<AlunoDTO>();
-            foreach (var aluno in alunos)
-            {
-                resultado.Add(await ConvertAlunoToAlunoDto(aluno));
-            }
-
-            return resultado;
+            return alunos.Select(aluno => ConvertAlunoToAlunoDto(aluno)).ToList();
         }
 
         public async Task UpdateTurmaAluno(int alunoId, int turmaId)
@@ -257,13 +227,13 @@ namespace tivitApi.Services
                 .FirstOrDefaultAsync(a => a.Id == alunoId);
 
             if (aluno == null)
-                throw new Exception("Aluno não encontrado");
+                throw new NotFoundException("Aluno", alunoId);
 
             var turmaExiste = await _context.Turmas
                 .AnyAsync(t => t.Id == turmaId);
 
             if (!turmaExiste)
-                throw new Exception("Turma não encontrada");
+                throw new NotFoundException("Turma", turmaId);
 
             aluno.TurmaId = turmaId;
             await _context.SaveChangesAsync();
@@ -271,17 +241,17 @@ namespace tivitApi.Services
 
         public async Task ResetSenha(string cpf)
         {
-            _logger.LogInformation($"Resetando senha do cpf: {cpf}");
+            _logger.LogInformation("Resetando senha do cpf: {Cpf}", cpf);
 
             if (string.IsNullOrWhiteSpace(cpf))
-                throw new ArgumentException("CPF inválido.");
+                throw new ValidationException("CPF invÃ¡lido.");
 
             try
             {
                 var aluno = await _context.Alunos.FirstOrDefaultAsync(a => a.Cpf == cpf);
 
                 if (aluno == null)
-                    throw new Exception("Aluno não encontrado.");
+                    throw new NotFoundException("Aluno", $"CPF: {cpf}");
 
                 var senhaGerada = GerarSenha();
                 var senhaHash = _passwordHasher.Hash(senhaGerada);
@@ -302,13 +272,13 @@ namespace tivitApi.Services
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError($"Erro ao enviar evento para SQS: {ex.Message}");
+                    _logger.LogError(ex, "Erro ao enviar evento para SQS");
                 }
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is not NotFoundException && ex is not ValidationException)
             {
-                _logger.LogError($"Erro ao resetar senha: {ex.Message}"); 
-                throw;
+                _logger.LogError(ex, "Erro ao resetar senha"); 
+                throw new BusinessException($"Erro ao resetar senha: {ex.Message}");
             }
         }
     }
