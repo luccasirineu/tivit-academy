@@ -3,6 +3,7 @@ using tivitApi.Data;
 using tivitApi.DTOs;
 using tivitApi.Models;
 using tivitApi.Exceptions;
+using tivitApi.Mappers;
 
 namespace tivitApi.Services
 {
@@ -24,21 +25,10 @@ namespace tivitApi.Services
         {
             _context = context;
             _logger = logger;
-
-        }
-
-        private Materia ConvertMateriaDtoToMateria(MateriaDTO materiaDTO)
-        {
-            return new Materia(
-                materiaDTO.Nome,
-                materiaDTO.Descricao,
-                materiaDTO.CursoId
-                );
         }
 
         public async Task<Materia> CriarMateriaAsync(MateriaDTO materiaDto)
         {
-
             _logger.LogInformation("Criando matéria: {NomeMateria}", materiaDto.Nome);
 
             // 1️ Verifica se o curso existe
@@ -48,8 +38,7 @@ namespace tivitApi.Services
             if (curso == null)
                 throw new NotFoundException("Curso", materiaDto.CursoId);
 
-
-            var materia = ConvertMateriaDtoToMateria(materiaDto);
+            var materia = materiaDto.ToEntity();
 
             // 3️ Salva no banco
             _context.Materias.Add(materia);

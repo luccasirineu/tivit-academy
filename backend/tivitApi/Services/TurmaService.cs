@@ -3,6 +3,7 @@ using tivitApi.Data;
 using tivitApi.DTOs;
 using tivitApi.Models;
 using tivitApi.Exceptions;
+using tivitApi.Mappers;
 
 namespace tivitApi.Services
 {
@@ -26,33 +27,12 @@ namespace tivitApi.Services
             _context = context;
         }
 
-        private Turma ConvertTurmaDtoToTurma(TurmaDTORequest turmaDto)
-        {
-            return new Turma(
-                turmaDto.Nome,
-                turmaDto.CursoId,
-                turmaDto.Status
-                );
-        }
-
-        private TurmaDTOResponse ConvertTurmaToTurmaDto(Turma turma)
-        {
-            return new TurmaDTOResponse(
-                turma.Id,
-                turma.Nome,
-                turma.CursoId,
-                turma.Status
-                );
-        }
-
         public async Task CriarTurma(TurmaDTORequest turmaDto)
         {
-
-            var turma = ConvertTurmaDtoToTurma(turmaDto);
+            var turma = turmaDto.ToEntity();
 
             _context.Turmas.Add(turma);
             await _context.SaveChangesAsync();
-
         }
 
         public async Task<List<TurmaDTOResponse>> GetTurmasByCursoId(int cursoId)
@@ -66,11 +46,7 @@ namespace tivitApi.Services
                 .OrderBy(m => m.Nome)
                 .ToListAsync();
 
-            var resultado = turmas
-            .Select(turma => ConvertTurmaToTurmaDto(turma))
-            .ToList();
-
-            return resultado;
+            return turmas.Select(turma => turma.ToDTO()).ToList();
         }
 
         public async Task<TurmaDTOResponse> GetTurmaByAlunoId(int alunoId)
@@ -87,9 +63,7 @@ namespace tivitApi.Services
             if (turma == null)
                 throw new NotFoundException("Turma", aluno.TurmaId);
 
-            var resultado = ConvertTurmaToTurmaDto(turma);
-
-            return resultado;
+            return turma.ToDTO();
         }
 
         public async Task<int> GetQntdTurmasAtivas()
@@ -102,11 +76,7 @@ namespace tivitApi.Services
         {
             var turmas = await _context.Turmas.ToListAsync();
 
-            var resultado = turmas
-            .Select(turma => ConvertTurmaToTurmaDto(turma))
-            .ToList();
-
-            return resultado;
+            return turmas.Select(turma => turma.ToDTO()).ToList();
         }
 
         public async Task AtualizarTurma(TurmaDTORequest dto)

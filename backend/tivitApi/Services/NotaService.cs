@@ -3,6 +3,7 @@ using tivitApi.Data;
 using tivitApi.DTOs;
 using tivitApi.Models;
 using tivitApi.Exceptions;
+using tivitApi.Mappers;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
@@ -29,20 +30,6 @@ namespace tivitApi.Services
         {
             _context = context;
             _logger = logger;
-
-        }
-
-        private Nota ConvertNotaDtoToNota(NotaDTORequest notaDTO, decimal media, string status, int qntdFaltas)
-        {
-            return new Nota(
-                notaDTO.AlunoId,
-                notaDTO.MateriaId,
-                notaDTO.Nota1,
-                notaDTO.Nota2,
-                media,
-                qntdFaltas,
-                status
-                );
         }
 
 
@@ -123,7 +110,7 @@ namespace tivitApi.Services
                 decimal media = CalcularMedia(dto.Nota1, dto.Nota2);
                 string status = CalcularStatusNota(media, qntdFaltas);
 
-                var nota = ConvertNotaDtoToNota(dto, media, status, qntdFaltas);
+                var nota = dto.ToEntity(media, status, qntdFaltas);
 
                 _context.Notas.Add(nota);
 

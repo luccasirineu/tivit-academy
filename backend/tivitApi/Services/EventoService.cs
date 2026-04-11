@@ -3,8 +3,8 @@ using tivitApi.Models;
 using tivitApi.DTOs;
 using tivitApi.Infra.SQS;
 using tivitApi.Exceptions;
+using tivitApi.Mappers;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
 using System.Text;
 using System.Security.Cryptography;
 
@@ -27,16 +27,6 @@ namespace tivitApi.Services
         {
             _context = context;
             _logger = logger;
-        }
-
-        private EventoDTO ConvertEventoToEventoDTO(Evento evento)
-        {
-            return new EventoDTO(
-                evento.Id,
-                evento.Titulo,
-                evento.Descricao,
-                evento.Horario
-                );
         }
 
 
@@ -113,11 +103,7 @@ namespace tivitApi.Services
         {
             var eventos = await _context.Eventos.ToListAsync();
 
-            var resultado = eventos
-            .Select(evento => ConvertEventoToEventoDTO(evento))
-            .ToList();
-
-            return resultado;
+            return eventos.Select(evento => evento.ToDTO()).ToList();
         }
 
         public async Task<int> getNextWeekEvents()

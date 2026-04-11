@@ -3,6 +3,7 @@ using tivitApi.Data;
 using tivitApi.DTOs;
 using tivitApi.Models;
 using tivitApi.Exceptions;
+using tivitApi.Mappers;
 
 namespace tivitApi.Services
 {
@@ -27,20 +28,6 @@ namespace tivitApi.Services
             _context = context;
             _logger = logger;
             _geminiService = geminiService;
-        }
-
-        private ConteudoDTO ConvertConteudoToConteudoDTO(Conteudo conteudo)
-        {
-            return new ConteudoDTO(
-                conteudo.Id,
-                conteudo.Titulo,
-                conteudo.Tipo,
-                conteudo.CaminhoOuUrl,
-                conteudo.DataPublicacao,
-                conteudo.MateriaId,
-                conteudo.ProfessorId,
-                conteudo.TurmaId
-                );
         }
 
 
@@ -143,17 +130,11 @@ namespace tivitApi.Services
             if (!materiaExiste)
                 throw new NotFoundException("Materia", materiaId);
 
-            var conteudos = await _context.Conteudos.Where(m => m.MateriaId == materiaId && m.TurmaId == turmaId).ToListAsync();
+            var conteudos = await _context.Conteudos
+                .Where(m => m.MateriaId == materiaId && m.TurmaId == turmaId)
+                .ToListAsync();
 
-            List<ConteudoDTO> conteudosDTO = new List<ConteudoDTO>();
-
-            foreach (var conteudo in conteudos)
-            {
-                conteudosDTO.Add(ConvertConteudoToConteudoDTO(conteudo));
-            }
-
-            return conteudosDTO;
-
+            return conteudos.Select(conteudo => conteudo.ToDTO()).ToList();
         }
     }
 }

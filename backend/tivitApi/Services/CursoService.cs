@@ -1,6 +1,8 @@
 ﻿using tivitApi.Data;
 using tivitApi.Models;
 using tivitApi.DTOs;
+using tivitApi.Exceptions;
+using tivitApi.Mappers;
 using Microsoft.EntityFrameworkCore;
 
 namespace tivitApi.Services
@@ -14,37 +16,11 @@ namespace tivitApi.Services
             _context = context;
         }
 
-        private CursoDTO ConvertCursoToCursoDTO(Curso curso)
-        {
-            return new CursoDTO(
-                curso.Id,
-                curso.Nome,
-                curso.Descricao,
-                curso.ProfResponsavel,
-                curso.Status
-                );
-        }
-        
-        private Curso ConvertCursoDTOToCurso(CursoDTORequest dto)
-        {
-            return new Curso(
-                dto.Nome,
-                dto.Descricao,
-                dto.ProfResponsavel,
-                "ATIVO"
-                );
-        }
-
         public async Task<List<CursoDTO>> GetAllCursosAsync()
         {
             var cursos = await _context.Cursos.ToListAsync();
 
-            // converter lista de Matricula -> lista de MatriculaDTO
-            var resultado = cursos
-            .Select(curso => ConvertCursoToCursoDTO(curso))
-            .ToList();
-
-            return resultado;
+            return cursos.Select(curso => curso.ToDTO()).ToList();
         }
 
         public async Task<CursoDTO> GetCursoById(int cursoId)
@@ -53,8 +29,7 @@ namespace tivitApi.Services
             if (curso == null)
                 throw new NotFoundException("Curso", cursoId);
 
-            CursoDTO cursoDTO =  ConvertCursoToCursoDTO(curso);
-            return cursoDTO;
+            return curso.ToDTO();
         }
 
         public async Task<int> GetQntdCursosProf(int professorId)
@@ -75,11 +50,7 @@ namespace tivitApi.Services
         {
             var cursos = await _context.Cursos.Where(m => m.ProfResponsavel == professorId).ToListAsync();
 
-            var resultado = cursos
-            .Select(curso => ConvertCursoToCursoDTO(curso))
-            .ToList();
-
-            return resultado;
+            return cursos.Select(curso => curso.ToDTO()).ToList();
         }
 
         public async Task<int> GetQntdAlunosByCursoId(int cursoId)
@@ -91,8 +62,8 @@ namespace tivitApi.Services
     
         public async Task CriarCurso(CursoDTORequest dto)
         {
-            var curso = ConvertCursoDTOToCurso(dto);
-            _context.Cursos.AddRange(curso);
+            var curso = dto.ToEntity();
+            _context.Cursos.Add(curso);
             await _context.SaveChangesAsync();
         }
 
@@ -151,16 +122,9 @@ namespace tivitApi.Services
 
         public async Task<List<CursoDTO>> GetAllCursosAtivos()
         {
-
             var cursos = await _context.Cursos.Where(p => p.Status == "ATIVO").ToListAsync();
 
-            // converter lista de Matricula -> lista de MatriculaDTO
-            var resultado = cursos
-            .Select(curso => ConvertCursoToCursoDTO(curso))
-            .ToList();
-
-            return resultado;
-
+            return cursos.Select(curso => curso.ToDTO()).ToList();
         }
     }
 }

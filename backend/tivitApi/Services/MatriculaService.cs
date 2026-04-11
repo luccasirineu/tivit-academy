@@ -3,8 +3,8 @@ using tivitApi.Models;
 using tivitApi.DTOs;
 using tivitApi.Infra.SQS;
 using tivitApi.Exceptions;
+using tivitApi.Mappers;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
 using System.Text;
 using System.Security.Cryptography;
 
@@ -26,34 +26,6 @@ namespace tivitApi.Services
             _logger = logger;
             _queue = queue;
             _passwordHasher = passwordHasher;
-
-
-        }
-
-
-
-
-        private Matricula ConvertMatriculaDtoToMatricula(MatriculaDTO matriculaDTO)
-        {
-            return new Matricula(
-                matriculaDTO.Nome,
-                matriculaDTO.Email,
-                matriculaDTO.Cpf,
-                matriculaDTO.CursoId);
-
-
-        }
-
-        private MatriculaDTO ConvertMatriculaToMatriculaDTO(Matricula matricula)
-        {
-            return new MatriculaDTO(
-                matricula.Id,
-                matricula.Nome,
-                matricula.Email,
-                matricula.Cpf,
-                matricula.Status,
-                matricula.CursoId
-                );
         }
 
         private string SomenteNumeros(string valor)
@@ -116,9 +88,9 @@ namespace tivitApi.Services
 
         public async Task<Matricula> CriarMatriculaAsync(MatriculaDTO matriculaDTO)
         {
-            _logger.LogInformation($"Iniciando criação de matrícula: {JsonSerializer.Serialize(matriculaDTO)}");
+            _logger.LogInformation("Iniciando criação de matrícula: {@MatriculaDTO}", matriculaDTO);
 
-            var matricula = ConvertMatriculaDtoToMatricula(matriculaDTO);
+            var matricula = matriculaDTO.ToEntity();
             matricula.Cpf = SomenteNumeros(matricula.Cpf);
 
             bool existeNoBanco = await _context.Matriculas.AnyAsync(m =>
@@ -132,7 +104,7 @@ namespace tivitApi.Services
             {
                 _context.Matriculas.Add(matricula);
                 await _context.SaveChangesAsync();
-                _logger.LogInformation($"Matrícula criada com sucesso! ID gerado: {matricula.Id}");
+                _logger.LogInformation("Matrícula criada com sucesso! ID gerado: {MatriculaId}", matricula.Id);
                 return matricula;
             }
 
@@ -201,14 +173,7 @@ namespace tivitApi.Services
 
             var matriculas = await _context.Matriculas.Where(c => c.Status == "AGUARDANDO_APROVACAO").ToListAsync();
 
-            List<MatriculaDTO> matriculasDTO = new List<MatriculaDTO>();
-
-            foreach (var matricula in matriculas)
-            {
-                matriculasDTO.Add(ConvertMatriculaToMatriculaDTO(matricula));
-            }
-
-            return matriculasDTO;
+            return matriculas.Select(matricula => matricula.ToDTO()).ToList();
         }
 
 

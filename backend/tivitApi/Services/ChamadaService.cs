@@ -3,6 +3,7 @@ using tivitApi.Data;
 using tivitApi.DTOs;
 using tivitApi.Models;
 using tivitApi.Exceptions;
+using tivitApi.Mappers;
 
 namespace tivitApi.Services
 {
@@ -20,21 +21,7 @@ namespace tivitApi.Services
         public ChamadaService(AppDbContext context)
         {
             _context = context;
-
         }
-
-
-        private Chamada ConvertChamadaDtoToChamada(ChamadaDTO dto)
-        {
-            return new Chamada(
-                dto.MatriculaId,
-                dto.MateriaId,
-                dto.Faltou,
-                DateTime.UtcNow,
-                dto.TurmaId
-                );
-        }
-
 
         public async Task RealizarChamada(List<ChamadaDTO> dtos)
         {
@@ -57,7 +44,7 @@ namespace tivitApi.Services
             if (chamadaJaExiste)
                 throw new BusinessException("Chamada já feita para essa matéria dessa turma.");
 
-            var chamadas = dtos.Select(dto => ConvertChamadaDtoToChamada(dto)).ToList();
+            var chamadas = dtos.Select(dto => dto.ToEntity()).ToList();
 
             _context.Chamadas.AddRange(chamadas);
             await _context.SaveChangesAsync();
@@ -95,7 +82,7 @@ namespace tivitApi.Services
                 if (chamadaExistente == null)
                     continue;
 
-                var chamadaAtualizada = ConvertChamadaDtoToChamada(dto);
+                var chamadaAtualizada = dto.ToEntity();
 
                 chamadaExistente.Faltou = chamadaAtualizada.Faltou;
                 chamadaExistente.HorarioDaAula = DateTime.UtcNow;

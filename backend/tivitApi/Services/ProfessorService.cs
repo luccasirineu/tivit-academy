@@ -3,10 +3,9 @@ using tivitApi.Data;
 using tivitApi.DTOs;
 using tivitApi.Models;
 using tivitApi.Exceptions;
+using tivitApi.Mappers;
 using System.Security.Cryptography;
 using tivitApi.Infra.SQS;
-
-using System.Text.Json;
 using System.Text;
 using System.Security.Cryptography;
 
@@ -37,35 +36,6 @@ namespace tivitApi.Services
             _passwordHasher = passwordHasher;
             _queue = queue;
             _logger = logger;
-
-        }
-
-        private ProfessorDTOResponse ConvertProfessorToProfessorDTOResponse(Professor professor)
-        {
-            return new ProfessorDTOResponse(
-                professor.Id,
-                professor.Nome,
-                professor.Email,
-                professor.Rm,
-                professor.Cpf,
-                professor.Status
-                );
-        }
-
-        private Professor ConvertProfessorRequestToProfessor(ProfessorDTORequest professorDTO, string senha, string rm)
-        {
-            var professor = new Professor
-            {
-
-                Nome = professorDTO.Nome,
-                Email = professorDTO.Email,
-                Cpf = professorDTO.Cpf,
-                Rm = rm,
-                Senha = senha,
-                Status = professorDTO.Status
-            };
-
-            return professor;
         }
 
         private string GerarSenha(int tamanho = 12)
@@ -103,7 +73,7 @@ namespace tivitApi.Services
                 // LCG
                 seed = (a * seed + c) % m;
 
-                // Garante 6 dígitos e mínimo 100000
+                // Garante 6 dï¿½gitos e mï¿½nimo 100000
                 numeroGerado = (int)(minimo + (seed % (maximo - minimo + 1)));
 
                 string rmFormatado = $"RM{numeroGerado}";
@@ -142,24 +112,14 @@ namespace tivitApi.Services
         {
             var professores = await _context.Professores.ToListAsync();
 
-            // converter lista de Professores -> lista de ProfessorDTOResponse
-            var resultado = professores
-            .Select(professor => ConvertProfessorToProfessorDTOResponse(professor))
-            .ToList();
-
-            return resultado;
+            return professores.Select(professor => professor.ToDTO()).ToList();
         }
 
         public async Task<List<ProfessorDTOResponse>> GetAllProfessoresAtivos()
         {
             var professores = await _context.Professores.Where(p => p.Status == "ATIVO").ToListAsync();
 
-            // converter lista de Professores -> lista de ProfessorDTOResponse
-            var resultado = professores
-            .Select(professor => ConvertProfessorToProfessorDTOResponse(professor))
-            .ToList();
-
-            return resultado;
+            return professores.Select(professor => professor.ToDTO()).ToList();
         }
 
         public async Task CriarProfessor(ProfessorDTORequest dto)
@@ -168,7 +128,7 @@ namespace tivitApi.Services
             var senhaHash = _passwordHasher.Hash(senha);
 
             var rm = await GerarRm();
-            var professor = ConvertProfessorRequestToProfessor(dto, senhaHash, rm);
+            var professor = dto.ToEntity(senhaHash, rm);
 
             _context.Professores.Add(professor);
             await _context.SaveChangesAsync();
@@ -187,9 +147,8 @@ namespace tivitApi.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Erro ao enviar evento para SQS: {ex.Message}");
+                _logger.LogError(ex, "Erro ao enviar evento para SQS");
             }
-
         }
 
 
