@@ -114,57 +114,79 @@ namespace tivitApi.Services
 
         public async Task<ComprovantePagamentoDTO> EnviarComprovantePagamentoAsync(int matriculaId, IFormFile arquivo)
         {
-            var matricula = await ObterMatricula(matriculaId);
+            using var transaction = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                var matricula = await ObterMatricula(matriculaId);
 
-            var arquivoBytes = await LerArquivoAsync(arquivo);
+                var arquivoBytes = await LerArquivoAsync(arquivo);
 
-            var comprovante = new ComprovantePagamento
-            (
-                matriculaId,
-                arquivoBytes,
-                DateTime.Now
-            );
+                var comprovante = new ComprovantePagamento
+                (
+                    matriculaId,
+                    arquivoBytes,
+                    DateTime.Now
+                );
 
-            _context.ComprovantesPagamento.Add(comprovante);
+                _context.ComprovantesPagamento.Add(comprovante);
 
-            matricula.Status = "AGUARDANDO_DOCUMENTOS";
-            await _context.SaveChangesAsync();
+                matricula.Status = "AGUARDANDO_DOCUMENTOS";
+                await _context.SaveChangesAsync();
 
-            return new ComprovantePagamentoDTO
-            (
-                comprovante.MatriculaId,
-                comprovante.Arquivo,
-                comprovante.HoraEnvio
-            );
+                await transaction.CommitAsync();
+
+                return new ComprovantePagamentoDTO
+                (
+                    comprovante.MatriculaId,
+                    comprovante.Arquivo,
+                    comprovante.HoraEnvio
+                );
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
         }
 
         public async Task<DocumentosDTO> EnviarDocumentosAsync(int matriculaId, IFormFile documentoHistorico, IFormFile documentoCpf)
         {
-            var matricula = await ObterMatricula(matriculaId);
+            using var transaction = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                var matricula = await ObterMatricula(matriculaId);
 
-            var historicoBytes = await LerArquivoAsync(documentoHistorico);
-            var cpfBytes = await LerArquivoAsync(documentoCpf);
+                var historicoBytes = await LerArquivoAsync(documentoHistorico);
+                var cpfBytes = await LerArquivoAsync(documentoCpf);
 
-            var documentos = new Documentos
-            (
-                matriculaId,
-                historicoBytes,
-                cpfBytes,
-                DateTime.Now
-            );
+                var documentos = new Documentos
+                (
+                    matriculaId,
+                    historicoBytes,
+                    cpfBytes,
+                    DateTime.Now
+                );
 
-            _context.Documentos.Add(documentos);
+                _context.Documentos.Add(documentos);
 
-            matricula.Status = "AGUARDANDO_APROVACAO";
-            await _context.SaveChangesAsync();
+                matricula.Status = "AGUARDANDO_APROVACAO";
+                await _context.SaveChangesAsync();
 
-            return new DocumentosDTO
-            (
-                documentos.MatriculaId,
-                documentos.DocumentoHistorico,
-                documentos.DocumentoCpf,
-                documentos.HoraEnvio
-            );
+                await transaction.CommitAsync();
+
+                return new DocumentosDTO
+                (
+                    documentos.MatriculaId,
+                    documentos.DocumentoHistorico,
+                    documentos.DocumentoCpf,
+                    documentos.HoraEnvio
+                );
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
         }
 
         public async Task<List<MatriculaDTO>> GetAllMatriculasPendentes()
@@ -179,8 +201,9 @@ namespace tivitApi.Services
 
         public async Task AprovarMatricula(string matriculaId)
         {
-            _logger.LogInformation($"Aprovando matricula: {matriculaId}");
+            _logger.LogInformation("Aprovando matricula: {MatriculaId}", matriculaId);
 
+            using var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
                 int matriculaIdConvertida = int.Parse(matriculaId);
@@ -192,10 +215,11 @@ namespace tivitApi.Services
                 var senhaGerada = GerarSenha();
                 var senhaHash = _passwordHasher.Hash(senhaGerada);
 
-
                 await CriarAlunoAPartirDaMatricula(matricula, senhaHash);
 
+                await transaction.CommitAsync();
 
+                // Envio de evento SQS fora da transação (operação externa)
                 try
                 {
                     await _queue.EnviarEventoAsync(new MatriculaStatusEvento
@@ -210,23 +234,23 @@ namespace tivitApi.Services
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError($"Erro ao enviar evento para SQS: {ex.Message}");
+                    _logger.LogError(ex, "Erro ao enviar evento para SQS");
+                    // Não falha a operação se o envio do evento falhar
                 }
-
-
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Erro ao aprovar matricula: {ex.Message}");
+                await transaction.RollbackAsync();
+                _logger.LogError(ex, "Erro ao aprovar matricula");
                 throw;
             }
         }
 
         public async Task RecusarMatricula(string matriculaId)
         {
-            _logger.LogInformation($"Reprovando matricula: {matriculaId}");
+            _logger.LogInformation("Reprovando matricula: {MatriculaId}", matriculaId);
 
-
+            using var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
                 int matriculaIdConvertida = int.Parse(matriculaId);
@@ -235,7 +259,9 @@ namespace tivitApi.Services
                 matricula.Status = "RECUSADO";
                 await _context.SaveChangesAsync();
 
+                await transaction.CommitAsync();
 
+                // Envio de evento SQS fora da transação (operação externa)
                 try
                 {
                     await _queue.EnviarEventoAsync(new MatriculaStatusEvento
@@ -248,14 +274,14 @@ namespace tivitApi.Services
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError($"Erro ao enviar evento para SQS: {ex.Message}");
+                    _logger.LogError(ex, "Erro ao enviar evento para SQS");
+                    // Não falha a operação se o envio do evento falhar
                 }
-
-
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Erro ao aprovar matricula: {ex.Message}");
+                await transaction.RollbackAsync();
+                _logger.LogError(ex, "Erro ao reprovar matricula");
                 throw;
             }
         }

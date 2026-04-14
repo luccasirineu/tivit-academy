@@ -124,30 +124,43 @@ namespace tivitApi.Services
 
         public async Task CriarProfessor(ProfessorDTORequest dto)
         {
-            var senha = GerarSenha();
-            var senhaHash = _passwordHasher.Hash(senha);
-
-            var rm = await GerarRm();
-            var professor = dto.ToEntity(senhaHash, rm);
-
-            _context.Professores.Add(professor);
-            await _context.SaveChangesAsync();
-
+            using var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
-                await _queue.EnviarEventoAsync(new ProfessorStatusEvento
+                var senha = GerarSenha();
+                var senhaHash = _passwordHasher.Hash(senha);
+
+                var rm = await GerarRm();
+                var professor = dto.ToEntity(senhaHash, rm);
+
+                _context.Professores.Add(professor);
+                await _context.SaveChangesAsync();
+
+                await transaction.CommitAsync();
+
+                // Envio de evento SQS fora da transação (operação externa)
+                try
                 {
-                    Rm = professor.Rm,
-                    Nome = professor.Nome,
-                    Email = professor.Email,
-                    Status = "APROVADO",
-                    SenhaGerada = senha,
-                    Cpf = professor.Cpf
-                });
+                    await _queue.EnviarEventoAsync(new ProfessorStatusEvento
+                    {
+                        Rm = professor.Rm,
+                        Nome = professor.Nome,
+                        Email = professor.Email,
+                        Status = "APROVADO",
+                        SenhaGerada = senha,
+                        Cpf = professor.Cpf
+                    });
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Erro ao enviar evento para SQS");
+                    // Não falha a operação se o envio do evento falhar
+                }
             }
-            catch (Exception ex)
+            catch
             {
-                _logger.LogError(ex, "Erro ao enviar evento para SQS");
+                await transaction.RollbackAsync();
+                throw;
             }
         }
 

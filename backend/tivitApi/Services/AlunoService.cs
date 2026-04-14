@@ -246,6 +246,7 @@ namespace tivitApi.Services
             if (string.IsNullOrWhiteSpace(cpf))
                 throw new ValidationException("CPF inválido.");
 
+            using var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
                 var aluno = await _context.Alunos.FirstOrDefaultAsync(a => a.Cpf == cpf);
@@ -258,6 +259,9 @@ namespace tivitApi.Services
                 aluno.Senha = senhaHash;
                 await _context.SaveChangesAsync();
 
+                await transaction.CommitAsync();
+
+                // Envio de evento SQS fora da transação (operação externa)
                 try
                 {
                     await _queue.EnviarEventoAsync(new MatriculaStatusEvento
@@ -273,10 +277,12 @@ namespace tivitApi.Services
                 catch (Exception ex)
                 {
                     _logger.LogError(ex, "Erro ao enviar evento para SQS");
+                    // Não falha a operação se o envio do evento falhar
                 }
             }
             catch (Exception ex) when (ex is not NotFoundException && ex is not ValidationException)
             {
+                await transaction.RollbackAsync();
                 _logger.LogError(ex, "Erro ao resetar senha"); 
                 throw new BusinessException($"Erro ao resetar senha: {ex.Message}");
             }
