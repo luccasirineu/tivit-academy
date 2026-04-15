@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using tivitApi.Enums;
 
 namespace tivitApi.Models
 {
@@ -20,9 +21,9 @@ namespace tivitApi.Models
         public int ProfResponsavel { get; set; }
         public Professor Professor { get; set; }
 
-        public string Status { get; set; }
+        public StatusCurso Status { get; set; }
 
-        public Curso(string nome, string descricao, int profResponsavel, string status)
+        public Curso(string nome, string descricao, int profResponsavel, StatusCurso status)
         {
             Nome = nome;
             Descricao = descricao;

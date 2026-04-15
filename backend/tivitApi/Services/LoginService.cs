@@ -2,6 +2,7 @@
 using tivitApi.Models;
 using tivitApi.DTOs;
 using tivitApi.Exceptions;
+using tivitApi.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace tivitApi.Services
@@ -53,7 +54,7 @@ namespace tivitApi.Services
         private async Task<LoginDTOResponse> AutenticarAluno(LoginDTO loginDTO)
         {
             var alunos = await _context.Alunos
-                .Where(a => a.Cpf == loginDTO.Cpf && a.Status == "ATIVO")
+                .Where(a => a.Cpf == loginDTO.Cpf && a.Status == StatusUsuario.ATIVO)
                 .ToListAsync();
 
             var alunosIds = alunos.Select(a => a.MatriculaId).ToList();
@@ -82,7 +83,7 @@ namespace tivitApi.Services
         private async Task<LoginDTOResponse> AutenticarProfessor(LoginDTO loginDTO)
         {
             var professor = await _context.Professores
-                .FirstOrDefaultAsync(p => p.Cpf == loginDTO.Cpf && p.Status == "ATIVO");
+                .FirstOrDefaultAsync(p => p.Cpf == loginDTO.Cpf && p.Status == StatusUsuario.ATIVO);
 
             ValidarCredenciais(professor?.Senha, loginDTO.Senha);
 
@@ -102,7 +103,7 @@ namespace tivitApi.Services
         private async Task<LoginDTOResponse> AutenticarAdministrador(LoginDTO loginDTO)
         {
             var admin = await _context.Administradores
-                .FirstOrDefaultAsync(a => a.Cpf == loginDTO.Cpf && a.Status == "ATIVO");
+                .FirstOrDefaultAsync(a => a.Cpf == loginDTO.Cpf && a.Status == StatusUsuario.ATIVO);
 
             //ValidarCredenciais(admin?.Senha, loginDTO.Senha);
 

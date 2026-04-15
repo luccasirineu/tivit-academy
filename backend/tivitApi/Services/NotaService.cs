@@ -4,6 +4,7 @@ using tivitApi.DTOs;
 using tivitApi.Models;
 using tivitApi.Exceptions;
 using tivitApi.Mappers;
+using tivitApi.Enums;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
@@ -41,12 +42,12 @@ namespace tivitApi.Services
             return media;
         }
 
-        private string CalcularStatusNota(decimal media, int qntdFaltas)
+        private StatusNota CalcularStatusNota(decimal media, int qntdFaltas)
         {
-            if (qntdFaltas > 10) return "REPROVADO";
+            if (qntdFaltas > 10) return StatusNota.REPROVADO;
 
-            if (media >= 6) return "APROVADO";
-            return "REPROVADO";
+            if (media >= 6) return StatusNota.APROVADO;
+            return StatusNota.REPROVADO;
         }
 
         private async Task<int> ObterFaltas(int alunoId, int materiaId)
@@ -108,7 +109,7 @@ namespace tivitApi.Services
                 var qntdFaltas = await ObterFaltas(dto.AlunoId, dto.MateriaId);
 
                 decimal media = CalcularMedia(dto.Nota1, dto.Nota2);
-                string status = CalcularStatusNota(media, qntdFaltas);
+                StatusNota status = CalcularStatusNota(media, qntdFaltas);
 
                 var nota = dto.ToEntity(media, status, qntdFaltas);
 
@@ -148,7 +149,7 @@ namespace tivitApi.Services
                     Nota2 = nota.Nota2,
                     Media = media,
                     QtdFaltas = qntdFaltas,
-                    Status = status
+                    Status = status.ToString()
                 };
             }
             catch (Exception ex) when (ex is not NotFoundException && ex is not ValidationException && ex is not BusinessException)
@@ -175,7 +176,7 @@ namespace tivitApi.Services
                     Nota2 = n.Nota2,
                     Media = n.Media,
                     QtdFaltas = n.QtdFaltas,
-                    Status = n.Status
+                    Status = n.Status.ToString()
                 })
                 .ToListAsync();
 
@@ -239,7 +240,7 @@ namespace tivitApi.Services
                     Nota2 = n.Nota2,
                     Media = n.Media,
                     QtdFaltas = n.QtdFaltas,
-                    Status = n.Status
+                    Status = n.Status.ToString()
                 })
                 .ToListAsync();
 
@@ -259,7 +260,7 @@ namespace tivitApi.Services
                     Nota2 = n.Nota2,
                     Media = n.Media,
                     QtdFaltas = n.QtdFaltas,
-                    Status = n.Status
+                    Status = n.Status.ToString()
                 })
                 .ToListAsync();
 
@@ -326,13 +327,13 @@ namespace tivitApi.Services
                             // Linhas
                             foreach (var nota in notas)
                             {
-                                var isAprovado = nota.Status == "APROVADO";
+                                var isAprovado = nota.Status == StatusNota.APROVADO;
                                 table.Cell().Padding(6).Text(nota.Materia?.Nome ?? "");
                                 table.Cell().Padding(6).Text(nota.Nota1.ToString("F2"));
                                 table.Cell().Padding(6).Text(nota.Nota2.ToString("F2"));
                                 table.Cell().Padding(6).Text(nota.Media.ToString("F2"));
                                 table.Cell().Padding(6).Text(nota.QtdFaltas.ToString());
-                                table.Cell().Padding(6).Text(nota.Status)
+                                table.Cell().Padding(6).Text(nota.Status.ToString())
                                     .FontColor(isAprovado ? Color.FromHex("#00aa55") : Color.FromHex("#ff0054"));
                             }
                         });

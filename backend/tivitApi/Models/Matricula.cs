@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using tivitApi.Enums;
 
 namespace tivitApi.Models
 {
@@ -19,7 +20,7 @@ namespace tivitApi.Models
         public string Cpf { get; set; }
 
         [Required]
-        public string Status{ get; set; }
+        public StatusMatricula Status { get; set; }
 
         // FK
         [ForeignKey("Curso")]
@@ -33,11 +34,11 @@ namespace tivitApi.Models
             Nome = nome;
             Email = email;
             Cpf = cpf;
-            Status = "AGUARDANDO_PAGAMENTO";
+            Status = StatusMatricula.AGUARDANDO_PAGAMENTO;
             CursoId = cursoId;
         }
 
-        public Matricula(string nome, string email, string cpf, string status, int cursoId)
+        public Matricula(string nome, string email, string cpf, StatusMatricula status, int cursoId)
         {
             Nome = nome;
             Email = email;

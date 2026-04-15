@@ -3,6 +3,7 @@ using tivitApi.Models;
 using tivitApi.DTOs;
 using tivitApi.Exceptions;
 using tivitApi.Mappers;
+using tivitApi.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace tivitApi.Services
@@ -56,7 +57,7 @@ namespace tivitApi.Services
         public async Task<int> GetQntdAlunosByCursoId(int cursoId)
         {
             return await _context.Matriculas
-                .Where(m => m.CursoId == cursoId && m.Status == "APROVADO")
+                .Where(m => m.CursoId == cursoId && m.Status == StatusMatricula.APROVADO)
                 .CountAsync();
         }
     
@@ -97,7 +98,7 @@ namespace tivitApi.Services
             if (curso == null)
                 throw new NotFoundException("Curso", cursoId);
 
-            curso.Status = "DESATIVADO";
+            curso.Status = StatusCurso.DESATIVADO;
             
             _context.Cursos.Update(curso);
             await _context.SaveChangesAsync();
@@ -114,7 +115,7 @@ namespace tivitApi.Services
             if (curso == null)
                 throw new NotFoundException("Curso", cursoId);
 
-            curso.Status = "ATIVO";
+            curso.Status = StatusCurso.ATIVO;
 
             _context.Cursos.Update(curso);
             await _context.SaveChangesAsync();
@@ -122,7 +123,7 @@ namespace tivitApi.Services
 
         public async Task<List<CursoDTO>> GetAllCursosAtivos()
         {
-            var cursos = await _context.Cursos.Where(p => p.Status == "ATIVO").ToListAsync();
+            var cursos = await _context.Cursos.Where(p => p.Status == StatusCurso.ATIVO).ToListAsync();
 
             return cursos.Select(curso => curso.ToDTO()).ToList();
         }

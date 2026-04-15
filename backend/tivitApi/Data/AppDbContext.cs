@@ -33,6 +33,32 @@ namespace tivitApi.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            // Configurar enums para serem armazenados como STRING no banco
+            modelBuilder.Entity<Matricula>()
+                .Property(m => m.Status)
+                .HasConversion<string>();
+
+            modelBuilder.Entity<Curso>()
+                .Property(c => c.Status)
+                .HasConversion<string>();
+
+            modelBuilder.Entity<Aluno>()
+                .Property(a => a.Status)
+                .HasConversion<string>();
+
+            modelBuilder.Entity<Professor>()
+                .Property(p => p.Status)
+                .HasConversion<string>();
+
+            modelBuilder.Entity<Administrador>()
+                .Property(a => a.Status)
+                .HasConversion<string>();
+
+            modelBuilder.Entity<Nota>()
+                .Property(n => n.Status)
+                .HasConversion<string>();
+
+            // Relacionamentos existentes
             modelBuilder.Entity<Aluno>()
                 .HasOne(a => a.Matricula)
                 .WithOne()

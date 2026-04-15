@@ -4,6 +4,7 @@ using tivitApi.DTOs;
 using tivitApi.Infra.SQS;
 using tivitApi.Exceptions;
 using tivitApi.Mappers;
+using tivitApi.Enums;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
 using System.Security.Cryptography;
@@ -76,7 +77,7 @@ namespace tivitApi.Services
                 Cpf = matricula.Cpf,
                 Senha = senha,
                 MatriculaId = matricula.Id,
-                Status = "ATIVO"
+                Status = StatusUsuario.ATIVO
             };
 
             _context.Alunos.Add(aluno);
@@ -94,10 +95,10 @@ namespace tivitApi.Services
             matricula.Cpf = SomenteNumeros(matricula.Cpf);
 
             bool existeNoBanco = await _context.Matriculas.AnyAsync(m =>
-                m.Cpf == matricula.Cpf &&                 // 1) Mesmo CPF
-                m.CursoId == matricula.CursoId &&         // 2) Mesmo curso
-                (m.Status == "AGUARDANDO_APROVACAO" ||    // 3) Status válido
-                 m.Status == "APROVADO")
+                m.Cpf == matricula.Cpf &&
+                m.CursoId == matricula.CursoId &&
+                (m.Status == StatusMatricula.AGUARDANDO_APROVACAO ||
+                 m.Status == StatusMatricula.APROVADO)
             );
 
             if (!existeNoBanco)
@@ -130,7 +131,7 @@ namespace tivitApi.Services
 
                 _context.ComprovantesPagamento.Add(comprovante);
 
-                matricula.Status = "AGUARDANDO_DOCUMENTOS";
+                matricula.Status = StatusMatricula.AGUARDANDO_DOCUMENTOS;
                 await _context.SaveChangesAsync();
 
                 await transaction.CommitAsync();
@@ -169,7 +170,7 @@ namespace tivitApi.Services
 
                 _context.Documentos.Add(documentos);
 
-                matricula.Status = "AGUARDANDO_APROVACAO";
+                matricula.Status = StatusMatricula.AGUARDANDO_APROVACAO;
                 await _context.SaveChangesAsync();
 
                 await transaction.CommitAsync();
@@ -193,7 +194,9 @@ namespace tivitApi.Services
         {
             _logger.LogInformation("Pegando todos as matriculas pendentes");
 
-            var matriculas = await _context.Matriculas.Where(c => c.Status == "AGUARDANDO_APROVACAO").ToListAsync();
+            var matriculas = await _context.Matriculas
+                .Where(c => c.Status == StatusMatricula.AGUARDANDO_APROVACAO)
+                .ToListAsync();
 
             return matriculas.Select(matricula => matricula.ToDTO()).ToList();
         }
@@ -209,7 +212,7 @@ namespace tivitApi.Services
                 int matriculaIdConvertida = int.Parse(matriculaId);
                 var matricula = await ObterMatricula(matriculaIdConvertida);
 
-                matricula.Status = "APROVADO";
+                matricula.Status = StatusMatricula.APROVADO;
                 await _context.SaveChangesAsync();
 
                 var senhaGerada = GerarSenha();
@@ -227,7 +230,7 @@ namespace tivitApi.Services
                         MatriculaId = matricula.Id,
                         Nome = matricula.Nome,
                         Email = matricula.Email,
-                        Status = "APROVADO",
+                        Status = StatusMatricula.APROVADO.ToString(),
                         SenhaGerada = senhaGerada,
                         Cpf = matricula.Cpf
                     });
@@ -256,7 +259,7 @@ namespace tivitApi.Services
                 int matriculaIdConvertida = int.Parse(matriculaId);
                 var matricula = await ObterMatricula(matriculaIdConvertida);
 
-                matricula.Status = "RECUSADO";
+                matricula.Status = StatusMatricula.RECUSADO;
                 await _context.SaveChangesAsync();
 
                 await transaction.CommitAsync();
@@ -296,14 +299,9 @@ namespace tivitApi.Services
             if (!cursosIds.Any())
                 return 0;
 
-            var totalAlunosAtivos = await _context.Matriculas
-                .Where(m =>
-                    cursosIds.Contains(m.CursoId) &&
-                    m.Status == "APROVADO"
-                )
+            return await _context.Matriculas
+                .Where(m => cursosIds.Contains(m.CursoId) && m.Status == StatusMatricula.APROVADO)
                 .CountAsync();
-
-            return totalAlunosAtivos;
         }
     }
 }

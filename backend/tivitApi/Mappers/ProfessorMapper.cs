@@ -1,5 +1,6 @@
 using tivitApi.DTOs;
 using tivitApi.Models;
+using tivitApi.Enums;
 
 namespace tivitApi.Mappers
 {
@@ -16,7 +17,7 @@ namespace tivitApi.Mappers
                 professor.Email,
                 professor.Rm,
                 professor.Cpf,
-                professor.Status
+                professor.Status.ToString()
             );
         }
 
@@ -29,7 +30,7 @@ namespace tivitApi.Mappers
                 Cpf = dto.Cpf,
                 Rm = rm,
                 Senha = senha,
-                Status = dto.Status
+                Status = StatusUsuario.ATIVO
             };
         }
     }

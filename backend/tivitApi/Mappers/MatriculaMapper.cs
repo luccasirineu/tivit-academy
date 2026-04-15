@@ -25,7 +25,7 @@ namespace tivitApi.Mappers
                 matricula.Nome,
                 matricula.Email,
                 matricula.Cpf,
-                matricula.Status,
+                matricula.Status.ToString(),
                 matricula.CursoId
             );
         }

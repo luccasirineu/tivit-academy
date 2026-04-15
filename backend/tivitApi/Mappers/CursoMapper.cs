@@ -1,5 +1,6 @@
 using tivitApi.DTOs;
 using tivitApi.Models;
+using tivitApi.Enums;
 
 namespace tivitApi.Mappers
 {
@@ -15,7 +16,7 @@ namespace tivitApi.Mappers
                 curso.Nome,
                 curso.Descricao,
                 curso.ProfResponsavel,
-                curso.Status
+                curso.Status.ToString()
             );
         }
 
@@ -25,7 +26,7 @@ namespace tivitApi.Mappers
                 dto.Nome,
                 dto.Descricao,
                 dto.ProfResponsavel,
-                "ATIVO"
+                StatusCurso.ATIVO
             );
         }
     }

@@ -3,6 +3,7 @@ using tivitApi.Data;
 using tivitApi.DTOs;
 using tivitApi.Models;
 using tivitApi.Exceptions;
+using tivitApi.Enums;
 using tivitApi.Infra.SQS;
 using System.Text;
 using System.Security.Cryptography;
@@ -102,7 +103,7 @@ namespace tivitApi.Services
             var alunosByCurso = await (
                 from m in _context.Matriculas
                 join a in _context.Alunos on m.Id equals a.MatriculaId
-                where m.CursoId == cursoId && m.Status == "APROVADO"
+                where m.CursoId == cursoId && m.Status == StatusMatricula.APROVADO
                 select new
                 {
                     MatriculaId = m.Id,

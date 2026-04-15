@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using tivitApi.Enums;
 
 namespace tivitApi.Models
 {
@@ -21,7 +22,7 @@ namespace tivitApi.Models
         [Required]
         public string Senha { get; set; }
 
-        public string Status { get; set; }
+        public StatusUsuario Status { get; set; }
 
 
     }

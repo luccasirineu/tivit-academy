@@ -1,3 +1,5 @@
+using tivitApi.Enums;
+
 namespace tivitApi.DTOs
 {
 	public class MatriculaDTO
@@ -14,7 +16,7 @@ namespace tivitApi.DTOs
             Nome = nome;
             Email = email;
             Cpf = cpf;
-            Status = "AGUARDANDO_PAGAMENTO";
+            Status = StatusMatricula.AGUARDANDO_PAGAMENTO.ToString();
             CursoId = cursoId;
         }
 

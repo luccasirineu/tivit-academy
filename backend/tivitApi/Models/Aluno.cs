@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using tivitApi.Enums;
 
 namespace tivitApi.Models
 {
@@ -28,7 +29,7 @@ namespace tivitApi.Models
 
         public int TurmaId { get; set; }
 
-        public string Status { get; set; }
+        public StatusUsuario Status { get; set; }
 
         public Aluno(string nome, string email, string cpf, string senha, int matriculaId)
         {

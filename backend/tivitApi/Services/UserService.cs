@@ -3,6 +3,7 @@ using tivitApi.Data;
 using tivitApi.DTOs;
 using tivitApi.Models;
 using tivitApi.Exceptions;
+using tivitApi.Enums;
 
 namespace tivitApi.Services
 {
@@ -36,7 +37,7 @@ namespace tivitApi.Services
                     Email = a.Email,
                     Cpf = a.Cpf,
                     Tipo = "Aluno",
-                    Status = a.Status
+                    Status = a.Status.ToString()
                 })
                 .FirstOrDefaultAsync();
         }
@@ -51,7 +52,7 @@ namespace tivitApi.Services
                     Email = p.Email,
                     Cpf = p.Cpf,
                     Tipo = "Professor",
-                    Status = p.Status
+                    Status = p.Status.ToString()
                 })
                 .FirstOrDefaultAsync();
         }
@@ -66,7 +67,7 @@ namespace tivitApi.Services
                     Email = a.Email,
                     Cpf = a.Cpf,
                     Tipo = "Aluno",
-                    Status = a.Status
+                    Status = a.Status.ToString()
                 })
                 .ToListAsync();
         }
@@ -81,7 +82,7 @@ namespace tivitApi.Services
                     Email = p.Email,
                     Cpf = p.Cpf,
                     Tipo = "Professor",
-                    Status = p.Status
+                    Status = p.Status.ToString()
                 })
                 .ToListAsync();
         }
@@ -134,7 +135,7 @@ namespace tivitApi.Services
                 if (aluno == null)
                     throw new NotFoundException("Aluno", $"CPF: {cpf}");
 
-                aluno.Status = "DESATIVADO";
+                aluno.Status = StatusUsuario.DESATIVADO;
             }
             else if (tipo == "professor")
             {
@@ -144,7 +145,7 @@ namespace tivitApi.Services
                 if (professor == null)
                     throw new NotFoundException("Professor", $"CPF: {cpf}");
 
-                professor.Status = "DESATIVADO";
+                professor.Status = StatusUsuario.DESATIVADO;
             }
             else
             {
@@ -172,7 +173,7 @@ namespace tivitApi.Services
                 if (aluno == null)
                     throw new NotFoundException("Aluno", $"CPF: {cpf}");
 
-                aluno.Status = "ATIVO";
+                aluno.Status = StatusUsuario.ATIVO;
             }
             else if (tipo == "professor")
             {
@@ -182,7 +183,7 @@ namespace tivitApi.Services
                 if (professor == null)
                     throw new NotFoundException("Professor", $"CPF: {cpf}");
 
-                professor.Status = "ATIVO";
+                professor.Status = StatusUsuario.ATIVO;
             }
             else
             {

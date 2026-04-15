@@ -4,10 +4,10 @@ using tivitApi.DTOs;
 using tivitApi.Models;
 using tivitApi.Exceptions;
 using tivitApi.Mappers;
+using tivitApi.Enums;
 using System.Security.Cryptography;
 using tivitApi.Infra.SQS;
 using System.Text;
-using System.Security.Cryptography;
 
 
 namespace tivitApi.Services
@@ -103,7 +103,7 @@ namespace tivitApi.Services
                     Email = p.Email,
                     Rm = p.Rm,
                     Cpf = p.Cpf,
-                    Status = p.Status
+                    Status = p.Status.ToString()
                 })
                 .FirstOrDefaultAsync();
         }
@@ -117,7 +117,7 @@ namespace tivitApi.Services
 
         public async Task<List<ProfessorDTOResponse>> GetAllProfessoresAtivos()
         {
-            var professores = await _context.Professores.Where(p => p.Status == "ATIVO").ToListAsync();
+            var professores = await _context.Professores.Where(p => p.Status == StatusUsuario.ATIVO).ToListAsync();
 
             return professores.Select(professor => professor.ToDTO()).ToList();
         }
@@ -146,7 +146,7 @@ namespace tivitApi.Services
                         Rm = professor.Rm,
                         Nome = professor.Nome,
                         Email = professor.Email,
-                        Status = "APROVADO",
+                        Status = StatusUsuario.ATIVO.ToString(),
                         SenhaGerada = senha,
                         Cpf = professor.Cpf
                     });

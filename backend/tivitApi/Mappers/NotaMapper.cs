@@ -1,5 +1,6 @@
 using tivitApi.DTOs;
 using tivitApi.Models;
+using tivitApi.Enums;
 
 namespace tivitApi.Mappers
 {
@@ -8,7 +9,7 @@ namespace tivitApi.Mappers
     /// </summary>
     public static class NotaMapper
     {
-        public static Nota ToEntity(this NotaDTORequest dto, decimal media, string status, int qntdFaltas)
+        public static Nota ToEntity(this NotaDTORequest dto, decimal media, StatusNota status, int qntdFaltas)
         {
             return new Nota(
                 dto.AlunoId,
