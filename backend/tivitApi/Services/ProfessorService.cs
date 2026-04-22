@@ -27,10 +27,10 @@ namespace tivitApi.Services
     {
         private readonly AppDbContext _context;
         private readonly IPasswordHasher _passwordHasher;
-        private readonly SQSProducer _queue;
+        private readonly ISQSProducer  _queue;
         private readonly ILogger<MatriculaService> _logger;
 
-        public ProfessorService(AppDbContext context, IPasswordHasher passwordHasher, SQSProducer queue, ILogger<MatriculaService> logger)
+        public ProfessorService(AppDbContext context, IPasswordHasher passwordHasher, ISQSProducer  queue, ILogger<MatriculaService> logger)
         {
             _context = context;
             _passwordHasher = passwordHasher;

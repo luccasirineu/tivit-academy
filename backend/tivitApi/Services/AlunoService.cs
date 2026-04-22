@@ -25,11 +25,11 @@ namespace tivitApi.Services
     public class AlunoService : IAlunoService
     {
         private readonly AppDbContext _context;
-        private readonly SQSProducer _queue;
+        private readonly ISQSProducer  _queue;
         private readonly ILogger<AlunoService> _logger;
         private readonly IPasswordHasher _passwordHasher;
 
-        public AlunoService(AppDbContext context, SQSProducer queue, ILogger<AlunoService> logger, IPasswordHasher passwordHasher)
+        public AlunoService(AppDbContext context, ISQSProducer  queue, ILogger<AlunoService> logger, IPasswordHasher passwordHasher)
         {
             _context = context;
             _queue = queue;

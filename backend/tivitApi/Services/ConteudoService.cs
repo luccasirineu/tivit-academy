@@ -105,50 +105,24 @@ namespace tivitApi.Services
             if (!Uri.IsWellFormedUriString(dto.Url, UriKind.Absolute))
                 throw new ValidationException("URL inválida");
 
-            using var transaction = await _context.Database.BeginTransactionAsync();
-            try
+            
+            var conteudo = new Conteudo
             {
-                var conteudo = new Conteudo
-                {
-                    Titulo = dto.Titulo,
-                    Tipo = "link",
-                    CaminhoOuUrl = dto.Url,
-                    MateriaId = dto.MateriaId,
-                    ProfessorId = professorId,
-                    DataPublicacao = DateTime.UtcNow,
-                    TurmaId = dto.TurmaId
-                };
+                Titulo = dto.Titulo,
+                Tipo = "link",
+                CaminhoOuUrl = dto.Url,
+                MateriaId = dto.MateriaId,
+                ProfessorId = professorId,
+                DataPublicacao = DateTime.UtcNow,
+                TurmaId = dto.TurmaId
+            };
 
-                _context.Conteudos.Add(conteudo);
-                await _context.SaveChangesAsync();
-
-                // Processar conteúdo com a IA e armazenar contexto
-                try
-                {
-                    _logger.LogInformation("Iniciando processamento de contexto para Link: {ConteudoId}", conteudo.Id);
-                    var conteudoContexto = await _geminiService.ExtrairEProcessarConteudoAsync(
-                        conteudo,
-                        dto.Url,
-                        "link");
-
-                    _context.ConteudosContexto.Add(conteudoContexto);
-                    await _context.SaveChangesAsync();
-                    _logger.LogInformation("Contexto armazenado com sucesso para ConteudoId: {ConteudoId}", conteudo.Id);
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "Erro ao processar contexto do Link. Conteúdo salvo sem contexto.");
-                    // Não falha o upload se houver erro no processamento de IA
-                }
-
-                await transaction.CommitAsync();
-                return conteudo;
-            }
-            catch
-            {
-                await transaction.RollbackAsync();
-                throw;
-            }
+            _context.Conteudos.Add(conteudo);
+            await _context.SaveChangesAsync();
+            
+            return conteudo;
+            
+            
         }
 
         public async Task<List<ConteudoDTO>> GetConteudosByMateriaIdAsync(int materiaId, int turmaId)

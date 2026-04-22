@@ -4,17 +4,19 @@ using Newtonsoft.Json;
 
 namespace tivitApi.Infra.SQS
 {
-    public class SQSProducer
+    public interface ISQSProducer
+    {
+        Task EnviarEventoAsync<T>(T evento); 
+    }
+    
+    public class SQSProducer : ISQSProducer
     {
         private readonly IAmazonSQS _sqs;
         private readonly string _queueUrl;
 
-        public SQSProducer(IConfiguration config)
+         public SQSProducer(IAmazonSQS sqs, IConfiguration config)
         {
-            _sqs = new AmazonSQSClient(
-                Amazon.RegionEndpoint.GetBySystemName(config["AWS:Region"])
-            );
-
+            _sqs = sqs;
             _queueUrl = config["AWS:SQSQueueUrl"];
         }
 

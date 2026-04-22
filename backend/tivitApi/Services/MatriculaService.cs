@@ -17,11 +17,11 @@ namespace tivitApi.Services
     {
         private readonly AppDbContext _context;
         private readonly ILogger<MatriculaService> _logger;
-        private readonly SQSProducer _queue;
+        private readonly ISQSProducer  _queue;
         private readonly IPasswordHasher _passwordHasher;
 
 
-        public MatriculaService(AppDbContext context, ILogger<MatriculaService> logger, SQSProducer queue, IPasswordHasher passwordHasher)
+        public MatriculaService(AppDbContext context, ILogger<MatriculaService> logger, ISQSProducer  queue, IPasswordHasher passwordHasher)
         {
             _context = context;
             _logger = logger;

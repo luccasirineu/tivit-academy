@@ -35,6 +35,7 @@ namespace tivitApi.Models
         {
             Nome = nome;
             Email = email;
+            Rm = rm;
             Cpf = cpf;
             Status = status;
         }

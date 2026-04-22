@@ -1,4 +1,5 @@
 using System.Text;
+using Amazon.SQS;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -69,7 +70,15 @@ builder.Services.AddScoped<IGeminiService, GeminiService>();
 builder.Services.AddHttpClient<IGeminiService, GeminiService>();
 builder.Services.AddScoped<IChatService, ChatService>();
 builder.Services.AddHttpClient<IChatService, ChatService>();
-builder.Services.AddSingleton<SQSProducer>();
+builder.Services.AddSingleton<IAmazonSQS>(sp =>
+{
+    var config = sp.GetRequiredService<IConfiguration>();
+    return new AmazonSQSClient(
+        Amazon.RegionEndpoint.GetBySystemName(config["AWS:Region"])
+    );
+});
+
+builder.Services.AddSingleton<ISQSProducer, SQSProducer>();
 
 
 var jwtKey = builder.Configuration["Jwt:Key"]!;
