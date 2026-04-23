@@ -461,20 +461,5 @@ Desenvolvido como sistema de gestão educacional completo.
 
 ---
 
-## ✨ Status do Projeto
-
-- ✅ Backend: Em produção
-- ✅ Frontend: Em produção
-- ✅ Banco de dados: SQL Server estruturado
-- ✅ Autenticação JWT: Implementada
-- ✅ Autorização por papéis: Implementada
-- ✅ Integração AWS SQS: Implementada
--  ✅ Testes: Parcialmente implementados
-    PROFESSORES ||--o{ CURSOS : "ministrado por"
-    CURSOS ||--o{ MATRICULAS : "recebe"
-    MATRICULAS ||--o{ COMPROVANTE_PAGAMENTO : "possui"
-    MATRICULAS ||--o{ DOCUMENTOS : "possui"
-
-```
 
 
