@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import api from "../../services/api";
-import { Modal } from "../../components/common/modal";
+import { Modal } from "../../components/common/Modal";
 
 interface Curso { id: number; nome: string; }
 interface Aluno { matriculaId: number; nome: string; email: string; cpf: string; }

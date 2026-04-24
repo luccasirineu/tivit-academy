@@ -1,6 +1,6 @@
 import { useState } from "react";
 import api from "../../services/api";
-import { Modal } from "../../components/common/modal";
+import { Modal } from "../../components/common/Modal";
 
 interface Nota { alunoId: number; materiaId: number; media: number; qtdFaltas: number; }
 interface AlunoInfo { nome: string; cursoNome: string; matriculaId: number; }

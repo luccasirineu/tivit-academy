@@ -36,6 +36,8 @@ services:
       - Jwt__Audience=${JWT_AUDIENCE}
       - Jwt__ExpiresInHours=${JWT_EXPIRES_IN_HOURS}
       - AWS__Region=${AWS_REGION}
+      - AWS__AccessKeyId=${AWS_ACCESS_KEY_ID}
+      - AWS__SecretAccessKey=${AWS_SECRET_ACCESS_KEY}
       - AWS__SQSQueueUrl=${AWS_SQS_QUEUE_URL}
       - Gemini__ApiKey=${GEMINI_API_KEY}
     ports:

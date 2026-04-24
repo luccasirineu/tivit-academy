@@ -73,8 +73,23 @@ builder.Services.AddHttpClient<IChatService, ChatService>();
 builder.Services.AddSingleton<IAmazonSQS>(sp =>
 {
     var config = sp.GetRequiredService<IConfiguration>();
+    var accessKey = config["AWS:AccessKeyId"];
+    var secretKey = config["AWS:SecretAccessKey"];
+    var region = config["AWS:Region"];
+
+    // Se as credenciais estiverem configuradas, use-as explicitamente
+    if (!string.IsNullOrEmpty(accessKey) && !string.IsNullOrEmpty(secretKey))
+    {
+        return new AmazonSQSClient(
+            accessKey,
+            secretKey,
+            Amazon.RegionEndpoint.GetBySystemName(region)
+        );
+    }
+    
+    // Caso contrário, use as credenciais padrão do ambiente
     return new AmazonSQSClient(
-        Amazon.RegionEndpoint.GetBySystemName(config["AWS:Region"])
+        Amazon.RegionEndpoint.GetBySystemName(region)
     );
 });
 
@@ -113,6 +128,26 @@ builder.Services.AddCors(options =>
 QuestPDF.Settings.License = LicenseType.Community;
 
 var app = builder.Build();
+
+// Aplicar migrations automaticamente ao iniciar
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<AppDbContext>();
+        
+        Console.WriteLine("🔄 Aplicando migrations...");
+        context.Database.Migrate();
+        Console.WriteLine("✅ Migrations aplicadas com sucesso!");
+        Console.WriteLine("✅ Banco de dados TivitDB criado e pronto para uso!");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"❌ Erro ao inicializar banco: {ex.Message}");
+        Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+    }
+}
 
 if (app.Environment.IsDevelopment())
 {

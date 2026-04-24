@@ -93,6 +93,12 @@ namespace tivitApi.Data
                 .HasForeignKey(c => c.TurmaId)
                 .OnDelete(DeleteBehavior.NoAction);
 
+            modelBuilder.Entity<Chamada>()
+                .HasOne(c => c.Matricula)
+                .WithMany()
+                .HasForeignKey(c => c.MatriculaId)
+                .OnDelete(DeleteBehavior.NoAction);
+
             modelBuilder.Entity<NotificacaoTurma>()
                 .HasKey(nt => new { nt.NotificacaoId, nt.TurmaId });
 
