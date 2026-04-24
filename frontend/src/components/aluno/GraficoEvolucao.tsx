@@ -24,7 +24,7 @@ export default function GraficoEvolucao({ notas = [] }) {
     status: n.status,
   }));
 
-  const CustomTooltip = ({ active, payload }) => {
+  const CustomTooltip = ({ active, payload }: any) => {
     if (!active || !payload?.length) return null;
     const item = payload[0].payload;
     return (
@@ -92,7 +92,7 @@ export default function GraficoEvolucao({ notas = [] }) {
             width={160}
             tick={{ fill: "var(--text)", fontSize: 12 }}
           />
-          <Tooltip content={<CustomTooltip />} cursor={{ fill: "rgba(255,255,255,0.05)" }} />
+          <Tooltip content={<CustomTooltip active={false} payload={[]} />} cursor={{ fill: "rgba(255,255,255,0.05)" }} />
           <Bar dataKey="media" radius={[0, 8, 8, 0]} barSize={22} name="Média">
             {data.map((entry, index) => (
               <Cell key={index} fill={STATUS_COR[entry.status] || "#ff0054"} />

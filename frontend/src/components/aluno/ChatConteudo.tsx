@@ -73,7 +73,7 @@ export default function ChatConteudo({
     }
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey && !carregando) {
       e.preventDefault();
       handleEnviar();
