@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import api from "../../services/api";
 
-interface Props { abrirModal: (titulo: string, mensagem: string) => void; }
+interface Props { abrirModal?: (titulo: string, mensagem: string) => void; }
 interface ProximoEvento { titulo: string; horario: string; descricao: string; }
 
 export default function DashboardProfessor({ abrirModal }: Props) {

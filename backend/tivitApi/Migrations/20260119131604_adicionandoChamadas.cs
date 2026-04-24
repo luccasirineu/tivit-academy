@@ -36,7 +36,7 @@ namespace tivitApi.Migrations
                         column: x => x.MatriculaId,
                         principalTable: "Matriculas",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateIndex(
